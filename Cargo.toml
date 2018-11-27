@@ -1,0 +1,7 @@
+[package]
+name = "duplex"
+version = "0.1.0"
+authors = ["kirjavascript <snkenjoi@gmail.com>"]
+
+[dependencies]
+nom = "4.1.1"
