@@ -2,11 +2,10 @@ use cube::*;
 
 use nom::types::CompleteStr as Input;
 use nom::*;
-// remove whitespace first
 
 named!(layer<Input, Layer>,
     map!(
-        one_of!("UFRLBDMESufrlbdXYZ"),
+        one_of!("UFRLBDMESufrlbdxyz"),
         |ly| match ly {
             'U' => Layer::U,
             'F' => Layer::F,
@@ -23,13 +22,38 @@ named!(layer<Input, Layer>,
             'l' => Layer::Lw,
             'b' => Layer::Bw,
             'd' => Layer::Dw,
-            'X' => Layer::X,
-            'Y' => Layer::Y,
-            'Z' => Layer::Z,
+            'x' => Layer::X,
+            'y' => Layer::Y,
+            'z' => Layer::Z,
             _ => unreachable!()
         }
     )
 );
 
-// move
-// alg
+named!(order<Input, Order>,
+    map!(
+        opt!(one_of!("'2")),
+        |or| match or {
+            Some('\'') => Order::Prime,
+            Some('2') => Order::Double,
+            None => Order::Normal,
+            _ => unreachable!()
+        }
+    )
+);
+
+named!(move_<Input, Move>,
+    do_parse!(
+        multispace0 >> layer: layer >>
+        multispace0 >> order: order >>
+        (Move { order, layer })
+    )
+);
+
+named!(moves<Input, Vec<Move>>,
+    many0!( move_ )
+);
+
+pub fn parse_moves(data: &str) -> Vec<Move> {
+    moves(Input(data.trim()))
+}

@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub enum Order {
     Normal,
     Prime,
@@ -19,9 +20,10 @@ pub enum Layer {
 //     }
 // }
 
+#[derive(Debug)]
 pub struct Move {
-    order: Order,
-    layer: Layer,
+    pub order: Order,
+    pub layer: Layer,
 }
 
 pub struct Transform {
