@@ -54,6 +54,18 @@ named!(moves<Input, Vec<Move>>,
     many0!( move_ )
 );
 
-pub fn parse_moves(data: &str) -> Vec<Move> {
-    moves(Input(data.trim()))
+pub fn parse_moves(data: &str) -> Result<Vec<Move>, String> {
+    let (etc, moves) = moves(Input(data)).expect("unknown parser error");
+    let etc = etc.to_string();
+    if !etc.is_empty() {
+        let pos = data.len() - etc.len();
+        Err(format!(
+            "{}\n{}^ parse error at position {}",
+            data,
+            String::from_utf8(vec![b' '; pos + 1]).unwrap(),
+            pos,
+        ))
+    } else {
+        Ok(moves)
+    }
 }

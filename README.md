@@ -1,10 +1,8 @@
 duplexLL
 
-do 3 look version
-do version on CLL
-
 support wasm from the start
 precompile algs into transforms
+
 select subset, generate cases that use smallest number of first algs
 3 look duplex, duplex on cll
 
