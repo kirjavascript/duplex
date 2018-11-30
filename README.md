@@ -12,6 +12,7 @@ needs checkboxes for [ ] mirror [ ] inverse [ ] minverse
 
 (trainer/2x3x3->ll)
 (R' F R U2 Rw U' Rw' U2 F' U2 Rw U R' U' Rw')
+for algs, look at OLL/CMLL
 subset chooser (filter)
 (choose how you want to learn) alg chooser |
 gamification (checkbox for learnt subset / case) |

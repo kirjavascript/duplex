@@ -1,4 +1,6 @@
-use std::fmt;
+use std::{fmt, mem};
+
+// moves
 
 #[derive(Debug)]
 pub enum Order {
@@ -28,13 +30,49 @@ pub struct Move {
     pub layer: Layer,
 }
 
-// pub struct Transform {
+// cube
 
-// }
+#[derive(Debug, PartialEq)]
+pub enum Face {
+    U,R,F,B,L,D,
+}
+
+#[derive(PartialEq)]
+pub struct Edge(Face, Face);
+
+impl Edge {
+    pub fn flip(&mut self) {
+        mem::swap(&mut self.0, &mut self.1);
+    }
+}
+
+#[derive(PartialEq)]
+pub struct Corner(Face, Face, Face);
+
+impl Corner {
+    pub fn twist(&mut self, anti: bool) {
+        mem::swap(&mut self.0, &mut self.1);
+        if anti {
+            mem::swap(&mut self.1, &mut self.2);
+        } else {
+            mem::swap(&mut self.0, &mut self.2);
+        }
+    }
+}
+
+#[derive(PartialEq)]
+pub struct Cube {
+    pub edges: [Edge; 12],
+    pub corners: [Corner; 8],
+    centres: [Face; 6],
+}
+
+pub struct Transform {
+    edge_swaps: Vec<(usize, bool)>,
+}
 
 // pub struct Alg {
 //     text: String,
-//     moves: Vec<Move>,
 //     transform: Transform,
 // }
 
@@ -43,29 +81,6 @@ pub struct Move {
 // impl Alg {
 //     is_ll_alg
 // }
-
-pub struct Edge(Face, Face);
-
-impl Edge {
-    fn flip(self) -> Self {
-        Edge(self.1, self.0)
-    }
-}
-
-pub struct Corner(Face, Face, Face);
-
-// twist
-
-pub struct Cube {
-    edges: [Edge; 12],
-    corners: [Corner; 8],
-    centres: [Face; 6],
-}
-
-#[derive(Debug)]
-pub enum Face {
-    U,R,F,B,L,D,
-}
 
 impl Cube {
     pub fn new() -> Self {
@@ -90,6 +105,11 @@ impl Cube {
                 Face::U, Face::B, Face::R, Face::F, Face::L, Face::D,
             ],
         }
+    }
+
+    fn is_solved(&self) -> bool {
+        // TODO: add isomorphisms
+        self == &Cube::new()
     }
 
     // is_solved
