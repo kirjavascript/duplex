@@ -40,10 +40,15 @@ impl Edge {
 #[derive(PartialEq)]
 pub struct Corner(Face, Face, Face);
 
+#[derive(PartialEq)]
+pub enum Twist {
+    Cw, Acw,
+}
+
 impl Corner {
-    pub fn twist(&mut self, anti: bool) {
+    pub fn twist(&mut self, type_: Twist) {
         mem::swap(&mut self.0, &mut self.1);
-        if anti {
+        if type_ == Twist::Acw {
             mem::swap(&mut self.1, &mut self.2);
         } else {
             mem::swap(&mut self.0, &mut self.2);
@@ -55,16 +60,85 @@ impl Corner {
 pub struct Cube {
     pub edges: [Edge; 12],
     pub corners: [Corner; 8],
-    centres: [Face; 6],
+    pub centres: [Face; 6],
 }
 
+// transforms
+
 pub struct Transform {
-    edge_swaps: Vec<(usize, bool)>,
+    pub edge_cycles: Vec<Vec<usize>>,
+    pub edge_flips: Vec<usize>,
+    pub corner_cycles: Vec<Vec<usize>>,
+    pub corner_twists: Vec<(usize, Twist)>,
 }
-// move.get_transform()
-// cube.do_transform()
-// cube.is_2x2x3_solved()
-// cube.get_ll_transform(&cube)
+
+fn combine_transforms(transforms: Vec<Transform>) -> Transform {
+    let mut ep = [0, 1, 2, 3, 4, 5, 6, 7];
+    let mut eo = [0, 0, 0, 0, 0, 0, 0, 0];
+    let mut cp = [0, 1, 2, 3, 4, 5, 6, 7];
+    let mut co = [0, 0, 0, 0, 0, 0, 0, 0];
+
+    for transform in transforms {
+        for edge_cycles in transform.edge_cycles {
+            for (i, index_a) in edge_cycles.iter().enumerate() {
+                if i != 0 {
+                    let index_b = edge_cycles[i-1];
+                    ep.swap(*index_a, index_b);
+                }
+            }
+        }
+        for i in transform.edge_flips {
+            eo[i] = if eo[i] == 1 { 0 } else { 1 };
+        }
+        for corner_cycles in transform.corner_cycles {
+            for (i, index_a) in corner_cycles.iter().enumerate() {
+                if i != 0 {
+                    let index_b = corner_cycles[i-1];
+                    ep.swap(*index_a, index_b);
+                }
+            }
+        }
+        for (i, type_) in transform.corner_twists {
+            match type_ {
+                Twist::Cw => {
+
+                },
+                Twist::Acw => {
+
+                },
+            }
+        }
+    }
+    println!("{:#?}", ep);
+    Transform {
+        edge_cycles: vec![],
+        edge_flips: vec![],
+        corner_cycles: vec![],
+        corner_twists: vec![],
+    }
+}
+
+impl Move {
+    pub fn get_transform(&self) -> Transform {
+        match self {
+            Move { layer: Layer::U, order: Order::Normal } => {
+                Transform {
+                    edge_cycles: vec![vec![3, 2, 1, 0]],
+                    edge_flips: vec![],
+                    corner_cycles: vec![vec![3, 2, 1, 0]],
+                    corner_twists: vec![],
+                }
+            },
+            Move { layer: Layer::U, order: Order::Double } => {
+                combine_transforms(vec![
+                    Move { layer: Layer::U, order: Order::Normal }.get_transform(),
+                    Move { layer: Layer::U, order: Order::Normal }.get_transform(),
+                ])
+            },
+            _ => panic!("unimplemented move"),
+        }
+    }
+}
 
 // pub struct Alg {
 //     text: String,
@@ -107,7 +181,34 @@ impl Cube {
         self == &Cube::new()
     }
 
+    pub fn do_transform(&mut self, transform: Transform) {
+        for edge_cycles in transform.edge_cycles {
+            for (i, index_a) in edge_cycles.iter().enumerate() {
+                if i != 0 {
+                    let index_b = edge_cycles[i-1];
+                    self.edges.swap(*index_a, index_b);
+                }
+            }
+        }
+        for i in transform.edge_flips {
+            self.edges[i].flip();
+        }
+        for corner_cycles in transform.corner_cycles {
+            for (i, index_a) in corner_cycles.iter().enumerate() {
+                if i != 0 {
+                    let index_b = corner_cycles[i-1];
+                    self.corners.swap(*index_a, index_b);
+                }
+            }
+        }
+        for (i, type_) in transform.corner_twists {
+            self.corners[i].twist(type_);
+        }
+    }
+
     // is_ll_solved
+    // cube.is_2x2x3_solved()
+
 }
 
 
