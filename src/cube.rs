@@ -15,15 +15,6 @@ pub enum Layer {
     Uw, Fw, Rw, Lw, Bw, Dw, X, Y, Z,
 }
 
-// impl Layer {
-//     fn is_rotation(&self) -> bool {
-//         match self {
-//             Layer::X | Layer::Y | Layer::Z => true,
-//             _ => false,
-//         }
-//     }
-// }
-
 #[derive(Debug)]
 pub struct Move {
     pub order: Order,
@@ -70,6 +61,10 @@ pub struct Cube {
 pub struct Transform {
     edge_swaps: Vec<(usize, bool)>,
 }
+// move.get_transform()
+// cube.do_transform()
+// cube.is_2x2x3_solved()
+// cube.get_ll_transform(&cube)
 
 // pub struct Alg {
 //     text: String,
@@ -112,7 +107,6 @@ impl Cube {
         self == &Cube::new()
     }
 
-    // is_solved
     // is_ll_solved
 }
 
@@ -129,6 +123,7 @@ impl fmt::Display for Corner {
 }
 impl fmt::Display for Cube {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        // TODO: add visualcube (temporary)
         write!(f, "{} ", self.corners[0]);
         write!(f, "{} ", self.edges[0]);
         write!(f, "{}\n", self.corners[1]);
