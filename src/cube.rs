@@ -40,7 +40,7 @@ impl Edge {
 #[derive(PartialEq)]
 pub struct Corner(Face, Face, Face);
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Debug)]
 pub enum Twist {
     Cw, Acw,
 }
@@ -65,6 +65,7 @@ pub struct Cube {
 
 // transforms
 
+#[derive(Clone, Debug)]
 pub struct Transform {
     pub edge_cycles: Vec<Vec<usize>>,
     pub edge_flips: Vec<usize>,
@@ -72,9 +73,9 @@ pub struct Transform {
     pub corner_twists: Vec<(usize, Twist)>,
 }
 
-fn combine_transforms(transforms: Vec<Transform>) -> Transform {
-    let mut ep = [0, 1, 2, 3, 4, 5, 6, 7];
-    let mut eo = [0, 0, 0, 0, 0, 0, 0, 0];
+pub fn combine_transforms(transforms: Vec<Transform>) -> Transform {
+    let mut ep = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    let mut eo = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     let mut cp = [0, 1, 2, 3, 4, 5, 6, 7];
     let mut co = [0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -84,6 +85,7 @@ fn combine_transforms(transforms: Vec<Transform>) -> Transform {
                 if i != 0 {
                     let index_b = edge_cycles[i-1];
                     ep.swap(*index_a, index_b);
+                    eo.swap(*index_a, index_b);
                 }
             }
         }
@@ -94,28 +96,116 @@ fn combine_transforms(transforms: Vec<Transform>) -> Transform {
             for (i, index_a) in corner_cycles.iter().enumerate() {
                 if i != 0 {
                     let index_b = corner_cycles[i-1];
-                    ep.swap(*index_a, index_b);
+                    cp.swap(*index_a, index_b);
+                    co.swap(*index_a, index_b);
                 }
             }
         }
         for (i, type_) in transform.corner_twists {
             match type_ {
                 Twist::Cw => {
-
+                    co[i] += 1;
+                    if co[i] == 3 {
+                        co[i] = 0;
+                    }
                 },
                 Twist::Acw => {
-
+                    co[i] -= 1;
+                    if co[i] == -1 {
+                        co[i] = 2;
+                    }
                 },
             }
         }
     }
-    println!("{:#?}", ep);
-    Transform {
-        edge_cycles: vec![],
-        edge_flips: vec![],
-        corner_cycles: vec![],
-        corner_twists: vec![],
+    let mut edge_cycles = vec![];
+    let mut edge_flips = vec![];
+    let mut corner_cycles = vec![];
+    let mut corner_twists = vec![];
+    {
+        let mut visited = vec![];
+        for (i, pos) in ep.iter().enumerate() {
+            if !visited.contains(&i) {
+                if pos != &i {
+                    // get cycles...
+                    let mut cycles = vec![];
+                    let first = i;
+                    let mut current = i;
+                    while ep[current] != first {
+                        cycles.push(current);
+                        visited.push(current);
+                        current = ep[current];
+                    }
+                    cycles.push(current);
+                    visited.push(current);
+                    edge_cycles.push(cycles);
+                } else {
+                    visited.push(i);
+                }
+            }
+        }
+        visited.clear();
+        for (i, pos) in cp.iter().enumerate() {
+            if !visited.contains(&i) {
+                if pos != &i {
+                    // get cycles...
+                    let mut cycles = vec![];
+                    let first = i;
+                    let mut current = i;
+                    while cp[current] != first {
+                        cycles.push(current);
+                        visited.push(current);
+                        current = cp[current];
+                    }
+                    cycles.push(current);
+                    visited.push(current);
+                    corner_cycles.push(cycles);
+                } else {
+                    visited.push(i);
+                }
+            }
+        }
+        for (i, flip) in eo.iter().enumerate() {
+            if flip == &1 {
+                edge_flips.push(i);
+            }
+        }
+        for (i, twist) in co.iter().enumerate() {
+            if twist != &0 {
+                corner_twists.push((
+                    i,
+                    { if twist == &1 { Twist::Cw } else { Twist::Acw } }
+                ));
+            }
+        }
     }
+    Transform {
+        edge_cycles,
+        edge_flips,
+        corner_cycles,
+        corner_twists,
+    }
+}
+
+lazy_static! {
+    static ref UPRI: Transform = combine_transforms(vec![
+        Move { layer: Layer::U, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::U, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::U, order: Order::Normal }.get_transform(),
+    ]);
+    static ref UDBL: Transform = combine_transforms(vec![
+        Move { layer: Layer::U, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::U, order: Order::Normal }.get_transform(),
+    ]);
+    static ref RPRI: Transform = combine_transforms(vec![
+        Move { layer: Layer::R, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::R, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::R, order: Order::Normal }.get_transform(),
+    ]);
+    static ref RDBL: Transform = combine_transforms(vec![
+        Move { layer: Layer::R, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::R, order: Order::Normal }.get_transform(),
+    ]);
 }
 
 impl Move {
@@ -129,12 +219,23 @@ impl Move {
                     corner_twists: vec![],
                 }
             },
-            Move { layer: Layer::U, order: Order::Double } => {
-                combine_transforms(vec![
-                    Move { layer: Layer::U, order: Order::Normal }.get_transform(),
-                    Move { layer: Layer::U, order: Order::Normal }.get_transform(),
-                ])
+            Move { layer: Layer::U, order: Order::Double } => UDBL.clone(),
+            Move { layer: Layer::U, order: Order::Prime } => UPRI.clone(),
+            Move { layer: Layer::R, order: Order::Normal } => {
+                Transform {
+                    edge_cycles: vec![vec![6, 9, 5, 1]],
+                    edge_flips: vec![],
+                    corner_cycles: vec![vec![6, 5, 1, 2]],
+                    corner_twists: vec![
+                        (2, Twist::Acw),
+                        (1, Twist::Cw),
+                        (5, Twist::Acw),
+                        (6, Twist::Cw),
+                    ],
+                }
             },
+            Move { layer: Layer::R, order: Order::Double } => RDBL.clone(),
+            Move { layer: Layer::R, order: Order::Prime } => RPRI.clone(),
             _ => panic!("unimplemented move"),
         }
     }
@@ -148,7 +249,7 @@ impl Move {
 //
 
 // impl Alg {
-//     is_ll_alg
+//     is_ll_alg -> just check transforms are < 4
 // }
 
 impl Cube {
@@ -207,7 +308,6 @@ impl Cube {
     }
 
     // is_ll_solved
-    // cube.is_2x2x3_solved()
 
 }
 
@@ -234,7 +334,7 @@ impl fmt::Display for Cube {
         write!(f, "{} ", self.corners[3]);
         write!(f, "{} ", self.edges[2]);
         write!(f, "{}\n", self.corners[2]);
-
+        write!(f, "--  -- --\n");
         write!(f, "{}  ", self.edges[4]);
         write!(f, "{:?}  ", self.centres[1]);
         write!(f, "{}  \n", self.edges[5]);
@@ -243,7 +343,7 @@ impl fmt::Display for Cube {
         write!(f, "{}  ", self.edges[7]);
         write!(f, "{:?}  ", self.centres[3]);
         write!(f, "{}\n", self.edges[6]);
-
+        write!(f, "--  -- --\n");
         write!(f, "{} ", self.corners[4]);
         write!(f, "{} ", self.edges[8]);
         write!(f, "{}\n", self.corners[5]);

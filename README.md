@@ -4,6 +4,7 @@ support wasm from the start
 precompile algs into transforms
 lazy static for solved positions
 trim AUF for Vec<Move>
+// mirror / inverse / minverse
 
 select subset, generate cases that use smallest number of first algs
 3 look duplex, duplex on cll
