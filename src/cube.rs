@@ -40,7 +40,7 @@ impl Edge {
 #[derive(PartialEq)]
 pub struct Corner(Face, Face, Face);
 
-#[derive(PartialEq, Clone, Debug)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum Twist {
     Cw, Acw,
 }
@@ -197,6 +197,15 @@ lazy_static! {
         Move { layer: Layer::U, order: Order::Normal }.get_transform(),
         Move { layer: Layer::U, order: Order::Normal }.get_transform(),
     ]);
+    static ref DPRI: Transform = combine_transforms(vec![
+        Move { layer: Layer::D, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::D, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::D, order: Order::Normal }.get_transform(),
+    ]);
+    static ref DDBL: Transform = combine_transforms(vec![
+        Move { layer: Layer::D, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::D, order: Order::Normal }.get_transform(),
+    ]);
     static ref RPRI: Transform = combine_transforms(vec![
         Move { layer: Layer::R, order: Order::Normal }.get_transform(),
         Move { layer: Layer::R, order: Order::Normal }.get_transform(),
@@ -215,6 +224,15 @@ lazy_static! {
         Move { layer: Layer::F, order: Order::Normal }.get_transform(),
         Move { layer: Layer::F, order: Order::Normal }.get_transform(),
     ]);
+    static ref LPRI: Transform = combine_transforms(vec![
+        Move { layer: Layer::L, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::L, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::L, order: Order::Normal }.get_transform(),
+    ]);
+    static ref LDBL: Transform = combine_transforms(vec![
+        Move { layer: Layer::L, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::L, order: Order::Normal }.get_transform(),
+    ]);
 }
 
 impl Move {
@@ -230,6 +248,16 @@ impl Move {
             },
             Move { layer: Layer::U, order: Order::Double } => UDBL.clone(),
             Move { layer: Layer::U, order: Order::Prime } => UPRI.clone(),
+            Move { layer: Layer::D, order: Order::Normal } => {
+                Transform {
+                    edge_cycles: vec![vec![11, 10, 9, 8]],
+                    edge_flips: vec![],
+                    corner_cycles: vec![vec![7, 6, 5, 4]],
+                    corner_twists: vec![],
+                }
+            },
+            Move { layer: Layer::D, order: Order::Double } => DDBL.clone(),
+            Move { layer: Layer::D, order: Order::Prime } => DPRI.clone(),
             Move { layer: Layer::R, order: Order::Normal } => {
                 Transform {
                     edge_cycles: vec![vec![6, 9, 5, 1]],
@@ -260,6 +288,21 @@ impl Move {
             },
             Move { layer: Layer::F, order: Order::Double } => FDBL.clone(),
             Move { layer: Layer::F, order: Order::Prime } => FPRI.clone(),
+            Move { layer: Layer::L, order: Order::Normal } => {
+                Transform {
+                    edge_cycles: vec![vec![]],
+                    edge_flips: vec![],
+                    corner_cycles: vec![vec![]],
+                    corner_twists: vec![
+                        // (3, Twist::Acw),
+                        // (7, Twist::Cw),
+                        // (6, Twist::Acw),
+                        // (2, Twist::Cw),
+                    ],
+                }
+            },
+            Move { layer: Layer::L, order: Order::Double } => LDBL.clone(),
+            Move { layer: Layer::L, order: Order::Prime } => LPRI.clone(),
             _ => panic!("unimplemented move"),
         }
     }
@@ -306,8 +349,8 @@ impl Cube {
         self == &Cube::new()
     }
 
-    pub fn do_transform(&mut self, transform: Transform) {
-        for edge_cycles in transform.edge_cycles {
+    pub fn do_transform(&mut self, transform: &Transform) {
+        for edge_cycles in transform.edge_cycles.iter() {
             for (i, index_a) in edge_cycles.iter().enumerate() {
                 if i != 0 {
                     let index_b = edge_cycles[i-1];
@@ -315,10 +358,10 @@ impl Cube {
                 }
             }
         }
-        for i in transform.edge_flips {
-            self.edges[i].flip();
+        for i in transform.edge_flips.iter() {
+            self.edges[*i].flip();
         }
-        for corner_cycles in transform.corner_cycles {
+        for corner_cycles in transform.corner_cycles.iter() {
             for (i, index_a) in corner_cycles.iter().enumerate() {
                 if i != 0 {
                     let index_b = corner_cycles[i-1];
@@ -326,8 +369,8 @@ impl Cube {
                 }
             }
         }
-        for (i, type_) in transform.corner_twists {
-            self.corners[i].twist(type_);
+        for (i, type_) in transform.corner_twists.iter() {
+            self.corners[*i].twist(*type_);
         }
     }
 
