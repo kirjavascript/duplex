@@ -187,53 +187,27 @@ pub fn combine_transforms(transforms: Vec<Transform>) -> Transform {
     }
 }
 
-lazy_static! {
-    static ref UPRI: Transform = combine_transforms(vec![
-        Move { layer: Layer::U, order: Order::Normal }.get_transform(),
-        Move { layer: Layer::U, order: Order::Normal }.get_transform(),
-        Move { layer: Layer::U, order: Order::Normal }.get_transform(),
-    ]);
-    static ref UDBL: Transform = combine_transforms(vec![
-        Move { layer: Layer::U, order: Order::Normal }.get_transform(),
-        Move { layer: Layer::U, order: Order::Normal }.get_transform(),
-    ]);
-    static ref DPRI: Transform = combine_transforms(vec![
-        Move { layer: Layer::D, order: Order::Normal }.get_transform(),
-        Move { layer: Layer::D, order: Order::Normal }.get_transform(),
-        Move { layer: Layer::D, order: Order::Normal }.get_transform(),
-    ]);
-    static ref DDBL: Transform = combine_transforms(vec![
-        Move { layer: Layer::D, order: Order::Normal }.get_transform(),
-        Move { layer: Layer::D, order: Order::Normal }.get_transform(),
-    ]);
-    static ref RPRI: Transform = combine_transforms(vec![
-        Move { layer: Layer::R, order: Order::Normal }.get_transform(),
-        Move { layer: Layer::R, order: Order::Normal }.get_transform(),
-        Move { layer: Layer::R, order: Order::Normal }.get_transform(),
-    ]);
-    static ref RDBL: Transform = combine_transforms(vec![
-        Move { layer: Layer::R, order: Order::Normal }.get_transform(),
-        Move { layer: Layer::R, order: Order::Normal }.get_transform(),
-    ]);
-    static ref FPRI: Transform = combine_transforms(vec![
-        Move { layer: Layer::F, order: Order::Normal }.get_transform(),
-        Move { layer: Layer::F, order: Order::Normal }.get_transform(),
-        Move { layer: Layer::F, order: Order::Normal }.get_transform(),
-    ]);
-    static ref FDBL: Transform = combine_transforms(vec![
-        Move { layer: Layer::F, order: Order::Normal }.get_transform(),
-        Move { layer: Layer::F, order: Order::Normal }.get_transform(),
-    ]);
-    static ref LPRI: Transform = combine_transforms(vec![
-        Move { layer: Layer::L, order: Order::Normal }.get_transform(),
-        Move { layer: Layer::L, order: Order::Normal }.get_transform(),
-        Move { layer: Layer::L, order: Order::Normal }.get_transform(),
-    ]);
-    static ref LDBL: Transform = combine_transforms(vec![
-        Move { layer: Layer::L, order: Order::Normal }.get_transform(),
-        Move { layer: Layer::L, order: Order::Normal }.get_transform(),
-    ]);
+macro_rules! prime_double {
+    ($name:ident, $pri:ident, $dbl:ident) => {
+        lazy_static! {
+            static ref $pri: Transform = combine_transforms(vec![
+                Move { layer: Layer::$name, order: Order::Normal }.get_transform(),
+                Move { layer: Layer::$name, order: Order::Normal }.get_transform(),
+                Move { layer: Layer::$name, order: Order::Normal }.get_transform(),
+            ]);
+            static ref $dbl: Transform = combine_transforms(vec![
+                Move { layer: Layer::$name, order: Order::Normal }.get_transform(),
+                Move { layer: Layer::$name, order: Order::Normal }.get_transform(),
+            ]);
+        }
+    };
 }
+
+prime_double!(U, UPRI, UDBL);
+prime_double!(D, DPRI, DDBL);
+prime_double!(R, RPRI, RDBL);
+prime_double!(F, FPRI, FDBL);
+prime_double!(L, LPRI, LDBL);
 
 impl Move {
     pub fn get_transform(&self) -> Transform {
