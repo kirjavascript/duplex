@@ -206,6 +206,15 @@ lazy_static! {
         Move { layer: Layer::R, order: Order::Normal }.get_transform(),
         Move { layer: Layer::R, order: Order::Normal }.get_transform(),
     ]);
+    static ref FPRI: Transform = combine_transforms(vec![
+        Move { layer: Layer::F, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::F, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::F, order: Order::Normal }.get_transform(),
+    ]);
+    static ref FDBL: Transform = combine_transforms(vec![
+        Move { layer: Layer::F, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::F, order: Order::Normal }.get_transform(),
+    ]);
 }
 
 impl Move {
@@ -236,6 +245,21 @@ impl Move {
             },
             Move { layer: Layer::R, order: Order::Double } => RDBL.clone(),
             Move { layer: Layer::R, order: Order::Prime } => RPRI.clone(),
+            Move { layer: Layer::F, order: Order::Normal } => {
+                Transform {
+                    edge_cycles: vec![vec![7, 10, 6, 2]],
+                    edge_flips: vec![10, 2, 6, 7],
+                    corner_cycles: vec![vec![3, 7, 6, 2]],
+                    corner_twists: vec![
+                        (3, Twist::Acw),
+                        (7, Twist::Cw),
+                        (6, Twist::Acw),
+                        (2, Twist::Cw),
+                    ],
+                }
+            },
+            Move { layer: Layer::F, order: Order::Double } => FDBL.clone(),
+            Move { layer: Layer::F, order: Order::Prime } => FPRI.clone(),
             _ => panic!("unimplemented move"),
         }
     }
@@ -347,11 +371,11 @@ impl fmt::Display for Cube {
         write!(f, "{} ", self.corners[4]);
         write!(f, "{} ", self.edges[8]);
         write!(f, "{}\n", self.corners[5]);
-        write!(f, "{}  ", self.edges[10]);
+        write!(f, "{}  ", self.edges[11]);
         write!(f, "{:?}  ", self.centres[5]);
         write!(f, "{}  \n", self.edges[9]);
         write!(f, "{} ", self.corners[7]);
-        write!(f, "{} ", self.edges[11]);
+        write!(f, "{} ", self.edges[10]);
         write!(f, "{}", self.corners[6])
     }
 }
