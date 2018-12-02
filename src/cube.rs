@@ -243,6 +243,18 @@ prime_double!(F, FPRI, FDBL);
 prime_double!(L, LPRI, LDBL);
 prime_double!(B, BPRI, BDBL);
 prime_double!(M, MPRI, MDBL);
+prime_double!(E, EPRI, EDBL);
+prime_double!(S, SPRI, SDBL);
+
+lazy_static! {
+    static ref XNORM: Transform = combine_transforms(vec![
+        Move { layer: Layer::R, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::M, order: Order::Prime }.get_transform(),
+        Move { layer: Layer::L, order: Order::Prime }.get_transform(),
+    ]);
+}
+
+prime_double!(X, XPRI, XDBL);
 
 impl Move {
     pub fn get_transform(&self) -> Transform {
@@ -344,6 +356,31 @@ impl Move {
             },
             Move { layer: Layer::M, order: Order::Double } => MDBL.clone(),
             Move { layer: Layer::M, order: Order::Prime } => MPRI.clone(),
+            Move { layer: Layer::E, order: Order::Normal } => {
+                Transform {
+                    edge_cycles: vec![vec![4, 5, 6, 7]],
+                    edge_flips: vec![4, 5, 6, 7],
+                    corner_cycles: vec![],
+                    corner_twists: vec![],
+                    centre_cycles: vec![vec![2, 3, 4, 5]],
+                }
+            },
+            Move { layer: Layer::E, order: Order::Double } => EDBL.clone(),
+            Move { layer: Layer::E, order: Order::Prime } => EPRI.clone(),
+            Move { layer: Layer::S, order: Order::Normal } => {
+                Transform {
+                    edge_cycles: vec![vec![3, 11, 9, 1]],
+                    edge_flips: vec![3, 11, 9, 1],
+                    corner_cycles: vec![],
+                    corner_twists: vec![],
+                    centre_cycles: vec![vec![5, 1, 3, 0]],
+                }
+            },
+            Move { layer: Layer::S, order: Order::Double } => SDBL.clone(),
+            Move { layer: Layer::S, order: Order::Prime } => SPRI.clone(),
+            Move { layer: Layer::X, order: Order::Normal } => XNORM.clone(),
+            Move { layer: Layer::X, order: Order::Double } => XDBL.clone(),
+            Move { layer: Layer::X, order: Order::Prime } => XPRI.clone(),
             _ => panic!("unimplemented move"),
         }
     }
