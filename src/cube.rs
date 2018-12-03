@@ -252,9 +252,51 @@ lazy_static! {
         Move { layer: Layer::M, order: Order::Prime }.get_transform(),
         Move { layer: Layer::L, order: Order::Prime }.get_transform(),
     ]);
+    static ref YNORM: Transform = combine_transforms(vec![
+        Move { layer: Layer::U, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::E, order: Order::Prime }.get_transform(),
+        Move { layer: Layer::D, order: Order::Prime }.get_transform(),
+    ]);
+    static ref ZNORM: Transform = combine_transforms(vec![
+        Move { layer: Layer::S, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::F, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::B, order: Order::Prime }.get_transform(),
+    ]);
+    static ref RWNORM: Transform = combine_transforms(vec![
+        Move { layer: Layer::R, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::M, order: Order::Prime }.get_transform(),
+    ]);
+    static ref LWNORM: Transform = combine_transforms(vec![
+        Move { layer: Layer::L, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::M, order: Order::Normal }.get_transform(),
+    ]);
+    static ref UWNORM: Transform = combine_transforms(vec![
+        Move { layer: Layer::U, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::E, order: Order::Prime }.get_transform(),
+    ]);
+    static ref DWNORM: Transform = combine_transforms(vec![
+        Move { layer: Layer::D, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::E, order: Order::Normal }.get_transform(),
+    ]);
+    static ref FWNORM: Transform = combine_transforms(vec![
+        Move { layer: Layer::F, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::S, order: Order::Normal }.get_transform(),
+    ]);
+    static ref BWNORM: Transform = combine_transforms(vec![
+        Move { layer: Layer::B, order: Order::Normal }.get_transform(),
+        Move { layer: Layer::S, order: Order::Prime }.get_transform(),
+    ]);
 }
 
 prime_double!(X, XPRI, XDBL);
+prime_double!(Y, YPRI, YDBL);
+prime_double!(Z, ZPRI, ZDBL);
+prime_double!(Uw, UWPRI, UWDBL);
+prime_double!(Dw, DWPRI, DWDBL);
+prime_double!(Lw, LWPRI, LWDBL);
+prime_double!(Rw, RWPRI, RWDBL);
+prime_double!(Fw, FWPRI, FWDBL);
+prime_double!(Bw, BWPRI, BWDBL);
 
 impl Move {
     pub fn get_transform(&self) -> Transform {
@@ -381,7 +423,30 @@ impl Move {
             Move { layer: Layer::X, order: Order::Normal } => XNORM.clone(),
             Move { layer: Layer::X, order: Order::Double } => XDBL.clone(),
             Move { layer: Layer::X, order: Order::Prime } => XPRI.clone(),
-            _ => panic!("unimplemented move"),
+            Move { layer: Layer::Y, order: Order::Normal } => YNORM.clone(),
+            Move { layer: Layer::Y, order: Order::Double } => YDBL.clone(),
+            Move { layer: Layer::Y, order: Order::Prime } => YPRI.clone(),
+            Move { layer: Layer::Z, order: Order::Normal } => ZNORM.clone(),
+            Move { layer: Layer::Z, order: Order::Double } => ZDBL.clone(),
+            Move { layer: Layer::Z, order: Order::Prime } => ZPRI.clone(),
+            Move { layer: Layer::Uw, order: Order::Normal } => UWNORM.clone(),
+            Move { layer: Layer::Uw, order: Order::Double } => UWDBL.clone(),
+            Move { layer: Layer::Uw, order: Order::Prime } => UWPRI.clone(),
+            Move { layer: Layer::Dw, order: Order::Normal } => DWNORM.clone(),
+            Move { layer: Layer::Dw, order: Order::Double } => DWDBL.clone(),
+            Move { layer: Layer::Dw, order: Order::Prime } => DWPRI.clone(),
+            Move { layer: Layer::Rw, order: Order::Normal } => RWNORM.clone(),
+            Move { layer: Layer::Rw, order: Order::Double } => RWDBL.clone(),
+            Move { layer: Layer::Rw, order: Order::Prime } => RWPRI.clone(),
+            Move { layer: Layer::Lw, order: Order::Normal } => LWNORM.clone(),
+            Move { layer: Layer::Lw, order: Order::Double } => LWDBL.clone(),
+            Move { layer: Layer::Lw, order: Order::Prime } => LWPRI.clone(),
+            Move { layer: Layer::Fw, order: Order::Normal } => FWNORM.clone(),
+            Move { layer: Layer::Fw, order: Order::Double } => FWDBL.clone(),
+            Move { layer: Layer::Fw, order: Order::Prime } => FWPRI.clone(),
+            Move { layer: Layer::Bw, order: Order::Normal } => BWNORM.clone(),
+            Move { layer: Layer::Bw, order: Order::Double } => BWDBL.clone(),
+            Move { layer: Layer::Bw, order: Order::Prime } => BWPRI.clone(),
         }
     }
 }
