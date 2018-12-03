@@ -9,7 +9,7 @@ use cube::*;
 use parser::parse_moves;
 
 fn main() {
-    let moves = parse_moves("z'").unwrap();
+    let moves = parse_moves("rUR'URU2r'").unwrap();
 
     let moves_transform = combine_transforms(
         moves.iter().map(|s|s.get_transform()).collect()
