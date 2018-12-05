@@ -463,7 +463,7 @@ impl Move {
 // }
 
 impl Cube {
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         Cube {
             edges: [
                         Edge(Face::U, Face::B),

@@ -1,22 +1,28 @@
 #[macro_use]
 extern crate lazy_static;
 extern crate nom;
+#[macro_use]
+extern crate stdweb;
 
 mod parser;
 mod cube;
-
-use cube::*;
-use parser::parse_moves;
+mod web;
+pub use web::*;
 
 fn main() {
-    let moves = parse_moves("rUR'URU2r'").unwrap();
+    web::init();
 
-    let moves_transform = combine_transforms(
-        moves.iter().map(|s|s.get_transform()).collect()
-    );
+    // use cube::*;
+    // use parser::parse_moves;
+    //
+    // let moves = parse_moves("rUR'URU2r'").unwrap();
 
-    let mut cube = Cube::new();
+    // let moves_transform = combine_transforms(
+    //     moves.iter().map(|s|s.get_transform()).collect()
+    // );
 
-    cube.do_transform(&moves_transform);
-    println!("{}", cube);
+    // let mut cube = Cube::new();
+
+    // cube.do_transform(&moves_transform);
+    // println!("{}", cube);
 }
