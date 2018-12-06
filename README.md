@@ -2,6 +2,9 @@ duplexLL
 
 explore | trainer | algs | cases | tutorial
 
+    cargo +nightly web start --target wasm32-unknown-unknown
+    yarn watch
+
 lazy static for solved positions
 trim AUF for Vec<Move>
 // mirror / inverse / minverse
