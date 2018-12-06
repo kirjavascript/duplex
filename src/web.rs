@@ -10,6 +10,7 @@ pub fn display() -> String {
     }
 }
 
+
 pub fn init() {
 
     let moves = parse_moves("rUR'URU2r'").unwrap();

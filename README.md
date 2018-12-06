@@ -1,11 +1,12 @@
 duplexLL
 
-support wasm from the start
-precompile algs into transforms
+explore | trainer | algs | cases | tutorial
+
 lazy static for solved positions
 trim AUF for Vec<Move>
 // mirror / inverse / minverse
 give algs names w/ colours
+click to see the alg / auto mirrored
 
 select subset, generate cases that use smallest number of first algs
 3 look duplex, duplex on cll
