@@ -82,9 +82,6 @@ module.exports = (env={}, args={}) => {
             },
         },
         devtool: env.dev && 'source-map',
-        node: {
-            fs: 'empty',
-        },
     };
 
     if (env.dev) {

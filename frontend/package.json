@@ -1,7 +1,7 @@
 {
   "scripts": {
     "watch": "webpack -w --env.dev",
-    "deploy": "rm -rf ./static && webpack -p"
+    "deploy": "cd ../static/ && find . ! -name 'index.html' -type f -exec rm -f {} + && webpack -p"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
