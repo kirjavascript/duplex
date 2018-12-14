@@ -10,6 +10,7 @@ aperm | l'UR'D2RU'R'D2lR
 tperm | RUR'U'R'FR2U'R'U'RUR'F'
 sexysledge | R U R' U' R' F R F'
 uperm | M2 etc
+fatsexysledge
 
 L F' L' U' L F L' F' U F
 R' U' R' F R F' U R

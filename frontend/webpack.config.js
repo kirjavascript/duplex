@@ -17,6 +17,19 @@ module.exports = (env={}, args={}) => {
         module: {
             rules: [
                 {
+                    test:  /wasm32-unknown-unknown\/release\/duplex\.js$/,
+                    use: [
+                        'script-loader',
+                        {
+                            loader: `${__dirname}/stdweb-loader.js`,
+                            options: {
+                                name: 'duplex',
+                                path: 'http://[::1]:8000/',
+                            },
+                        }
+                    ],
+                },
+                {
                     test: /\.jsx?$/,
                     exclude: env.dev ? /node_modules/ : void 0,
                     use: [

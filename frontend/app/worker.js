@@ -1,8 +1,4 @@
-/* eslint-disable */
-import interop from 'raw-loader!!../../target/wasm32-unknown-unknown/release/duplex';
-// webworkers need to use absolute urls
-eval(interop.replace(/"duplex.wasm"/g, '"http://[::1]:8000/duplex.wasm"'));
-/* eslint-enable */
+import '../../target/wasm32-unknown-unknown/release/duplex';
 
 self.onmessage = ({ data: { cube } }) => {
     Rust.duplex // eslint-disable-line
