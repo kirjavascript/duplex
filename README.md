@@ -1,5 +1,7 @@
 duplexLL
 
+explore | algs
+
 explore | trainer | algs | cases | tutorial
 
     cargo +nightly web start --target wasm32-unknown-unknown
