@@ -13,6 +13,7 @@ fetch('http://lh:8000/duplex.wasm').then(response =>
 ).then(results => {
     // interop
     const { exports } = results.instance;
+    exports.web_main();
     function getStringFunc(str) {
         return () => {
             exports[str]();
@@ -41,9 +42,13 @@ fetch('http://lh:8000/duplex.wasm').then(response =>
         return stringPtr;
     }
 
-    const getCube = getStringFunc('get_cube');
+    const get_cube = getStringFunc('get_cube');
+    const get_ll = getStringFunc('get_ll');
 
-    console.log(getCube());
+    // console.log(get_cube());
+    console.log(get_ll());
+
+    // todo: console log stack to grid
 
     // examples
 

@@ -84,6 +84,16 @@ pub fn console_log(string: &str) {
     }
 }
 
+#[macro_export]
+macro_rules! console {
+    ( $x:expr, $( $y:expr ),* ) => {
+        crate::web::interop::console_log(&format!($x, $($y),*));
+    };
+    ( $x:expr ) => {
+        crate::web::interop::console_log(&format!($x, $($y),*));
+    };
+}
+
 // examples
 
 // #[no_mangle]

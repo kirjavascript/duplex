@@ -1,22 +1,32 @@
 use std::{fmt, mem};
 use lazy_static::lazy_static;
+use serde_derive::Serialize;
 
 // moves
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Order {
     Normal,
     Prime,
     Double,
 }
 
-#[derive(Debug)]
+impl Order {
+    pub fn flip(&self) -> Self {
+        match self {
+            Order::Normal => Order::Prime,
+            Order::Prime => Order::Normal,
+            Order::Double => Order::Double,
+        }
+    }
+}
+
+#[derive(Debug, Clone)]
 pub enum Layer {
     U, F, R, L, B, D, M, E, S,
     Uw, Fw, Rw, Lw, Bw, Dw, X, Y, Z,
 }
 
-#[derive(Debug)]
 pub struct Move {
     pub order: Order,
     pub layer: Layer,
@@ -24,12 +34,13 @@ pub struct Move {
 
 // cube
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Serialize)]
 pub enum Face {
     U,R,F,B,L,D,
 }
 
-#[derive(PartialEq)]
+
+#[derive(PartialEq, Serialize)]
 pub struct Edge(Face, Face);
 
 impl Edge {
@@ -38,7 +49,7 @@ impl Edge {
     }
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Serialize)]
 pub struct Corner(Face, Face, Face);
 
 #[derive(PartialEq, Clone, Copy, Debug)]
@@ -73,6 +84,20 @@ pub struct Transform {
     pub corner_cycles: Vec<Vec<usize>>,
     pub corner_twists: Vec<(usize, Twist)>,
     pub centre_cycles: Vec<Vec<usize>>,
+}
+
+impl Transform {
+    pub fn is_ll_transform(&self) -> bool {
+        !self.edge_cycles.iter().any(|v| v.iter().any(|c| *c > 3))
+        && !self.edge_flips.iter().any(|c| *c > 3)
+        && !self.corner_cycles.iter().any(|v| v.iter().any(|c| *c > 3))
+        && !self.corner_twists.iter().any(|c| c.0 > 3)
+        && !self.centre_cycles.iter().any(|v| v.iter().any(|c| *c == 0))
+    }
+}
+
+pub fn moves_to_transform(moves: &Vec<Move>) -> Transform {
+    combine_transforms(moves.iter().map(|s|s.get_transform()).collect())
 }
 
 pub fn combine_transforms(transforms: Vec<Transform>) -> Transform {
@@ -452,17 +477,6 @@ impl Move {
     }
 }
 
-// pub struct Alg {
-//     text: String,
-//     transform: Transform,
-// }
-
-//
-
-// impl Alg {
-//     is_ll_alg -> just check transforms are < 4
-// }
-
 impl Cube {
     pub const fn new() -> Self {
         Cube {
@@ -531,12 +545,22 @@ impl Cube {
 }
 
 
-impl fmt::Display for Edge {
+impl fmt::Debug for Move {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let order = match self.order {
+            Order::Normal => "",
+            Order::Prime => "'",
+            Order::Double => "2",
+        };
+        write!(f, "{:?}{}", self.layer, order)
+    }
+}
+impl fmt::Debug for Edge {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{:?}{:?}", self.0, self.1)
     }
 }
-impl fmt::Display for Corner {
+impl fmt::Debug for Corner {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{:?}{:?}{:?}", self.0, self.1, self.2)
     }
@@ -544,33 +568,33 @@ impl fmt::Display for Corner {
 impl fmt::Display for Cube {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         // TODO: add visualcube (temporary)
-        write!(f, "{} ", self.corners[0]).ok();
-        write!(f, "{} ", self.edges[0]).ok();
-        write!(f, "{}\n", self.corners[1]).ok();
-        write!(f, "{}  ", self.edges[3]).ok();
+        write!(f, "{:?} ", self.corners[0]).ok();
+        write!(f, "{:?} ", self.edges[0]).ok();
+        write!(f, "{:?}\n", self.corners[1]).ok();
+        write!(f, "{:?}  ", self.edges[3]).ok();
         write!(f, "{:?}  ", self.centres[0]).ok();
-        write!(f, "{}  \n", self.edges[1]).ok();
-        write!(f, "{} ", self.corners[3]).ok();
-        write!(f, "{} ", self.edges[2]).ok();
-        write!(f, "{}\n", self.corners[2]).ok();
+        write!(f, "{:?}  \n", self.edges[1]).ok();
+        write!(f, "{:?} ", self.corners[3]).ok();
+        write!(f, "{:?} ", self.edges[2]).ok();
+        write!(f, "{:?}\n", self.corners[2]).ok();
         write!(f, "--  -- --\n").ok();
-        write!(f, "{}  ", self.edges[4]).ok();
+        write!(f, "{:?}  ", self.edges[4]).ok();
         write!(f, "{:?}  ", self.centres[2]).ok();
-        write!(f, "{}  \n", self.edges[5]).ok();
+        write!(f, "{:?}  \n", self.edges[5]).ok();
         write!(f, "{:?}       ", self.centres[5]).ok();
         write!(f, "{:?}\n", self.centres[3]).ok();
-        write!(f, "{}  ", self.edges[7]).ok();
+        write!(f, "{:?}  ", self.edges[7]).ok();
         write!(f, "{:?}  ", self.centres[4]).ok();
-        write!(f, "{}\n", self.edges[6]).ok();
+        write!(f, "{:?}\n", self.edges[6]).ok();
         write!(f, "--  -- --\n").ok();
-        write!(f, "{} ", self.corners[4]).ok();
-        write!(f, "{} ", self.edges[8]).ok();
-        write!(f, "{}\n", self.corners[5]).ok();
-        write!(f, "{}  ", self.edges[11]).ok();
+        write!(f, "{:?} ", self.corners[4]).ok();
+        write!(f, "{:?} ", self.edges[8]).ok();
+        write!(f, "{:?}\n", self.corners[5]).ok();
+        write!(f, "{:?}  ", self.edges[11]).ok();
         write!(f, "{:?}  ", self.centres[1]).ok();
-        write!(f, "{}  \n", self.edges[9]).ok();
-        write!(f, "{} ", self.corners[7]).ok();
-        write!(f, "{} ", self.edges[10]).ok();
-        write!(f, "{}", self.corners[6])
+        write!(f, "{:?}  \n", self.edges[9]).ok();
+        write!(f, "{:?} ", self.corners[7]).ok();
+        write!(f, "{:?} ", self.edges[10]).ok();
+        write!(f, "{:?}", self.corners[6])
     }
 }

@@ -1,26 +1,20 @@
-// #[macro_use]
-// extern crate lazy_static;
-// extern crate nom;
-
-use lazy_static::lazy_static;
-
 mod parser;
 mod cube;
+mod alg;
 mod web;
 
-fn main() {
+fn main() { }
+
+#[no_mangle]
+pub unsafe extern "C" fn web_main() {
      use crate::cube::*;
-     use crate::parser::parse_moves;
+     use crate::alg::*;
 
-     let moves = parse_moves("rUR'URU2r'").unwrap();
-
-     let moves_transform = combine_transforms(
-         moves.iter().map(|s|s.get_transform()).collect()
-     );
+     let alg = Alg::new("RUR'U'R'FR2U'R'U'RUR'F'").unwrap();
 
      let mut cube = Cube::new();
+     cube.do_transform(&alg.transform);
 
-     cube.do_transform(&moves_transform);
-     println!("{}", cube);
-
+     console!("{:?}", alg.moves);
+     console!("{:?}", alg.invert().moves);
 }
