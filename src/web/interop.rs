@@ -7,7 +7,7 @@ use std::ptr;
 
 #[no_mangle]
 extern "C" {
-    fn stack_push(num: usize);
+    pub fn stack_push(num: usize);
     fn console_log_stack();
 }
 
@@ -57,6 +57,7 @@ pub extern "C" fn dealloc_rust_string(ptr: *mut c_char) {
     unsafe { let _ = CString::from_raw(ptr); }
 }
 
+#[macro_export]
 macro_rules! export_string {
     ($name:ident, $exec:expr) => {
         #[no_mangle]
@@ -65,8 +66,8 @@ macro_rules! export_string {
             let rust_string_length = rust_string.len();
             let c_string = std::ffi::CString::new(rust_string)
                 .expect("must be a valid C string");
-            unsafe { stack_push(rust_string_length); }
-            unsafe { stack_push(c_string.into_raw() as usize); }
+            unsafe { crate::web::interop::stack_push(rust_string_length); }
+            unsafe { crate::web::interop::stack_push(c_string.into_raw() as usize); }
         }
     }
 }
@@ -85,13 +86,7 @@ pub fn console_log(string: &str) {
 
 // examples
 
-export_string!(TEST_STRING, get_test_string());
-
-fn get_test_string() -> &'static str {
-    "test string"
-}
-
-#[no_mangle]
-pub extern "C" fn receive_string(mut string: JSString) {
-    console_log(&format!("string came from rust: {:?}", &string.to_owned()));
-}
+// #[no_mangle]
+// pub extern "C" fn receive_string(mut string: JSString) {
+//     console_log(&format!("string came from rust: {:?}", &string.to_owned()));
+// }

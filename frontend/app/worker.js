@@ -11,19 +11,21 @@ fetch('http://lh:8000/duplex.wasm').then(response =>
         }
     }})
 ).then(results => {
-    console.log(results);
+    // interop
     const { exports } = results.instance;
-    function getString(str) {
-        exports[str]();
-        const [pointer, length] = [stack.pop(), stack.pop()];
-        const buffer = new Uint8Array(
-            exports.memory.buffer,
-            pointer,
-            length,
-        );
-        const string = String.fromCharCode(...buffer);
-        exports.dealloc_rust_string(pointer);
-        return string;
+    function getStringFunc(str) {
+        return () => {
+            exports[str]();
+            const [pointer, length] = [stack.pop(), stack.pop()];
+            const buffer = new Uint8Array(
+                exports.memory.buffer,
+                pointer,
+                length,
+            );
+            const string = String.fromCharCode(...buffer);
+            exports.dealloc_rust_string(pointer);
+            return string;
+        };
     }
     function createString(str) {
         const encoder = new TextEncoder();
@@ -39,13 +41,17 @@ fetch('http://lh:8000/duplex.wasm').then(response =>
         return stringPtr;
     }
 
+    const getCube = getStringFunc('get_cube');
+
+    console.log(getCube());
+
     // examples
 
-    console.log(getString('TEST_STRING'));
+    // console.log(getString('TEST_STRING'));
 
-    exports.receive_string(createString('this is a test'));
+    // exports.receive_string(createString('this is a test'));
 
-    self.onmessage = ({ data: { cube } }) => {
-        self.postMessage({ cube: getString('TEST_STRING') });
-    };
+    // self.onmessage = ({ data: { cube } }) => {
+    //     self.postMessage({ cube: getString('TEST_STRING') });
+    // };
 });

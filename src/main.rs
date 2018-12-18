@@ -1,14 +1,16 @@
-#[macro_use]
-extern crate lazy_static;
-extern crate nom;
+// #[macro_use]
+// extern crate lazy_static;
+// extern crate nom;
+
+use lazy_static::lazy_static;
 
 mod parser;
 mod cube;
 mod web;
 
 fn main() {
-     use cube::*;
-     use parser::parse_moves;
+     use crate::cube::*;
+     use crate::parser::parse_moves;
 
      let moves = parse_moves("rUR'URU2r'").unwrap();
 

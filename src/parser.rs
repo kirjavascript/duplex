@@ -1,4 +1,4 @@
-use cube::*;
+use crate::cube::*;
 
 use nom::types::CompleteStr as Input;
 use nom::*;

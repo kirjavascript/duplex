@@ -1,9 +1,12 @@
-use cube::*;
-use parser::parse_moves;
-
+#[macro_use]
 mod interop;
 
+use crate::cube::*;
+use crate::parser::parse_moves;
+
 static mut CUBE: Cube = Cube::new();
+
+export_string!(get_cube, unsafe { format!("{}", CUBE) });
 
 
 // pub fn init() {
