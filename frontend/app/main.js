@@ -1,10 +1,3 @@
-// import Duplex from  './cube';
-
-// Duplex((obj) => {
-//     console.log(obj);
-// });
-
-
 import Worker from './worker';
 const worker = new Worker();
 worker.addEventListener('message', ({ data: { cube } }) => {

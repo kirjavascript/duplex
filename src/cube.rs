@@ -543,33 +543,33 @@ impl fmt::Display for Corner {
 impl fmt::Display for Cube {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         // TODO: add visualcube (temporary)
-        write!(f, "{} ", self.corners[0]);
-        write!(f, "{} ", self.edges[0]);
-        write!(f, "{}\n", self.corners[1]);
-        write!(f, "{}  ", self.edges[3]);
-        write!(f, "{:?}  ", self.centres[0]);
-        write!(f, "{}  \n", self.edges[1]);
-        write!(f, "{} ", self.corners[3]);
-        write!(f, "{} ", self.edges[2]);
-        write!(f, "{}\n", self.corners[2]);
-        write!(f, "--  -- --\n");
-        write!(f, "{}  ", self.edges[4]);
-        write!(f, "{:?}  ", self.centres[2]);
-        write!(f, "{}  \n", self.edges[5]);
-        write!(f, "{:?}       ", self.centres[5]);
-        write!(f, "{:?}\n", self.centres[3]);
-        write!(f, "{}  ", self.edges[7]);
-        write!(f, "{:?}  ", self.centres[4]);
-        write!(f, "{}\n", self.edges[6]);
-        write!(f, "--  -- --\n");
-        write!(f, "{} ", self.corners[4]);
-        write!(f, "{} ", self.edges[8]);
-        write!(f, "{}\n", self.corners[5]);
-        write!(f, "{}  ", self.edges[11]);
-        write!(f, "{:?}  ", self.centres[1]);
-        write!(f, "{}  \n", self.edges[9]);
-        write!(f, "{} ", self.corners[7]);
-        write!(f, "{} ", self.edges[10]);
+        write!(f, "{} ", self.corners[0]).ok();
+        write!(f, "{} ", self.edges[0]).ok();
+        write!(f, "{}\n", self.corners[1]).ok();
+        write!(f, "{}  ", self.edges[3]).ok();
+        write!(f, "{:?}  ", self.centres[0]).ok();
+        write!(f, "{}  \n", self.edges[1]).ok();
+        write!(f, "{} ", self.corners[3]).ok();
+        write!(f, "{} ", self.edges[2]).ok();
+        write!(f, "{}\n", self.corners[2]).ok();
+        write!(f, "--  -- --\n").ok();
+        write!(f, "{}  ", self.edges[4]).ok();
+        write!(f, "{:?}  ", self.centres[2]).ok();
+        write!(f, "{}  \n", self.edges[5]).ok();
+        write!(f, "{:?}       ", self.centres[5]).ok();
+        write!(f, "{:?}\n", self.centres[3]).ok();
+        write!(f, "{}  ", self.edges[7]).ok();
+        write!(f, "{:?}  ", self.centres[4]).ok();
+        write!(f, "{}\n", self.edges[6]).ok();
+        write!(f, "--  -- --\n").ok();
+        write!(f, "{} ", self.corners[4]).ok();
+        write!(f, "{} ", self.edges[8]).ok();
+        write!(f, "{}\n", self.corners[5]).ok();
+        write!(f, "{}  ", self.edges[11]).ok();
+        write!(f, "{:?}  ", self.centres[1]).ok();
+        write!(f, "{}  \n", self.edges[9]).ok();
+        write!(f, "{} ", self.corners[7]).ok();
+        write!(f, "{} ", self.edges[10]).ok();
         write!(f, "{}", self.corners[6])
     }
 }
