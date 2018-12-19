@@ -11,9 +11,11 @@ fn main() {
 
      let mut cube = Cube::new();
      cube.do_transform(&alg.transform);
+     // console!("{}", cube.is_ll_solved());
+     cube.do_transform(&alg.invert().transform);
+     // console!("{}", cube.is_ll_solved());
 
      console!("{:?}", alg.moves);
-     console!("{:?}", alg.invert().moves);
 }
 
-// TODO: is_ll_solved, is_ll_alg
+// TODO: is_ll_solved, is_ll_transform

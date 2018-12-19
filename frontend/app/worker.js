@@ -1,5 +1,9 @@
+const ENDPOINT = __DEV__ // eslint-disable-line
+    ? 'http://lh:8000/duplex.wasm'
+    : 'http://duplex.kirjava.xyz/duplex.wasm';
+
 const stack = [];
-fetch('http://lh:8000/duplex.wasm').then(response =>
+fetch(ENDPOINT).then(response =>
     response.arrayBuffer()
 ).then(bytes =>
     WebAssembly.instantiate(bytes, { env: {
@@ -47,7 +51,7 @@ fetch('http://lh:8000/duplex.wasm').then(response =>
     const get_ll = getStringFunc('get_ll');
 
     // console.log(get_cube());
-    console.log(get_ll());
+    // console.log(get_ll());
 
     // todo: console log stack to grid
 

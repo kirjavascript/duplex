@@ -29,9 +29,6 @@ module.exports = (env={}, args={}) => {
                                     '@babel/preset-react',
                                 ],
                                 plugins: [
-                                    'transform-class-properties',
-                                    'transform-do-expressions',
-                                    '@babel/plugin-syntax-dynamic-import',
                                 ],
                             }
                         }
