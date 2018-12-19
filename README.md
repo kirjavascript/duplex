@@ -2,7 +2,7 @@ duplexLL
 
 explore | algs
 
-explore | trainer | algs | cases | tutorial
+explore | subsets | trainer | algs | cases | tutorial
 
     cargo +nightly web start --target wasm32-unknown-unknown
     yarn watch
@@ -13,7 +13,9 @@ trim AUF for Vec<Move>
 give algs names w/ colours
 click to see the alg / auto mirrored
 
+subset chooser like 2LLui
 select subset, generate cases that use smallest number of first algs
+do lazy load subset cubes
 3 look duplex, duplex on cll
 
 * add ability to select a subset, and list solutions that use the smallest quantity of first alg -> this is how to find recog patterns -> add colours to tell algs apart

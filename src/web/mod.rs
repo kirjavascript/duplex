@@ -5,9 +5,15 @@ use serde_json::json;
 use crate::cube::*;
 // use self::interop::*;
 
-static mut CUBE: Cube = Cube::new();
+pub static mut CUBE: Cube = Cube::new();
 
-export_string!(get_cube, unsafe { format!("{}", CUBE) });
+export_string!(get_cube, unsafe {
+    json!({
+        "edges": CUBE.edges,
+        "corners": CUBE.corners,
+        "centres": CUBE.centres,
+    }).to_string()
+});
 
 export_string!(get_ll, unsafe {
     json!({

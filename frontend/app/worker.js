@@ -11,7 +11,7 @@ fetch(ENDPOINT).then(response =>
         console_stack: (type) => {
             const method = ['log', 'warn', 'error'][type];
             console[method](
-                String.fromCharCode(...stack.splice(0, stack.length))
+                '> ' + String.fromCharCode(...stack.splice(0, stack.length))
             );
         }
     }})
@@ -33,6 +33,10 @@ fetch(ENDPOINT).then(response =>
             return string;
         };
     }
+    function getJSONFunc(str) {
+        const func = getStringFunc(str);
+        return () => JSON.parse(func());
+    }
     function createString(str) {
         const encoder = new TextEncoder();
         const encodedString = encoder.encode(str);
@@ -47,21 +51,16 @@ fetch(ENDPOINT).then(response =>
         return stringPtr;
     }
 
-    const get_cube = getStringFunc('get_cube');
+    const get_cube = getJSONFunc('get_cube');
     const get_ll = getStringFunc('get_ll');
 
-    // console.log(get_cube());
-    // console.log(get_ll());
-
     // todo: console log stack to grid
-
-    // examples
 
     // console.log(getString('TEST_STRING'));
 
     // exports.receive_string(createString('this is a test'));
 
-    // self.onmessage = ({ data: { cube } }) => {
-    //     self.postMessage({ cube: getString('TEST_STRING') });
-    // };
+    self.onmessage = ({ data: { cube } }) => {
+        self.postMessage({ cube: get_cube() });
+    };
 });

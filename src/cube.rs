@@ -68,12 +68,6 @@ impl Corner {
     }
 }
 
-#[derive(PartialEq)]
-pub struct Cube {
-    pub edges: [Edge; 12],
-    pub corners: [Corner; 8],
-    pub centres: [Face; 6],
-}
 
 // transforms
 
@@ -338,9 +332,9 @@ impl Move {
             Move { layer: Layer::U, order: Order::Prime } => UPRI.clone(),
             Move { layer: Layer::D, order: Order::Normal } => {
                 Transform {
-                    edge_cycles: vec![vec![11, 10, 9, 8]],
+                    edge_cycles: vec![vec![8, 9, 10, 11]],
                     edge_flips: vec![],
-                    corner_cycles: vec![vec![7, 6, 5, 4]],
+                    corner_cycles: vec![vec![4, 5, 6, 7]],
                     corner_twists: vec![],
                     centre_cycles: vec![],
                 }
@@ -475,6 +469,12 @@ impl Move {
     }
 }
 
+#[derive(PartialEq)]
+pub struct Cube {
+    pub edges: [Edge; 12],
+    pub corners: [Corner; 8],
+    pub centres: [Face; 6],
+}
 
 lazy_static! {
     static ref SOLVED0: Cube = Cube::new();
