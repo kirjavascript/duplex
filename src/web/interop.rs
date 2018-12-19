@@ -12,10 +12,18 @@ extern "C" {
     fn console_stack(type_: usize); // 0 - log, 2 - warn, 3 - error
 }
 
+// called on init
+
+#[no_mangle]
+extern "C" fn web_main() {
+     panic_hook();
+     crate::main();
+}
+
 // importing strings from JS
 
 #[no_mangle]
-pub unsafe extern "C" fn alloc_js_string(cap: usize) -> JSString {
+unsafe extern "C" fn alloc_js_string(cap: usize) -> JSString {
     let mut d = Vec::with_capacity(cap);
     d.set_len(cap);
     let s = Box::new(String::from_utf8_unchecked(d));
@@ -23,12 +31,12 @@ pub unsafe extern "C" fn alloc_js_string(cap: usize) -> JSString {
 }
 
 #[no_mangle]
-pub extern "C" fn get_mut_js_string(mut string: JSString) -> *mut u8 {
+extern "C" fn get_mut_js_string(mut string: JSString) -> *mut u8 {
     string.as_mut_ptr()
 }
 
 #[repr(transparent)]
-pub struct JSString(pub *mut String);
+struct JSString(pub *mut String);
 
 impl JSString {
     fn to_owned(&mut self) -> Box<String> {
@@ -54,7 +62,7 @@ impl Drop for JSString {
 // exports to js
 
 #[no_mangle]
-pub extern "C" fn dealloc_rust_string(ptr: *mut c_char) {
+extern "C" fn dealloc_rust_string(ptr: *mut c_char) {
     unsafe { let _ = CString::from_raw(ptr); }
 }
 
@@ -102,7 +110,7 @@ macro_rules! console {
 // panic
 
 #[inline]
-pub fn panic_hook() {
+fn panic_hook() {
     #[cfg(target_arch = "wasm32")]
     {
         use std::sync::{ONCE_INIT, Once};

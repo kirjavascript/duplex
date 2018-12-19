@@ -3,12 +3,7 @@ mod cube;
 mod alg;
 mod web;
 
-fn main() { web_main(); }
-
-#[no_mangle]
-extern "C" fn web_main() {
-     crate::web::interop::panic_hook();
-
+fn main() {
      use crate::cube::*;
      use crate::alg::*;
 
