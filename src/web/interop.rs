@@ -2,6 +2,7 @@ use std::ffi::CString;
 use std::os::raw::c_char;
 use std::ops::Drop;
 use std::ptr;
+use std::panic;
 
 // imported functions
 
@@ -72,28 +73,44 @@ macro_rules! export_string {
     }
 }
 
-// helpers
+// console
 
 pub fn console_log(string: &str) {
-    #[cfg(target_arch = "wasm32")]
-    {
-        for c in string.chars() {
-            unsafe { stack_push(c as usize); }
-        }
-        unsafe { console_log_stack(); }
+    // TODO: pass a pointer instead
+    for c in string.chars() {
+        unsafe { stack_push(c as usize); }
     }
+    unsafe { console_log_stack(); }
 }
 
 #[macro_export]
 macro_rules! console {
     ( $x:expr, $( $y:expr ),* ) => {
+        #[cfg(target_arch = "wasm32")]
         crate::web::interop::console_log(&format!($x, $($y),*));
         #[cfg(not(target_arch = "wasm32"))]
         println!($x, $($y),*);
     };
     ( $x:expr ) => {
+        #[cfg(target_arch = "wasm32")]
         crate::web::interop::console_log(&format!($x));
         #[cfg(not(target_arch = "wasm32"))]
         println!($x);
     };
+}
+
+// panic
+
+#[inline]
+pub fn panic_hook() {
+    #[cfg(target_arch = "wasm32")]
+    {
+        use std::sync::{ONCE_INIT, Once};
+        static SET_HOOK: Once = ONCE_INIT;
+        SET_HOOK.call_once(|| {
+            panic::set_hook(Box::new(|info| {
+                console!("{}", info.to_string());
+            }));
+        });
+    }
 }
