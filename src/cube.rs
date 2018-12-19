@@ -544,6 +544,7 @@ impl Cube {
 
 }
 
+// display / debug
 
 impl fmt::Debug for Move {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -552,7 +553,15 @@ impl fmt::Debug for Move {
             Order::Prime => "'",
             Order::Double => "2",
         };
-        write!(f, "{:?}{}", self.layer, order)
+        let layer = format!("{:?}", self.layer);
+        let is_lower = layer.ends_with('w')
+            || layer == "X" || layer == "Y" || layer == "Z";
+        let layer = if is_lower {
+            format!("{}", &layer[..1].to_lowercase())
+        } else {
+            layer
+        };
+        write!(f, "{}{}", layer, order)
     }
 }
 impl fmt::Debug for Edge {
