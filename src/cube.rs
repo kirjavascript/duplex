@@ -90,7 +90,6 @@ impl Transform {
     pub fn is_ll_transform(&self) -> bool {
         let mut cube = Cube::new();
         cube.do_transform(self);
-        console!("fuck: \n{}", cube);
         cube.is_f2l_solved()
     }
 }

@@ -7,8 +7,15 @@ mod alg;
 fn main() {
      use crate::cube::*;
      use crate::alg::*;
+     use crate::parser::*;
 
-     let alg = Alg::new("FR'F'R'F2LDRD'L'R'F2R2").unwrap();
+         let moves = parse_moves("FR'F'R'F2LDRD'L'R'F2R2").unwrap();
+         let transform = moves_to_transform(&moves);
+         let mut cube = Cube::new();
+         cube.do_transform(&transform);
+         console!("{}", cube);
+
+     // let alg = Alg::new("FR'F'R'F2LDRD'L'R'F2R2").unwrap();
 
      // let mut cube = Cube::new();
      // cube.do_transform(&alg.transform);
