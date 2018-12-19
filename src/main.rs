@@ -4,6 +4,7 @@ mod alg;
 mod web;
 
 fn main() { web_main(); }
+// https://github.com/rustwasm/console_error_panic_hook
 
 #[no_mangle]
 extern "C" fn web_main() {
