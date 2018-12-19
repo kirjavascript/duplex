@@ -477,6 +477,29 @@ impl Move {
     }
 }
 
+
+lazy_static! {
+    static ref SOLVED0: Cube = Cube::new();
+    static ref SOLVED1: Cube = {
+        let mut cube = Cube::new();
+        let move_ = Move { layer: Layer::Y, order: Order::Normal };
+        cube.do_transform(&move_.get_transform());
+        cube
+    };
+    static ref SOLVED2: Cube = {
+        let mut cube = Cube::new();
+        let move_ = Move { layer: Layer::Y, order: Order::Double };
+        cube.do_transform(&move_.get_transform());
+        cube
+    };
+    static ref SOLVED3: Cube = {
+        let mut cube = Cube::new();
+        let move_ = Move { layer: Layer::Y, order: Order::Prime };
+        cube.do_transform(&move_.get_transform());
+        cube
+    };
+}
+
 impl Cube {
     pub const fn new() -> Self {
         Cube {
@@ -500,11 +523,6 @@ impl Cube {
                 Face::U, Face::D, Face::B, Face::R, Face::F, Face::L,
             ],
         }
-    }
-
-    fn _is_solved(&self) -> bool {
-        // TODO: check rotations
-        self == &Cube::new()
     }
 
     pub fn do_transform(&mut self, transform: &Transform) {
@@ -540,7 +558,18 @@ impl Cube {
         }
     }
 
-    // is_ll_solved
+    pub fn is_ll_solved(&self) -> bool {
+        self.centres[0] == Face::U && (
+            (self.edges[0..4] == SOLVED0.edges[0..4] &&
+             self.corners[0..4] == SOLVED0.corners[0..4]) ||
+            (self.edges[0..4] == SOLVED1.edges[0..4] &&
+             self.corners[0..4] == SOLVED1.corners[0..4]) ||
+            (self.edges[0..4] == SOLVED2.edges[0..4] &&
+             self.corners[0..4] == SOLVED2.corners[0..4]) ||
+            (self.edges[0..4] == SOLVED3.edges[0..4] &&
+             self.corners[0..4] == SOLVED3.corners[0..4])
+        )
+    }
 
 }
 
