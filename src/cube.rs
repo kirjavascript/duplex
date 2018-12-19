@@ -88,11 +88,10 @@ pub struct Transform {
 
 impl Transform {
     pub fn is_ll_transform(&self) -> bool {
-        !self.edge_cycles.iter().any(|v| v.iter().any(|c| *c > 3))
-        && !self.edge_flips.iter().any(|c| *c > 3)
-        && !self.corner_cycles.iter().any(|v| v.iter().any(|c| *c > 3))
-        && !self.corner_twists.iter().any(|c| c.0 > 3)
-        && !self.centre_cycles.iter().any(|v| v.iter().any(|c| *c == 0))
+        let mut cube = Cube::new();
+        cube.do_transform(self);
+        console!("fuck: \n{}", cube);
+        cube.is_f2l_solved()
     }
 }
 
@@ -559,6 +558,7 @@ impl Cube {
     }
 
     pub fn is_ll_solved(&self) -> bool {
+        // TODO: benchmark different approaches to doing this
         self.centres[0] == Face::U && (
             (self.edges[0..4] == SOLVED0.edges[0..4] &&
              self.corners[0..4] == SOLVED0.corners[0..4]) ||
@@ -568,6 +568,19 @@ impl Cube {
              self.corners[0..4] == SOLVED2.corners[0..4]) ||
             (self.edges[0..4] == SOLVED3.edges[0..4] &&
              self.corners[0..4] == SOLVED3.corners[0..4])
+        )
+    }
+
+    pub fn is_f2l_solved(&self) -> bool {
+        self.centres[0] == Face::U && (
+            (self.edges[4..] == SOLVED0.edges[4..] &&
+             self.corners[4..] == SOLVED0.corners[4..]) ||
+            (self.edges[4..] == SOLVED1.edges[4..] &&
+             self.corners[4..] == SOLVED1.corners[4..]) ||
+            (self.edges[4..] == SOLVED2.edges[4..] &&
+             self.corners[4..] == SOLVED2.corners[4..]) ||
+            (self.edges[4..] == SOLVED3.edges[4..] &&
+             self.corners[4..] == SOLVED3.corners[4..])
         )
     }
 
@@ -605,7 +618,6 @@ impl fmt::Debug for Corner {
 }
 impl fmt::Display for Cube {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        // TODO: add visualcube (temporary)
         write!(f, "{:?} ", self.corners[0]).ok();
         write!(f, "{:?} ", self.edges[0]).ok();
         write!(f, "{:?}\n", self.corners[1]).ok();

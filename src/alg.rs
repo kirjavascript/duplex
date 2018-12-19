@@ -1,6 +1,5 @@
 use crate::cube::*;
 use crate::parser::parse_moves;
-use std::fmt;
 
 #[derive(Debug)]
 pub struct Alg {
@@ -12,7 +11,6 @@ impl Alg {
     pub fn new(input: &str) -> Result<Self, String> {
          let moves = parse_moves(input)?;
          let transform = moves_to_transform(&moves);
-
          match transform.is_ll_transform() {
              true => Ok(Alg { moves, transform }),
              false => Err("Not an LL alg".to_string()),
