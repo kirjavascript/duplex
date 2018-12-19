@@ -9,7 +9,7 @@ use std::panic;
 #[no_mangle]
 extern "C" {
     pub fn stack_push(num: usize);
-    fn console_log_stack();
+    fn console_stack(type_: usize); // 0 - log, 2 - warn, 3 - error
 }
 
 // importing strings from JS
@@ -75,25 +75,25 @@ macro_rules! export_string {
 
 // console
 
-pub fn console_log(string: &str) {
+pub fn console_log(string: &str, type_: usize) {
     // TODO: pass a pointer instead
     for c in string.chars() {
         unsafe { stack_push(c as usize); }
     }
-    unsafe { console_log_stack(); }
+    unsafe { console_stack(type_); }
 }
 
 #[macro_export]
 macro_rules! console {
     ( $x:expr, $( $y:expr ),* ) => {
         #[cfg(target_arch = "wasm32")]
-        crate::web::interop::console_log(&format!($x, $($y),*));
+        crate::web::interop::console_log(&format!($x, $($y),*), 0);
         #[cfg(not(target_arch = "wasm32"))]
         println!($x, $($y),*);
     };
     ( $x:expr ) => {
         #[cfg(target_arch = "wasm32")]
-        crate::web::interop::console_log(&format!($x));
+        crate::web::interop::console_log(&format!($x), 0);
         #[cfg(not(target_arch = "wasm32"))]
         println!($x);
     };
@@ -109,7 +109,7 @@ pub fn panic_hook() {
         static SET_HOOK: Once = ONCE_INIT;
         SET_HOOK.call_once(|| {
             panic::set_hook(Box::new(|info| {
-                console!("{}", info.to_string());
+                console_log(&info.to_string(), 2);
             }));
         });
     }

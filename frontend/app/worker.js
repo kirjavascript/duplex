@@ -4,8 +4,9 @@ fetch('http://lh:8000/duplex.wasm').then(response =>
 ).then(bytes =>
     WebAssembly.instantiate(bytes, { env: {
         stack_push: (thing) => {stack.push(thing);},
-        console_log_stack: () => {
-            console.log(
+        console_stack: (type) => {
+            const method = ['log', 'warn', 'error'][type];
+            console[method](
                 String.fromCharCode(...stack.splice(0, stack.length))
             );
         }
