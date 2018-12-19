@@ -88,15 +88,12 @@ pub fn console_log(string: &str) {
 macro_rules! console {
     ( $x:expr, $( $y:expr ),* ) => {
         crate::web::interop::console_log(&format!($x, $($y),*));
+        #[cfg(not(target_arch = "wasm32"))]
+        println!($x, $($y),*);
     };
     ( $x:expr ) => {
-        crate::web::interop::console_log(&format!($x, $($y),*));
+        crate::web::interop::console_log(&format!($x));
+        #[cfg(not(target_arch = "wasm32"))]
+        println!($x);
     };
 }
-
-// examples
-
-// #[no_mangle]
-// pub extern "C" fn receive_string(mut string: JSString) {
-//     console_log(&format!("string came from rust: {:?}", &string.to_owned()));
-// }

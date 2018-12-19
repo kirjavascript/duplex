@@ -3,10 +3,10 @@ mod cube;
 mod alg;
 mod web;
 
-fn main() { }
+fn main() { web_main(); }
 
 #[no_mangle]
-pub unsafe extern "C" fn web_main() {
+extern "C" fn web_main() {
      use crate::cube::*;
      use crate::alg::*;
 
