@@ -71,12 +71,13 @@ macro_rules! export_string {
     ($name:ident, $exec:expr) => {
         #[no_mangle]
         pub extern "C" fn $name() {
+            use crate::web::interop::stack_push;
             let rust_string = $exec;
             let rust_string_length = rust_string.len();
             let c_string = std::ffi::CString::new(rust_string)
                 .expect("must be a valid C string");
-            unsafe { crate::web::interop::stack_push(rust_string_length); }
-            unsafe { crate::web::interop::stack_push(c_string.into_raw() as usize); }
+            unsafe { stack_push(rust_string_length); }
+            unsafe { stack_push(c_string.into_raw() as usize); }
         }
     }
 }
@@ -111,14 +112,11 @@ macro_rules! console {
 
 #[inline]
 fn panic_hook() {
-    #[cfg(target_arch = "wasm32")]
-    {
-        use std::sync::{ONCE_INIT, Once};
-        static SET_HOOK: Once = ONCE_INIT;
-        SET_HOOK.call_once(|| {
-            panic::set_hook(Box::new(|info| {
-                console_log(&info.to_string(), 2);
-            }));
-        });
-    }
+    use std::sync::{ONCE_INIT, Once};
+    static SET_HOOK: Once = ONCE_INIT;
+    SET_HOOK.call_once(|| {
+        panic::set_hook(Box::new(|info| {
+            console_log(&info.to_string(), 2);
+        }));
+    });
 }

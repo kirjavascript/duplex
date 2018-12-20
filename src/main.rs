@@ -5,8 +5,7 @@ mod cube;
 mod alg;
 
 fn main() {
-
-     console!(".wasm loaded");
+     console!("solver loaded");
      use crate::cube::*;
      use crate::alg::*;
 
