@@ -315,6 +315,18 @@ prime_double!(Rw, RWPRI, RWDBL);
 prime_double!(Fw, FWPRI, FWDBL);
 prime_double!(Bw, BWPRI, BWDBL);
 
+lazy_static! {
+    pub static ref UTRANS: Transform = Move {
+        order: Order::Normal, layer: Layer::U
+    }.get_transform();
+    pub static ref UPRITRANS: Transform = Move {
+        order: Order::Prime, layer: Layer::U
+    }.get_transform();
+    pub static ref UDBLTRANS: Transform = Move {
+        order: Order::Double, layer: Layer::U
+    }.get_transform();
+}
+
 impl Move {
     pub fn get_transform(&self) -> Transform {
         match self {

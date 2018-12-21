@@ -13,9 +13,9 @@ export function startWorker(onload) {
 }
 
 
-export function updateAlgs(algs) {
+export function loadAlgs(algs) {
     worker.postMessage({
-        action: 'UPDATE_ALGS',
+        action: 'LOAD_ALGS',
         payload: algs,
     });
 }

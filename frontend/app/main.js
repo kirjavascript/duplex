@@ -2,24 +2,16 @@ import React, { Fragment, useEffect } from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
-import Algs, { AlgStore, useAlgs } from './algs';
-import { startWorker, updateAlgs} from './solver';
+import Algs, { AlgStore } from './algs';
+import Solver from './solver/component';
 
-const links = ['', 'explore', 'algs'];
+const links = ['', 'explore', 'subsets', 'trainer', 'algs'];
 
 function App(props) {
 
-    // load worker, set initial algs
-    // TODO: consecutive algs
-    const { algs } = useAlgs();
-    useEffect(() => {
-        startWorker(() => {
-            updateAlgs(algs);
-        });
-    }, []);
-
     return (
         <Fragment>
+            <Solver />
             <Route component={({location}) => (
                 <div className="menu">
                     {links.map(link => (
@@ -29,7 +21,7 @@ function App(props) {
                             }
                             key={link}
                             to={'/' + link}>
-                            {link || 'home'}
+                            {link || 'about'}
                         </Link>
                     ))}
                 </div>

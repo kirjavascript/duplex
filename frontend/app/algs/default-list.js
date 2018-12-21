@@ -11,27 +11,21 @@ export default [
     { name: 'tperm', moves: `RUR'U'R'FR2U'R'U'RUR'F'`, mirror: false, invert: false },
     { name: 'sexysledge', moves: `R U R' U' R' F R F'`, mirror: true, invert: true },
     { name: 'uperm', moves: `M2 U'MU2M'U'M2`, mirror: true, invert: true },
+    { name: 'sexyslice', moves: `R U R' U' M' URU' r'`, mirror: true, invert: true },
+    { name: 'edgeflip', moves: `M'U'MU2M'U'M`, mirror: true, invert: true },
+    { name: 'unnamed', moves: `r U' r' U' r U r' F' U F`, mirror: true, invert: true },
+    { name: 'unnamed', moves: `R' U' R' F R F' U R`, mirror: true, invert: true },
+    { name: 'unnamed', moves: `F R U' R D R' U2 R D' R2 U' F'`, mirror: true, invert: true },
+    { name: 'unnamed', moves: `R2 D R' U2 R D' R' U2 R'`, mirror: true, invert: true },
+    { name: 'unnamed', moves: `F R2 D R' U R D' R2 U' F'`, mirror: true, invert: true },
+    { name: 'unnamed', moves: `R U' L' U R' U L U L' U L`, mirror: true, invert: true },
+    { name: 'unnamed', moves: `R' U' R U' R' U F' U F R`, mirror: true, invert: true },
+    { name: 'unnamed', moves: `R' U' R' F R F' R U' R' U2 R`, mirror: true, invert: true },
+    { name: 'unnamed', moves: `R U2 R' U2 R' F R2 U R' U' F'`, mirror: true, invert: true },
+    { name: 'unnamed', moves: `F R U' R' U' R U2 R' U' F'`, mirror: true, invert: true },
+    { name: 'unnamed', moves: `R' U' R U R' F' R U R' U' R' F R2`, mirror: true, invert: true },
+    { name: 'unnamed', moves: `r U r' R U R' U' r U' r'`, mirror: true, invert: true },
+    { name: 'unnamed', moves: `R U R' U R U' R' U' R' F R F'`, mirror: true, invert: true },
+    { name: 'unnamed', moves: `F U R U2 R' U' R U R' F'`, mirror: true, invert: true },
+    { name: 'unnamed', moves: `F R U R' U' R U' R' U R U R' F'`, mirror: true, invert: true },
 ];
-
-// L F' L' U' L F L' F' U F
-// R' U' R' F R F' U R
-// F R U' R D R' U2 R D' R2 U' F'
-// R U R' U F' L' U L F U' R U' R'
-// L F R' F R F L' F R' F' L F L' R
-// R2 D R' U2 R D' R' U2 R'
-// R' F' R U R' U' R' F R2 U' R' U2 R
-// F R2 D R' U R D' R2 U' F'
-// R U' L' U R' U L U L' U L
-// R' U' R U' R' U F' U F R
-// R' U' R' F R F' R U' R' U2 R
-// R U R' U' L R' F R F' L'
-// R' L F R L' U2 R' L F R L'
-// R U2 R' U2 R' F R2 U R' U' F'
-// F R U' R' U' R U2 R' U' F'
-// R' U' R U R' F' R U R' U' R' F R2
-// L F L' R U R' U' L F' L'
-// R U R' U R U' R' U' R' F R F'
-// F U R U2 R' U' R U R' F'
-// F R U R' U' R U' R' U R U R' F'
-// F R U R2 U2 R2 U R2 U R F'
-// F R' U' R2 F R' F' R2 U R U F'

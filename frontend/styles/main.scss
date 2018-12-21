@@ -5,8 +5,9 @@
     src: local('Source Sans Pro'),local(SourceSansPro-Regular),url(https://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlNV_2ngZ8dMf8fLgjYEouxg.woff2) format("woff2");
     unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2212,U+2215,U+E0FF,U+EFFD,U+F000;
 }
+
 html, body {
-    font-size: 16px;
+    font-size: 18px;
     margin: 0;
     padding: 0;
     font-family: 'Source Sans Pro', sans-serif;
@@ -16,6 +17,26 @@ a {
     color: steelblue;
     text-decoration: none;
     font-weight: 600;
+}
+
+button {
+    color: white;
+    font-weight: 400;
+    padding: 5px 40px;
+    background-color: steelblue;
+    border: none;
+    font-size: 18px;
+    margin: 0 5px;
+}
+
+input {
+    color: steelblue;
+    padding: 5px 20px;
+    font-weight: 500;
+    background-color: white;
+    border: 2px solid steelblue;
+    margin: 0 5px;
+    font-size: 18px;
 }
 
 .menu {
@@ -30,5 +51,14 @@ a {
         &.active {
             box-shadow: 0 -5px 0 steelblue inset;
         }
+    }
+}
+
+.alg {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+    .moves {
+        flex-grow: 1;
     }
 }

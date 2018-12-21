@@ -67,8 +67,9 @@ fetch(ENDPOINT).then(response =>
     // exports.receive_string(createString('this is a test'));
 
     self.onmessage = ({ data: { action, payload } }) => {
-        if (action === 'UPDATE_ALGS') {
-            exports.update_algs(createJSON(payload));
+        if (action === 'LOAD_ALGS') {
+            exports.load_algs(createJSON(payload));
+            // exports.solve_alg(createString('RUR\'URU2R\''));
         }
     };
 

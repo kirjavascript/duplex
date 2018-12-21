@@ -88,7 +88,7 @@ export default function Algs() {
         <Fragment>
             TODO: storage/styles
             {algs.map((alg, i) => (
-                <div key={i}>
+                <div key={i} className="alg">
                     <input
                         type="text"
                         value={alg.name}
@@ -96,6 +96,7 @@ export default function Algs() {
                         onChange={(e) => { updateName(i, e.target.value); }}
                     />
                     <input
+                        className="moves"
                         type="text"
                         value={alg.moves}
                         placeholder="moves"
@@ -124,6 +125,7 @@ export default function Algs() {
             <button
                 type="button"
                 onClick={addAlg}
+                className="fullwidth"
             >
                 add
             </button>

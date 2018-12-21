@@ -43,7 +43,7 @@ impl Alg {
          let transform = moves_to_transform(&moves);
          match transform.is_ll_transform() {
              true => Ok(Alg { moves, transform, name: name.to_owned() }),
-             false => Err("Not an LL alg".to_string()),
+             false => Err(format!("Not an LL alg: {}", input)),
          }
     }
 
