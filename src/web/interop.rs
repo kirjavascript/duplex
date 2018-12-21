@@ -36,10 +36,10 @@ extern "C" fn get_mut_js_string(mut string: JSString) -> *mut u8 {
 }
 
 #[repr(transparent)]
-struct JSString(pub *mut String);
+pub struct JSString(pub *mut String);
 
 impl JSString {
-    fn to_owned(&mut self) -> Box<String> {
+    pub fn to_owned(&mut self) -> Box<String> {
         let boxed_string = unsafe { Box::from_raw(self.0) };
         self.0 = ptr::null_mut();
         boxed_string
@@ -48,6 +48,9 @@ impl JSString {
         let ptr = unsafe { (&mut *self.0).as_mut_vec() }.as_mut_ptr();
         self.0 = ptr::null_mut();
         ptr
+    }
+    pub fn to_string(&mut self) -> String {
+        self.to_owned().to_string()
     }
 }
 

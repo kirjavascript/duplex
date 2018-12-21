@@ -47,6 +47,7 @@
         "no-shadow": "off",
         "no-unused-expressions": "off",
         "no-restricted-globals": "off",
+        "no-param-reassign": "off",
         "smells/no-switch": "error",
     },
     "settings": {

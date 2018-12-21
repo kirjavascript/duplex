@@ -1,23 +1,27 @@
 #[macro_use]
 pub mod interop;
 
-use serde_json::json;
+use lazy_static::lazy_static;
 use crate::cube::*;
-// use self::interop::*;
+use crate::alg::*;
+use self::interop::JSString;
 
-pub static mut CUBE: Cube = Cube::new();
+static mut CUBE: Cube = Cube::new();
+lazy_static! {
+    static ref ALGS: Vec<Alg> = Vec::new();
+}
 
-export_string!(get_cube, unsafe {
-    json!({
-        "edges": CUBE.edges,
-        "corners": CUBE.corners,
-        "centres": CUBE.centres,
-    }).to_string()
-});
+#[no_mangle]
+unsafe extern "C" fn update_algs(mut algs: JSString) {
+    ALGS.clear();
+    ALGS.extend(create_alglist(algs.to_string()));
 
-export_string!(get_ll, unsafe {
-    json!({
-        "edges": &CUBE.edges[..4],
-        "corners": &CUBE.corners[..4],
-    }).to_string()
-});
+    console!("solve test ~~");
+    let transform = Alg::new("RUR'URU2R'", "sune").unwrap().transform;
+    CUBE.reset();
+    CUBE.do_transform(&transform);
+
+    for first_auf in 0..4 {
+        console!("{}", first_auf);
+    }
+}

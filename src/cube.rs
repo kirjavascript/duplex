@@ -1,6 +1,5 @@
 use std::{fmt, mem};
 use lazy_static::lazy_static;
-use serde_derive::Serialize;
 
 // moves
 
@@ -34,13 +33,13 @@ pub struct Move {
 
 // cube
 
-#[derive(Debug, PartialEq, Serialize)]
+#[derive(Debug, PartialEq)]
 pub enum Face {
     U,R,F,B,L,D,
 }
 
 
-#[derive(PartialEq, Serialize)]
+#[derive(PartialEq)]
 pub struct Edge(Face, Face);
 
 impl Edge {
@@ -49,7 +48,7 @@ impl Edge {
     }
 }
 
-#[derive(PartialEq, Serialize)]
+#[derive(PartialEq)]
 pub struct Corner(Face, Face, Face);
 
 #[derive(PartialEq, Clone, Copy, Debug)]
@@ -521,6 +520,10 @@ impl Cube {
                 Face::U, Face::D, Face::B, Face::R, Face::F, Face::L,
             ],
         }
+    }
+
+    pub fn reset(&mut self) {
+        std::mem::replace(self, Cube::new());
     }
 
     pub fn do_transform(&mut self, transform: &Transform) {

@@ -1,18 +1,49 @@
-import React, { useState, useEffect, useCallback, Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { render } from 'react-dom';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
-function App() {
+import Algs, { AlgStore, useAlgs } from './algs';
+import { startWorker, updateAlgs} from './solver';
+
+const links = ['', 'explore', 'algs'];
+
+function App(props) {
+
+    // load worker, set initial algs
+    // TODO: consecutive algs
+    const { algs } = useAlgs();
+    useEffect(() => {
+        startWorker(() => {
+            updateAlgs(algs);
+        });
+    }, []);
 
     return (
         <Fragment>
-            hello
-            <svg width="200" height="200">
+            <Route component={({location}) => (
+                <div className="menu">
+                    {links.map(link => (
+                        <Link
+                            className={
+                                location.pathname === '/' + link ? 'active' : ''
+                            }
+                            key={link}
+                            to={'/' + link}>
+                            {link || 'home'}
+                        </Link>
+                    ))}
+                </div>
+            )} />
 
-            </svg>
+            <Route path="/algs" component={Algs} />
         </Fragment>
     );
 }
 
 render((
-    <App />
+    <Router>
+        <AlgStore>
+            <App />
+        </AlgStore>
+    </Router>
 ), document.body.appendChild(document.createElement('div')));
