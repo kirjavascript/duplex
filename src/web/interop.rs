@@ -66,11 +66,19 @@ extern "C" fn dealloc_rust_string(ptr: *mut c_char) {
     unsafe { let _ = CString::from_raw(ptr); }
 }
 
+pub fn export_string(rust_string: &str) {
+    let rust_string_length = rust_string.len();
+    let c_string = std::ffi::CString::new(rust_string)
+        .expect("must be a valid C string");
+    unsafe { stack_push(rust_string_length); }
+    unsafe { stack_push(c_string.into_raw() as usize); }
+}
+
 #[macro_export]
 macro_rules! export_string {
-    ($name:ident, $exec:expr) => {
+    ($name:ident => $exec:expr) => {
         #[no_mangle]
-        pub extern "C" fn $name() {
+        extern "C" fn $name() {
             use crate::web::interop::stack_push;
             let rust_string = $exec;
             let rust_string_length = rust_string.len();

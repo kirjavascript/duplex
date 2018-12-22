@@ -6,7 +6,7 @@ export function startWorker(onload) {
     worker = new Worker();
 
     worker.addEventListener('message', ({ data: { action } }) => {
-        if (action == 'INIT') {
+        if (action === 'INIT') {
             onload();
         }
     });

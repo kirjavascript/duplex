@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import Algs, { AlgStore } from './algs';
 import Solver from './solver/component';
+import Explore from './explore';
 
 const links = ['', 'explore', 'subsets', 'trainer', 'algs'];
 
@@ -28,6 +29,7 @@ function App(props) {
             )} />
 
             <Route path="/algs" component={Algs} />
+            <Route path="/explore" component={Explore} />
         </Fragment>
     );
 }

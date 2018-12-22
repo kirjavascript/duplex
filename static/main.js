@@ -345,6 +345,15 @@ var useAlgs = function useAlgs() {
   return Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(ctx);
 }; // ui
 
+function Checkbox(_ref2) {
+  var checked = _ref2.checked,
+      onChange = _ref2.onChange;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "link",
+    onClick: onChange
+  }, checked ? 'yes' : 'no');
+}
+
 function Algs() {
   var _useAlgs = useAlgs(),
       algs = _useAlgs.algs,
@@ -374,14 +383,12 @@ function Algs() {
       onChange: function onChange(e) {
         updateMoves(i, e.target.value);
       }
-    }), "mirror", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-      type: "checkbox",
+    }), "mirror", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Checkbox, {
       checked: alg.mirror,
       onChange: function onChange() {
         toggleMirror(i);
       }
-    }), "invert", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-      type: "checkbox",
+    }), "invert", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Checkbox, {
       checked: alg.invert,
       onChange: function onChange() {
         toggleInvert(i);
@@ -397,6 +404,46 @@ function Algs() {
     onClick: addAlg,
     className: "fullwidth"
   }, "add"));
+}
+
+/***/ }),
+
+/***/ "./app/explore/index.js":
+/*!******************************!*\
+  !*** ./app/explore/index.js ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Explore; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+ // import {  } from './index';
+
+function Explore() {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(LL, null), "asd");
+}
+
+function LL() {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
+    width: "500",
+    height: "500",
+    viewBox: "0 0 500 500"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Sticker, {
+    x: "10",
+    y: "10"
+  }));
+}
+
+function Sticker(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", _extends({
+    width: "10",
+    height: "10"
+  }, props));
 }
 
 /***/ }),
@@ -417,6 +464,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 /* harmony import */ var _algs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./algs */ "./app/algs/index.js");
 /* harmony import */ var _solver_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./solver/component */ "./app/solver/component.js");
+/* harmony import */ var _explore__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./explore */ "./app/explore/index.js");
+
 
 
 
@@ -441,6 +490,9 @@ function App(props) {
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "/algs",
     component: _algs__WEBPACK_IMPORTED_MODULE_3__["default"]
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+    path: "/explore",
+    component: _explore__WEBPACK_IMPORTED_MODULE_5__["default"]
   }));
 }
 
@@ -500,7 +552,7 @@ function startWorker(onload) {
   worker.addEventListener('message', function (_ref) {
     var action = _ref.data.action;
 
-    if (action == 'INIT') {
+    if (action === 'INIT') {
       onload();
     }
   });
@@ -522,7 +574,7 @@ function loadAlgs(algs) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = function () {
-  return __webpack_require__(/*! !./node_modules/worker-loader/dist/workers/InlineWorker.js */ "./node_modules/worker-loader/dist/workers/InlineWorker.js")("/******/ (function(modules) { // webpackBootstrap\n/******/ \t// The module cache\n/******/ \tvar installedModules = {};\n/******/\n/******/ \t// The require function\n/******/ \tfunction __webpack_require__(moduleId) {\n/******/\n/******/ \t\t// Check if module is in cache\n/******/ \t\tif(installedModules[moduleId]) {\n/******/ \t\t\treturn installedModules[moduleId].exports;\n/******/ \t\t}\n/******/ \t\t// Create a new module (and put it into the cache)\n/******/ \t\tvar module = installedModules[moduleId] = {\n/******/ \t\t\ti: moduleId,\n/******/ \t\t\tl: false,\n/******/ \t\t\texports: {}\n/******/ \t\t};\n/******/\n/******/ \t\t// Execute the module function\n/******/ \t\tmodules[moduleId].call(module.exports, module, module.exports, __webpack_require__);\n/******/\n/******/ \t\t// Flag the module as loaded\n/******/ \t\tmodule.l = true;\n/******/\n/******/ \t\t// Return the exports of the module\n/******/ \t\treturn module.exports;\n/******/ \t}\n/******/\n/******/\n/******/ \t// expose the modules object (__webpack_modules__)\n/******/ \t__webpack_require__.m = modules;\n/******/\n/******/ \t// expose the module cache\n/******/ \t__webpack_require__.c = installedModules;\n/******/\n/******/ \t// define getter function for harmony exports\n/******/ \t__webpack_require__.d = function(exports, name, getter) {\n/******/ \t\tif(!__webpack_require__.o(exports, name)) {\n/******/ \t\t\tObject.defineProperty(exports, name, { enumerable: true, get: getter });\n/******/ \t\t}\n/******/ \t};\n/******/\n/******/ \t// define __esModule on exports\n/******/ \t__webpack_require__.r = function(exports) {\n/******/ \t\tif(typeof Symbol !== 'undefined' && Symbol.toStringTag) {\n/******/ \t\t\tObject.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });\n/******/ \t\t}\n/******/ \t\tObject.defineProperty(exports, '__esModule', { value: true });\n/******/ \t};\n/******/\n/******/ \t// create a fake namespace object\n/******/ \t// mode & 1: value is a module id, require it\n/******/ \t// mode & 2: merge all properties of value into the ns\n/******/ \t// mode & 4: return value when already ns object\n/******/ \t// mode & 8|1: behave like require\n/******/ \t__webpack_require__.t = function(value, mode) {\n/******/ \t\tif(mode & 1) value = __webpack_require__(value);\n/******/ \t\tif(mode & 8) return value;\n/******/ \t\tif((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;\n/******/ \t\tvar ns = Object.create(null);\n/******/ \t\t__webpack_require__.r(ns);\n/******/ \t\tObject.defineProperty(ns, 'default', { enumerable: true, value: value });\n/******/ \t\tif(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));\n/******/ \t\treturn ns;\n/******/ \t};\n/******/\n/******/ \t// getDefaultExport function for compatibility with non-harmony modules\n/******/ \t__webpack_require__.n = function(module) {\n/******/ \t\tvar getter = module && module.__esModule ?\n/******/ \t\t\tfunction getDefault() { return module['default']; } :\n/******/ \t\t\tfunction getModuleExports() { return module; };\n/******/ \t\t__webpack_require__.d(getter, 'a', getter);\n/******/ \t\treturn getter;\n/******/ \t};\n/******/\n/******/ \t// Object.prototype.hasOwnProperty.call\n/******/ \t__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };\n/******/\n/******/ \t// __webpack_public_path__\n/******/ \t__webpack_require__.p = \"\";\n/******/\n/******/\n/******/ \t// Load entry module and return exports\n/******/ \treturn __webpack_require__(__webpack_require__.s = \"./node_modules/eslint-loader/index.js?!./app/solver/worker.js\");\n/******/ })\n/************************************************************************/\n/******/ ({\n\n/***/ \"./node_modules/eslint-loader/index.js?!./app/solver/worker.js\":\n/*!*******************************************************************!*\\\n  !*** ./node_modules/eslint-loader??ref--7!./app/solver/worker.js ***!\n  \\*******************************************************************/\n/*! no static exports found */\n/***/ (function(module, exports, __webpack_require__) {\n\nconst ENDPOINT =  true // eslint-disable-line\n    ? 'http://lh:8000/duplex.wasm'\n    : undefined;\n\nconst stack = [];\nfetch(ENDPOINT).then(response =>\n    response.arrayBuffer()\n).then(bytes =>\n    WebAssembly.instantiate(bytes, { env: {\n        stack_push: (thing) => {stack.push(thing);},\n        console_stack: (type) => {\n            const method = ['log', 'warn', 'error'][type];\n            console[method](\n                '> ' + String.fromCharCode(...stack.splice(0, stack.length))\n            );\n        }\n    }})\n).then(results => {\n    // interop\n\n    const { exports } = results.instance;\n    exports.web_main();\n    function getStringFunc(str) {\n        return () => {\n            exports[str]();\n            const [pointer, length] = [stack.pop(), stack.pop()];\n            const buffer = new Uint8Array(\n                exports.memory.buffer,\n                pointer,\n                length,\n            );\n            const string = String.fromCharCode(...buffer);\n            exports.dealloc_rust_string(pointer);\n            return string;\n        };\n    }\n    function getJSONFunc(str) {\n        const func = getStringFunc(str);\n        return () => JSON.parse(func());\n    }\n    function createString(str) {\n        const encoder = new TextEncoder();\n        const encodedString = encoder.encode(str);\n        const stringPtr = exports.alloc_js_string(encodedString.length);\n        const mutStringPtr = exports.get_mut_js_string(stringPtr);\n        const asBytes = new Uint8Array(\n            exports.memory.buffer,\n            mutStringPtr,\n            encodedString.length,\n        );\n        asBytes.set(encodedString);\n        return stringPtr;\n    }\n    function createJSON(str) {\n        return createString(JSON.stringify(str));\n    }\n\n    // api\n\n    const get_cube = getJSONFunc('get_cube');\n    const get_ll = getStringFunc('get_ll');\n\n    // todo: console log stack to grid\n\n    // console.log(getString('TEST_STRING'));\n\n    // exports.receive_string(createString('this is a test'));\n\n    self.onmessage = ({ data: { action, payload } }) => {\n        if (action === 'LOAD_ALGS') {\n            exports.load_algs(createJSON(payload));\n            // exports.solve_alg(createString('RUR\\'URU2R\\''));\n        }\n    };\n\n    self.postMessage({ action: 'INIT' });\n});\n\n\n/***/ })\n\n/******/ });\n//# sourceMappingURL=320a14c056485f741b35.worker.js.map", null);
+  return __webpack_require__(/*! !./node_modules/worker-loader/dist/workers/InlineWorker.js */ "./node_modules/worker-loader/dist/workers/InlineWorker.js")("/******/ (function(modules) { // webpackBootstrap\n/******/ \t// The module cache\n/******/ \tvar installedModules = {};\n/******/\n/******/ \t// The require function\n/******/ \tfunction __webpack_require__(moduleId) {\n/******/\n/******/ \t\t// Check if module is in cache\n/******/ \t\tif(installedModules[moduleId]) {\n/******/ \t\t\treturn installedModules[moduleId].exports;\n/******/ \t\t}\n/******/ \t\t// Create a new module (and put it into the cache)\n/******/ \t\tvar module = installedModules[moduleId] = {\n/******/ \t\t\ti: moduleId,\n/******/ \t\t\tl: false,\n/******/ \t\t\texports: {}\n/******/ \t\t};\n/******/\n/******/ \t\t// Execute the module function\n/******/ \t\tmodules[moduleId].call(module.exports, module, module.exports, __webpack_require__);\n/******/\n/******/ \t\t// Flag the module as loaded\n/******/ \t\tmodule.l = true;\n/******/\n/******/ \t\t// Return the exports of the module\n/******/ \t\treturn module.exports;\n/******/ \t}\n/******/\n/******/\n/******/ \t// expose the modules object (__webpack_modules__)\n/******/ \t__webpack_require__.m = modules;\n/******/\n/******/ \t// expose the module cache\n/******/ \t__webpack_require__.c = installedModules;\n/******/\n/******/ \t// define getter function for harmony exports\n/******/ \t__webpack_require__.d = function(exports, name, getter) {\n/******/ \t\tif(!__webpack_require__.o(exports, name)) {\n/******/ \t\t\tObject.defineProperty(exports, name, { enumerable: true, get: getter });\n/******/ \t\t}\n/******/ \t};\n/******/\n/******/ \t// define __esModule on exports\n/******/ \t__webpack_require__.r = function(exports) {\n/******/ \t\tif(typeof Symbol !== 'undefined' && Symbol.toStringTag) {\n/******/ \t\t\tObject.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });\n/******/ \t\t}\n/******/ \t\tObject.defineProperty(exports, '__esModule', { value: true });\n/******/ \t};\n/******/\n/******/ \t// create a fake namespace object\n/******/ \t// mode & 1: value is a module id, require it\n/******/ \t// mode & 2: merge all properties of value into the ns\n/******/ \t// mode & 4: return value when already ns object\n/******/ \t// mode & 8|1: behave like require\n/******/ \t__webpack_require__.t = function(value, mode) {\n/******/ \t\tif(mode & 1) value = __webpack_require__(value);\n/******/ \t\tif(mode & 8) return value;\n/******/ \t\tif((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;\n/******/ \t\tvar ns = Object.create(null);\n/******/ \t\t__webpack_require__.r(ns);\n/******/ \t\tObject.defineProperty(ns, 'default', { enumerable: true, value: value });\n/******/ \t\tif(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));\n/******/ \t\treturn ns;\n/******/ \t};\n/******/\n/******/ \t// getDefaultExport function for compatibility with non-harmony modules\n/******/ \t__webpack_require__.n = function(module) {\n/******/ \t\tvar getter = module && module.__esModule ?\n/******/ \t\t\tfunction getDefault() { return module['default']; } :\n/******/ \t\t\tfunction getModuleExports() { return module; };\n/******/ \t\t__webpack_require__.d(getter, 'a', getter);\n/******/ \t\treturn getter;\n/******/ \t};\n/******/\n/******/ \t// Object.prototype.hasOwnProperty.call\n/******/ \t__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };\n/******/\n/******/ \t// __webpack_public_path__\n/******/ \t__webpack_require__.p = \"\";\n/******/\n/******/\n/******/ \t// Load entry module and return exports\n/******/ \treturn __webpack_require__(__webpack_require__.s = \"./node_modules/eslint-loader/index.js?!./app/solver/worker.js\");\n/******/ })\n/************************************************************************/\n/******/ ({\n\n/***/ \"./node_modules/eslint-loader/index.js?!./app/solver/worker.js\":\n/*!*******************************************************************!*\\\n  !*** ./node_modules/eslint-loader??ref--7!./app/solver/worker.js ***!\n  \\*******************************************************************/\n/*! no static exports found */\n/***/ (function(module, exports, __webpack_require__) {\n\n/* eslint-disable */\nconst ENDPOINT =  true\n    ? 'http://lh:8000/duplex.wasm'\n    : undefined;\n\nconst stack = [];\nfetch(ENDPOINT).then(response =>\n    response.arrayBuffer()\n).then(bytes =>\n    WebAssembly.instantiate(bytes, { env: {\n        stack_push: (thing) => {\n            stack.push(thing);\n        },\n        console_stack: (type) => {\n            const method = ['log', 'warn', 'error'][type];\n            console[method](\n                '> ' + String.fromCharCode(...stack.splice(0, stack.length))\n            );\n            // const ref = {};\n        }\n    }})\n).then(results => {\n    // interop\n    const { exports } = results.instance;\n    exports.web_main();\n    function getStringFromStack() {\n        const [pointer, length] = [stack.pop(), stack.pop()];\n        const buffer = new Uint8Array(\n            exports.memory.buffer,\n            pointer,\n            length,\n        );\n        const string = String.fromCharCode(...buffer);\n        exports.dealloc_rust_string(pointer);\n        return string;\n    }\n    function createString(str) {\n        const encoder = new TextEncoder();\n        const encodedString = encoder.encode(str);\n        const stringPtr = exports.alloc_js_string(encodedString.length);\n        const mutStringPtr = exports.get_mut_js_string(stringPtr);\n        const asBytes = new Uint8Array(\n            exports.memory.buffer,\n            mutStringPtr,\n            encodedString.length,\n        );\n        asBytes.set(encodedString);\n        return stringPtr;\n    }\n    const wasm = Object.keys(exports)\n        .reduce((acc, cur) => {\n            if (typeof exports[cur] === 'function') {\n                acc[cur] = (...args) => {\n                    const wrappedArgs = args\n                        .map(arg => (\n                            typeof arg === 'string' ? createString(arg) : arg\n                        ));\n                    exports[cur](...wrappedArgs);\n                    if (stack.length) {\n                        return getStringFromStack();\n                    }\n                };\n            }\n            return acc;\n        }, {});\n\n    // api\n\n\n    // todo: console log stack to grid\n\n    // console.log(getString('TEST_STRING'));\n\n    // exports.receive_string(createString('this is a test'));\n\n    self.onmessage = ({ data: { action, payload } }) => {\n        if (action === 'LOAD_ALGS') {\n            wasm.load_algs(JSON.stringify(payload));\n            wasm.solve_alg('RUR\\'URU2R\\'');\n        }\n    };\n\n    self.postMessage({ action: 'INIT' });\n});\n\n\n/***/ })\n\n/******/ });\n//# sourceMappingURL=e7c3072949d03e4e3fa5.worker.js.map", null);
 };
 
 /***/ }),

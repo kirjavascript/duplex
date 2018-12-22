@@ -73,6 +73,14 @@ export const useAlgs = () => {
 
 // ui
 
+function Checkbox({ checked, onChange }) {
+    return (
+        <span className="link" onClick={onChange}>
+            {checked?'yes':'no'}
+        </span>
+    );
+}
+
 export default function Algs() {
     const {
         algs,
@@ -83,7 +91,6 @@ export default function Algs() {
         toggleInvert,
         deleteAlg
     } = useAlgs();
-
     return (
         <Fragment>
             TODO: storage/styles
@@ -103,14 +110,12 @@ export default function Algs() {
                         onChange={(e) => { updateMoves(i, e.target.value); }}
                     />
                     mirror
-                    <input
-                        type="checkbox"
+                    <Checkbox
                         checked={alg.mirror}
                         onChange={() => { toggleMirror(i); }}
                     />
                     invert
-                    <input
-                        type="checkbox"
+                    <Checkbox
                         checked={alg.invert}
                         onChange={() => { toggleInvert(i); }}
                     />

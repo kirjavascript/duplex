@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
-import Algs, { AlgStore, useAlgs } from '#app/algs';
+import { useAlgs } from '#app/algs';
 import { startWorker, loadAlgs } from './index';
 
 export default function Solver() {

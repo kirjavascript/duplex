@@ -5,11 +5,16 @@ use lazy_static::lazy_static;
 use std::sync::Mutex;
 use crate::cube::*;
 use crate::alg::*;
-use self::interop::JSString;
+use self::interop::{ JSString, export_string };
 
 static mut CUBE: Cube = Cube::new();
 lazy_static! {
     static ref ALGS: Mutex<Vec<Alg>> = Mutex::new(Vec::new());
+}
+
+#[no_mangle]
+extern "C" fn say_hello() {
+    export_string("hello");
 }
 
 #[no_mangle]

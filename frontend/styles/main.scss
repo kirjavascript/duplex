@@ -13,16 +13,24 @@ html, body {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-a {
+a, .link {
     color: steelblue;
     text-decoration: none;
     font-weight: 600;
 }
 
+.link {
+    cursor: pointer;
+    min-width: 30px;
+    padding: 0 10px;
+    display: inline-block;
+}
+
+
 button {
     color: white;
     font-weight: 400;
-    padding: 5px 40px;
+    padding: 2px 40px;
     background-color: steelblue;
     border: none;
     font-size: 18px;
@@ -31,7 +39,7 @@ button {
 
 input {
     color: steelblue;
-    padding: 5px 20px;
+    padding: 2px 10px;
     font-weight: 500;
     background-color: white;
     border: 2px solid steelblue;

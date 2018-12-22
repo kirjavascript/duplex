@@ -1,4 +1,5 @@
-const ENDPOINT = __DEV__ // eslint-disable-line
+/* eslint-disable */
+const ENDPOINT = __DEV__
     ? 'http://lh:8000/duplex.wasm'
     : 'http://duplex.kirjava.xyz/duplex.wasm';
 
@@ -7,36 +8,31 @@ fetch(ENDPOINT).then(response =>
     response.arrayBuffer()
 ).then(bytes =>
     WebAssembly.instantiate(bytes, { env: {
-        stack_push: (thing) => {stack.push(thing);},
+        stack_push: (thing) => {
+            stack.push(thing);
+        },
         console_stack: (type) => {
             const method = ['log', 'warn', 'error'][type];
             console[method](
                 '> ' + String.fromCharCode(...stack.splice(0, stack.length))
             );
+            // const ref = {};
         }
     }})
 ).then(results => {
     // interop
-
     const { exports } = results.instance;
     exports.web_main();
-    function getStringFunc(str) {
-        return () => {
-            exports[str]();
-            const [pointer, length] = [stack.pop(), stack.pop()];
-            const buffer = new Uint8Array(
-                exports.memory.buffer,
-                pointer,
-                length,
-            );
-            const string = String.fromCharCode(...buffer);
-            exports.dealloc_rust_string(pointer);
-            return string;
-        };
-    }
-    function getJSONFunc(str) {
-        const func = getStringFunc(str);
-        return () => JSON.parse(func());
+    function getStringFromStack() {
+        const [pointer, length] = [stack.pop(), stack.pop()];
+        const buffer = new Uint8Array(
+            exports.memory.buffer,
+            pointer,
+            length,
+        );
+        const string = String.fromCharCode(...buffer);
+        exports.dealloc_rust_string(pointer);
+        return string;
     }
     function createString(str) {
         const encoder = new TextEncoder();
@@ -51,14 +47,25 @@ fetch(ENDPOINT).then(response =>
         asBytes.set(encodedString);
         return stringPtr;
     }
-    function createJSON(str) {
-        return createString(JSON.stringify(str));
-    }
+    const wasm = Object.keys(exports)
+        .reduce((acc, cur) => {
+            if (typeof exports[cur] === 'function') {
+                acc[cur] = (...args) => {
+                    const wrappedArgs = args
+                        .map(arg => (
+                            typeof arg === 'string' ? createString(arg) : arg
+                        ));
+                    exports[cur](...wrappedArgs);
+                    if (stack.length) {
+                        return getStringFromStack();
+                    }
+                };
+            }
+            return acc;
+        }, {});
 
     // api
 
-    const get_cube = getJSONFunc('get_cube');
-    const get_ll = getStringFunc('get_ll');
 
     // todo: console log stack to grid
 
@@ -68,8 +75,8 @@ fetch(ENDPOINT).then(response =>
 
     self.onmessage = ({ data: { action, payload } }) => {
         if (action === 'LOAD_ALGS') {
-            exports.load_algs(createJSON(payload));
-            // exports.solve_alg(createString('RUR\'URU2R\''));
+            wasm.load_algs(JSON.stringify(payload));
+            wasm.solve_alg('RUR\'URU2R\'');
         }
     };
 
