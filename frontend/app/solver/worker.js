@@ -83,7 +83,8 @@ fetch(ENDPOINT).then(response =>
     self.onmessage = ({ data: { action, payload } }) => {
         if (action === 'LOAD_ALGS') {
             wasm.load_algs(JSON.stringify(payload));
-            // wasm.solve_alg('RUR\'URU2R\'');
+        } else if (action === 'EXPLORE_SOLVE') {
+            wasm.explore_solve(JSON.stringify(payload));
         }
     };
 

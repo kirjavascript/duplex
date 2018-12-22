@@ -11,7 +11,8 @@ click to see the alg / auto mirrored
 
 subset chooser like 2LLui - show coverage
 subsets - strip first auf by rotating
-select subset, generate cases that use smallest number of first algs
+select subset, generate cases that use smallest number of first algs OR shortest OR minimize auf
+<a>all solutions</a>
 do lazy load subset cubes
 duplex on cll
 

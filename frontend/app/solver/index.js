@@ -19,3 +19,10 @@ export function loadAlgs(algs) {
         payload: algs,
     });
 }
+
+export function exploreSolve(transform) {
+    worker.postMessage({
+        action: 'EXPLORE_SOLVE',
+        payload: transform,
+    });
+}

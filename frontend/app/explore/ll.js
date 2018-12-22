@@ -5,7 +5,7 @@ const [yellow, red, green, blue, orange] = [
 ];
 
 const getSideColor = (index) => (
-    [orange, blue, red, green][index%4]
+    [red, blue, orange, green][index%4]
 );
 
 export default function LL({

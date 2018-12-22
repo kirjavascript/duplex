@@ -2,6 +2,7 @@
 pub mod interop;
 
 use lazy_static::lazy_static;
+
 use std::sync::Mutex;
 use crate::cube::*;
 use crate::alg::*;
@@ -21,15 +22,19 @@ unsafe extern "C" fn load_algs(mut algs: JSString) {
 }
 
 #[no_mangle]
-unsafe extern "C" fn solve_alg(mut input: JSString) {
-    console!("solve test ~~");
-    let main_transform = Alg::new(&input.to_string(), "do solve").unwrap().transform;
+unsafe extern "C" fn explore_solve(mut input: JSString) {
+    console!("solving transform");
+
+    let main_transform: Transform = serde_json::from_str(&input.to_string())
+        .expect("malformed transform object");
+
+    console!("{:#?}", main_transform);
 
     let do_auf = |index| {
         match index {
             1 => CUBE.do_transform(&UTRANS),
-            2 => CUBE.do_transform(&UPRITRANS),
-            3 => CUBE.do_transform(&UDBLTRANS),
+            2 => CUBE.do_transform(&UDBLTRANS),
+            3 => CUBE.do_transform(&UPRITRANS),
             _ => {},
         }
     };
@@ -70,3 +75,6 @@ unsafe extern "C" fn solve_alg(mut input: JSString) {
 
     console!("solving done");
 }
+
+// unsafe fn solve_transform<F>(main_transform: Transform, cb: F) where F: Fn() {
+// }

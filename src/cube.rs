@@ -1,5 +1,6 @@
 use std::{fmt, mem};
 use lazy_static::lazy_static;
+use serde_derive::{Serialize, Deserialize};
 
 // moves
 
@@ -51,7 +52,7 @@ impl Edge {
 #[derive(PartialEq)]
 pub struct Corner(Face, Face, Face);
 
-#[derive(PartialEq, Clone, Copy, Debug)]
+#[derive(PartialEq, Clone, Copy, Debug, Serialize, Deserialize)]
 pub enum Twist {
     Cw, Acw,
 }
@@ -70,7 +71,7 @@ impl Corner {
 
 // transforms
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Transform {
     pub edge_cycles: Vec<Vec<usize>>,
     pub edge_flips: Vec<usize>,
