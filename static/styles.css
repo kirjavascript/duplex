@@ -58,5 +58,12 @@ input {
   .alg .moves {
     flex-grow: 1; }
 
+.explore .ll {
+  display: block;
+  margin: 50px auto; }
+
+.explore .actions {
+  text-align: center; }
+
 
 /*# sourceMappingURL=styles.css.map*/

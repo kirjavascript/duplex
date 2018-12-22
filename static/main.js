@@ -426,14 +426,97 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Explore; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
- // import {  } from './index';
+/* harmony import */ var _ll__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ll */ "./app/explore/ll.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
 
 function Explore() {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(LL, {
-    edges: [[0, 0], [1, 0], [2, 0], [3, 0]],
-    corners: [[0, 0], [1, 0], [2, 0], [3, 0]]
-  }));
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])([[0, 0], [1, 0], [2, 0], [3, 0]]),
+      _useState2 = _slicedToArray(_useState, 2),
+      edges = _useState2[0],
+      setEdges = _useState2[1];
+
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])([[0, 0], [1, 0], [2, 0], [3, 0]]),
+      _useState4 = _slicedToArray(_useState3, 2),
+      corners = _useState4[0],
+      setCorners = _useState4[1];
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "explore"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ll__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    edges: edges,
+    corners: corners,
+    onFlip: function onFlip(a) {
+      setEdges(function (edges) {
+        edges[a][1] ^= 1; // eslint-disable-line
+
+        return edges;
+      });
+    },
+    onTwist: function onTwist(a) {
+      setCorners(function (corners) {
+        corners[a][1] = (corners[a][1] + 1) % 3;
+        return corners;
+      });
+    },
+    onSwapEdges: function onSwapEdges(a, b) {
+      setEdges(function (edges) {
+        edges[a] = edges.splice(b, 1, edges[a])[0]; // eslint-disable-line
+
+        return edges;
+      });
+    },
+    onSwapCorners: function onSwapCorners(a, b) {
+      setCorners(function (corners) {
+        corners[a] = corners.splice(b, 1, corners[a])[0]; // eslint-disable-line
+
+        return corners;
+      });
+    }
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "actions"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "text",
+    placeholder: "specify a LL alg"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    type: "button"
+  }, "load alg"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    type: "button"
+  }, "solve")));
 }
+
+/***/ }),
+
+/***/ "./app/explore/ll.js":
+/*!***************************!*\
+  !*** ./app/explore/ll.js ***!
+  \***************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return LL; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
 var yellow = '#FFFF5A',
     red = '#FA2222',
     green = '#90EE90',
@@ -446,58 +529,123 @@ var getSideColor = function getSideColor(index) {
 
 function LL(_ref) {
   var edges = _ref.edges,
-      corners = _ref.corners;
-  var swapSelected = undefined;
+      corners = _ref.corners,
+      onSwapEdges = _ref.onSwapEdges,
+      onSwapCorners = _ref.onSwapCorners,
+      onFlip = _ref.onFlip,
+      onTwist = _ref.onTwist;
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(),
+      _useState2 = _slicedToArray(_useState, 2),
+      selected = _useState2[0],
+      setSelected = _useState2[1];
+
+  var updateSelected = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (next) {
+    if (typeof selected === 'number') {
+      if (selected === next) {
+        if (selected < 4) {
+          onFlip(selected);
+        } else {
+          onTwist(selected - 4);
+        }
+
+        setSelected(undefined);
+      } else {
+        if (selected < 4 && next < 4) {
+          onSwapEdges(selected, next);
+          setSelected(undefined);
+        } else if (selected >= 4 && next >= 4) {
+          onSwapCorners(selected - 4, next - 4);
+          setSelected(undefined);
+        }
+      }
+    } else {
+      setSelected(next);
+    }
+  }, [selected]);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
     width: "400",
     height: "400",
-    viewBox: "15 15 84 84"
+    viewBox: "15 15 84 84",
+    className: "ll"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Edge, {
+    selected: selected === 0,
+    onClick: function onClick() {
+      return updateSelected(0);
+    },
     x: "50",
     y: "35",
     data: edges[0],
     rotate: "-90"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Edge, {
+    selected: selected === 1,
+    onClick: function onClick() {
+      return updateSelected(1);
+    },
     x: "65",
     y: "50",
     data: edges[1],
     rotate: "0"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Edge, {
+    selected: selected === 2,
+    onClick: function onClick() {
+      return updateSelected(2);
+    },
     x: "50",
     y: "65",
     data: edges[2],
     rotate: "90"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Edge, {
+    selected: selected === 3,
+    onClick: function onClick() {
+      return updateSelected(3);
+    },
     x: "35",
     y: "50",
     data: edges[3],
     rotate: "180"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Corner, {
+    selected: selected === 4,
+    onClick: function onClick() {
+      return updateSelected(4);
+    },
+    x: "35",
+    y: "35",
+    rotate: "0",
+    data: corners[0]
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Corner, {
+    selected: selected === 5,
+    onClick: function onClick() {
+      return updateSelected(5);
+    },
+    x: "65",
+    y: "35",
+    rotate: "90",
+    data: corners[1]
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Corner, {
+    selected: selected === 6,
+    onClick: function onClick() {
+      return updateSelected(6);
+    },
+    x: "65",
+    y: "65",
+    rotate: "180",
+    data: corners[2]
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Corner, {
+    selected: selected === 7,
+    onClick: function onClick() {
+      return updateSelected(7);
+    },
+    x: "35",
+    y: "65",
+    rotate: "270",
+    data: corners[3]
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", {
     x: "50",
     y: "50",
     width: "12",
     height: "12",
     fill: yellow
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Corner, {
-    x: "35",
-    y: "35",
-    rotate: "0",
-    data: corners[0]
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Corner, {
-    x: "65",
-    y: "35",
-    rotate: "90",
-    data: corners[1]
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Corner, {
-    x: "65",
-    y: "65",
-    rotate: "180",
-    data: corners[2]
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Corner, {
-    x: "35",
-    y: "65",
-    rotate: "270",
-    data: corners[3]
   }));
 }
 
@@ -505,41 +653,57 @@ function rotate(arr, n) {
   return arr.slice(n, arr.length).concat(arr.slice(0, n));
 }
 
+function getSelectedProps(selected) {
+  if (selected) {
+    return {
+      stroke: '#CCC',
+      strokeWidth: 1,
+      strokeDasharray: '4,3'
+    };
+  } else {
+    return {};
+  }
+}
+
 function Corner(props) {
   var colors = rotate([yellow, getSideColor(props.data[0]), getSideColor(props.data[0] + 1)], -props.data[1]);
+  var selectedProps = getSelectedProps(props.selected);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("g", {
-    transform: "\n                translate(".concat(props.x, ",").concat(props.y, ")\n                rotate(").concat(props.rotate || 0, " 6 6)\n            ")
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", {
+    transform: "\n                translate(".concat(props.x, ",").concat(props.y, ")\n                rotate(").concat(props.rotate || 0, " 6 6)\n            "),
+    onClick: props.onClick
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", _extends({
     width: "12",
     height: "12",
     fill: colors[0]
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", {
+  }, selectedProps)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", _extends({
     y: "-15",
     width: "12",
     height: "12",
     fill: colors[2]
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", {
+  }, selectedProps)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", _extends({
     x: "-15",
     width: "12",
     height: "12",
     fill: colors[1]
-  }));
+  }, selectedProps)));
 }
 
 function Edge(props) {
   var color = getSideColor(props.data[0] + 1);
+  var selectedProps = getSelectedProps(props.selected);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("g", {
-    transform: "\n                translate(".concat(props.x, ",").concat(props.y, ")\n                rotate(").concat(props.rotate || 0, " 6 6)\n            ")
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", {
+    transform: "\n                translate(".concat(props.x, ",").concat(props.y, ")\n                rotate(").concat(props.rotate || 0, " 6 6)\n            "),
+    onClick: props.onClick
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", _extends({
     width: "12",
     height: "12",
     fill: props.data[1] ? color : yellow
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", {
+  }, selectedProps)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("rect", _extends({
     x: "15",
     width: "12",
     height: "12",
     fill: !props.data[1] ? color : yellow
-  }));
+  }, selectedProps)));
 }
 
 /***/ }),
