@@ -4,6 +4,8 @@ const ENDPOINT = __DEV__
     : 'http://duplex.kirjava.xyz/duplex.wasm';
 
 const stack = [];
+const ref = { console_stack(method) { } };
+
 fetch(ENDPOINT).then(response =>
     response.arrayBuffer()
 ).then(bytes =>
@@ -13,16 +15,13 @@ fetch(ENDPOINT).then(response =>
         },
         console_stack: (type) => {
             const method = ['log', 'warn', 'error'][type];
-            console[method](
-                '> ' + String.fromCharCode(...stack.splice(0, stack.length))
-            );
-            // const ref = {};
+            ref.console_stack(method);
         }
     }})
 ).then(results => {
     // interop
+
     const { exports } = results.instance;
-    exports.web_main();
     function getStringFromStack() {
         const [pointer, length] = [stack.pop(), stack.pop()];
         const buffer = new Uint8Array(
@@ -47,6 +46,17 @@ fetch(ENDPOINT).then(response =>
         asBytes.set(encodedString);
         return stringPtr;
     }
+
+    // init console, call main
+
+    ref.console_stack = (method) => {
+        const message = getStringFromStack();
+        console[method]('> ' + message);
+    };
+    exports.web_main();
+
+    // wrap exports object
+
     const wasm = Object.keys(exports)
         .reduce((acc, cur) => {
             if (typeof exports[cur] === 'function') {
@@ -55,16 +65,18 @@ fetch(ENDPOINT).then(response =>
                         .map(arg => (
                             typeof arg === 'string' ? createString(arg) : arg
                         ));
-                    exports[cur](...wrappedArgs);
+                    const ret = exports[cur](...wrappedArgs);
                     if (stack.length) {
                         return getStringFromStack();
+                    } else {
+                        return ret;
                     }
                 };
             }
             return acc;
         }, {});
 
-    // api
+    // userland
 
 
     // todo: console log stack to grid
