@@ -10,7 +10,7 @@ struct JSONAlg {
     invert: bool,
 }
 
-pub fn create_alglist(data: String) -> Vec<Alg> {
+pub fn create_algset(data: String) -> Vec<Alg> {
     let json_algs: Vec<JSONAlg> = serde_json::from_str(&data).unwrap();
     let mut algs = Vec::new();
     for json_alg in json_algs {

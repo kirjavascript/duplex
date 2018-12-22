@@ -4,7 +4,7 @@ const ENDPOINT = __DEV__
     : 'http://duplex.kirjava.xyz/duplex.wasm';
 
 const stack = [];
-const ref = { console_stack(method) { } };
+const ref = { console_stack(method) { console.error('unreachable'); } };
 
 fetch(ENDPOINT).then(response =>
     response.arrayBuffer()
@@ -66,7 +66,9 @@ fetch(ENDPOINT).then(response =>
                             typeof arg === 'string' ? createString(arg) : arg
                         ));
                     const ret = exports[cur](...wrappedArgs);
-                    if (stack.length) {
+                    if (stack.length > 2) {
+                        throw new Error('export_string must only be called once per function');
+                    } else if (stack.length) {
                         return getStringFromStack();
                     } else {
                         return ret;
@@ -78,19 +80,13 @@ fetch(ENDPOINT).then(response =>
 
     // userland
 
-
-    // todo: console log stack to grid
-
-    // console.log(getString('TEST_STRING'));
-
-    // exports.receive_string(createString('this is a test'));
-
     self.onmessage = ({ data: { action, payload } }) => {
         if (action === 'LOAD_ALGS') {
             wasm.load_algs(JSON.stringify(payload));
-            wasm.solve_alg('RUR\'URU2R\'');
+            // wasm.solve_alg('RUR\'URU2R\'');
         }
     };
 
     self.postMessage({ action: 'INIT' });
-});
+
+}).catch(console.error);

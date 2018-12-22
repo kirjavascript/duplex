@@ -13,14 +13,11 @@ lazy_static! {
 }
 
 #[no_mangle]
-extern "C" fn say_hello() {
-    export_string("hello");
-}
-
-#[no_mangle]
 unsafe extern "C" fn load_algs(mut algs: JSString) {
+    let algset = create_algset(algs.to_string());
+    console!("loaded {} transforms", algset.len());
     ALGS.lock().unwrap().clear();
-    ALGS.lock().unwrap().extend(create_alglist(algs.to_string()));
+    ALGS.lock().unwrap().extend(algset);
 }
 
 #[no_mangle]

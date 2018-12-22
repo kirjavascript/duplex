@@ -39,15 +39,15 @@ extern "C" fn get_mut_js_string(mut string: JSString) -> *mut u8 {
 pub struct JSString(pub *mut String);
 
 impl JSString {
-    fn as_mut_ptr(&mut self) -> *mut u8 {
-        let ptr = unsafe { (&mut *self.0).as_mut_vec() }.as_mut_ptr();
-        self.0 = ptr::null_mut();
-        ptr
-    }
     pub fn to_string(&mut self) -> String {
         let boxed_string = unsafe { Box::from_raw(self.0) };
         self.0 = ptr::null_mut();
         *boxed_string
+    }
+    fn as_mut_ptr(&mut self) -> *mut u8 {
+        let ptr = unsafe { (&mut *self.0).as_mut_vec() }.as_mut_ptr();
+        self.0 = ptr::null_mut();
+        ptr
     }
 }
 

@@ -1,4 +1,5 @@
 import React, { createContext, useState, useCallback, useContext, Fragment } from 'react';
+import { loadAlgs } from '#app/solver';
 import defaultList from './default-list';
 
 // state
@@ -93,7 +94,7 @@ export default function Algs() {
     } = useAlgs();
     return (
         <Fragment>
-            TODO: storage/styles
+            TODO: storage/csv
             {algs.map((alg, i) => (
                 <div key={i} className="alg">
                     <input
@@ -129,8 +130,15 @@ export default function Algs() {
             ))}
             <button
                 type="button"
+                onClick={() => {
+                    loadAlgs(algs);
+                }}
+            >
+                reload algs
+            </button>
+            <button
+                type="button"
                 onClick={addAlg}
-                className="fullwidth"
             >
                 add
             </button>

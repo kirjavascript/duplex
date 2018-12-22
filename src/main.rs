@@ -5,6 +5,6 @@ mod cube;
 mod alg;
 
 fn main() {
-     console!("solver loaded");
+     console!("wasm says hi");
      // get_ll_hash
 }
