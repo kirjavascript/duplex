@@ -1,5 +1,24 @@
 import React, { Fragment, useState, useCallback } from 'react';
 
+function rotate(arr, n) {
+    return arr.slice(n, arr.length).concat(arr.slice(0, n));
+}
+
+export function llToCube({ edges, corners }) {
+    const uEdges = edges.map(edge => {
+        const face = 'BRFL'[edge[0]];
+        return edge[1] ? [face, 'U'] : ['U', face];
+    });
+    const uCorners = corners.map(corner => (
+        rotate([["U","L","B"],["U","B","R"],["U","R","F"],["U","F","L"]][corner[0]], -corner[1])
+    ));
+    return ({
+        "edges":[...uEdges,["B","L"],["B","R"],["F","R"],["F","L"],["D","B"],["D","R"],["D","F"],["D","L"]],
+        "corners":[...uCorners,["D","B","L"],["D","R","B"],["D","F","R"],["D","L","F"]],
+        "centres":["U","D","B","R","F","L"]
+    });
+}
+
 const [yellow, red, green, blue, orange] = [
     '#FFFF5A', '#FA2222', '#90EE90', 'steelblue', '#FAA222',
 ];
@@ -41,6 +60,8 @@ export default function LL({
         }
     }, [selected]);
 
+    // TODO: validation
+
     return (
         <svg width="400" height="400" viewBox="15 15 84 84" className="ll">
             <Edge selected={selected === 0} onClick={() => updateSelected(0)}
@@ -64,9 +85,6 @@ export default function LL({
     );
 }
 
-function rotate(arr, n) {
-    return arr.slice(n, arr.length).concat(arr.slice(0, n));
-}
 
 function getSelectedProps(selected) {
     if (selected) {

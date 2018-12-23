@@ -84,7 +84,9 @@ fetch(ENDPOINT).then(response =>
         if (action === 'LOAD_ALGS') {
             wasm.load_algs(JSON.stringify(payload));
         } else if (action === 'EXPLORE_SOLVE') {
+            console.time('solve');
             wasm.explore_solve(JSON.stringify(payload));
+            console.timeEnd('solve');
         }
     };
 

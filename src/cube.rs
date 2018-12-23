@@ -34,13 +34,13 @@ pub struct Move {
 
 // cube
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
 pub enum Face {
     U,R,F,B,L,D,
 }
 
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Serialize, Deserialize, Clone)]
 pub struct Edge(Face, Face);
 
 impl Edge {
@@ -49,7 +49,7 @@ impl Edge {
     }
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Serialize, Deserialize, Clone)]
 pub struct Corner(Face, Face, Face);
 
 #[derive(PartialEq, Clone, Copy, Debug, Serialize, Deserialize)]
@@ -71,7 +71,7 @@ impl Corner {
 
 // transforms
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug)]
 pub struct Transform {
     pub edge_cycles: Vec<Vec<usize>>,
     pub edge_flips: Vec<usize>,
@@ -481,7 +481,7 @@ impl Move {
     }
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Serialize, Deserialize, Clone)]
 pub struct Cube {
     pub edges: [Edge; 12],
     pub corners: [Corner; 8],
@@ -537,6 +537,10 @@ impl Cube {
 
     pub fn reset(&mut self) {
         std::mem::replace(self, Cube::new());
+    }
+
+    pub fn replace(&mut self, next: Cube) {
+        std::mem::replace(self, next);
     }
 
     pub fn do_transform(&mut self, transform: &Transform) {

@@ -23,12 +23,12 @@ unsafe extern "C" fn load_algs(mut algs: JSString) {
 
 #[no_mangle]
 unsafe extern "C" fn explore_solve(mut input: JSString) {
-    console!("solving transform");
+    console!("solving start");
 
-    let main_transform: Transform = serde_json::from_str(&input.to_string())
-        .expect("malformed transform object");
+    let position: Cube = serde_json::from_str(&input.to_string())
+        .expect("malformed cube");
 
-    console!("{:#?}", main_transform);
+    // TODO: setup
 
     let do_auf = |index| {
         match index {
@@ -42,8 +42,7 @@ unsafe extern "C" fn explore_solve(mut input: JSString) {
     for first_auf in 0..4 {
         for first_alg in algs.iter() {
             // first check without a second alg
-            CUBE.reset();
-            CUBE.do_transform(&main_transform);
+            CUBE.replace(position.clone());
             do_auf(first_auf);
             CUBE.do_transform(&first_alg.transform);
 
@@ -53,8 +52,7 @@ unsafe extern "C" fn explore_solve(mut input: JSString) {
 
             for second_auf in 0..4 {
                 for second_alg in algs.iter() {
-                    CUBE.reset();
-                    CUBE.do_transform(&main_transform);
+                    CUBE.replace(position.clone());
                     do_auf(first_auf);
                     CUBE.do_transform(&first_alg.transform);
                     do_auf(second_auf);

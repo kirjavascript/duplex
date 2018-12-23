@@ -1,15 +1,6 @@
 import React, { Fragment, useState, useCallback } from 'react';
 import { exploreSolve } from '#app/solver';
-import LL from './ll';
-
-// #[derive(Clone, Debug)]
-// pub struct Transform {
-//     pub edge_cycles: Vec<Vec<usize>>,
-//     pub edge_flips: Vec<usize>,
-//     pub corner_cycles: Vec<Vec<usize>>,
-//     pub corner_twists: Vec<(usize, Twist)>,
-//     pub centre_cycles: Vec<Vec<usize>>,
-// }
+import LL, { llToCube } from './ll';
 
 export default function Explore() {
     const [edges, setEdges] = useState([[0, 0], [1, 0], [2, 0], [3, 0]]);
@@ -51,20 +42,7 @@ export default function Explore() {
                     load alg
                 </button>
                 <button type="button" onClick={() => {
-                    /* eslint-disable */
-                    const edge_cycles = [edges.map(d => d[0]).filter((d, i) => d !== i)];
-                    const edge_flips = edges.filter((d) => d[1] !== 0).map(d => d[0]);
-                    const corner_cycles = [corners.map(d => d[0]).filter((d, i) => d !== i)];
-                    const corner_twists = corners.filter((d) => d[1] !== 0).map(d => [d[0], d[1]==1 ? 'Cw' : 'Acw']);
-                    const transform = ({
-                        edge_flips,
-                        edge_cycles,
-                        corner_cycles,
-                        corner_twists,
-                        centre_cycles: [],
-                    });
-                    /* eslint-enable */
-                    exploreSolve(transform);
+                    exploreSolve(llToCube({ corners, edges }));
                 }}>
                     solve
                 </button>
