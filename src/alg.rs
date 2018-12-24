@@ -1,6 +1,6 @@
 use crate::cube::*;
 use crate::parser::parse_moves;
-use serde_derive::{Serialize, Deserialize};
+use serde::{Serialize, Deserialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 struct JSONAlg {

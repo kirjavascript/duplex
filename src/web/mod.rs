@@ -22,6 +22,12 @@ unsafe extern "C" fn load_algs(mut algs: JSString) {
 }
 
 #[no_mangle]
+extern "C" fn explore_alg(mut input: JSString) {
+    // console!("{}", input);
+}
+
+
+#[no_mangle]
 unsafe extern "C" fn explore_solve(mut input: JSString) {
     console!("solving start");
 
@@ -73,6 +79,3 @@ unsafe extern "C" fn explore_solve(mut input: JSString) {
 
     console!("solving done");
 }
-
-// unsafe fn solve_transform<F>(main_transform: Transform, cb: F) where F: Fn() {
-// }

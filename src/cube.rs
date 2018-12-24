@@ -1,6 +1,6 @@
 use std::{fmt, mem};
 use lazy_static::lazy_static;
-use serde_derive::{Serialize, Deserialize};
+use serde::{Serialize, Deserialize};
 
 // moves
 

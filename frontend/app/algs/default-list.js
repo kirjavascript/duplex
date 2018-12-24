@@ -24,7 +24,7 @@ export default [
     { name: 'unnamed', moves: `R U2 R' U2 R' F R2 U R' U' F'`, mirror: true, invert: true },
     { name: 'unnamed', moves: `F R U' R' U' R U2 R' U' F'`, mirror: true, invert: true },
     { name: 'unnamed', moves: `R' U' R U R' F' R U R' U' R' F R2`, mirror: true, invert: true },
-    { name: 'unnamed', moves: `r U r' R U R' U' r U' r'`, mirror: true, invert: true },
+    { name: 'unnamed', moves: `r U M U R' U' r U' r'`, mirror: true, invert: true },
     { name: 'unnamed', moves: `R U R' U R U' R' U' R' F R F'`, mirror: true, invert: true },
     { name: 'unnamed', moves: `F U R U2 R' U' R U R' F'`, mirror: true, invert: true },
     { name: 'unnamed', moves: `F R U R' U' R U' R' U R U R' F'`, mirror: true, invert: true },
