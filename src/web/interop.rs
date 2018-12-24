@@ -4,6 +4,16 @@ use std::ops::Drop;
 use std::ptr;
 use std::panic;
 
+// TODO: JSFunc
+//
+// use js fn stack with Drop to pop
+//
+// #[no_mangle]
+// unsafe extern "C" fn get_func(func: JSFunc) {
+//     func.call(&params[..]);
+// }
+
+
 // imported functions
 
 #[no_mangle]

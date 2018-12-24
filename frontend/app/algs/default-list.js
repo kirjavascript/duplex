@@ -7,7 +7,7 @@ export default [
     { name: 'suneflip', moves: `RU2R'U2R'FRF'`, mirror: true, invert: true },
     { name: 'fruruf', moves: `FRUR'U'F'`, mirror: true, invert: true },
     { name: 'dlbfruruf', moves: `F R U R' U' R U R' U' F'`, mirror: true, invert: true },
-    { name: 'aperm', moves: `l'UR'D2RU'R'D2lR`, mirror: true, invert: true },
+    { name: 'aperm', moves: `l'UR'D2RU'R'D2R2x'`, mirror: true, invert: true },
     { name: 'tperm', moves: `RUR'U'R'FR2U'R'U'RUR'F'`, mirror: false, invert: false },
     { name: 'sexysledge', moves: `R U R' U' R' F R F'`, mirror: true, invert: true },
     { name: 'uperm', moves: `M2 U'MU2M'U'M2`, mirror: true, invert: true },

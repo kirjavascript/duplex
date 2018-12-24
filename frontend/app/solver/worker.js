@@ -55,6 +55,12 @@ fetch(ENDPOINT).then(response =>
     };
     exports.web_main();
 
+    console.log(exports);
+
+    // exports.get_func(() => {
+    //     console.log('called func');
+    // });
+
     // wrap exports object
 
     const wasm = Object.keys(exports)
