@@ -3,12 +3,12 @@ duplexLL
     cargo +nightly web start --target wasm32-unknown-unknown
     yarn watch
 
-lazy static for solved positions
 trim AUF for Vec<Move>
 // mirror / inverse / minverse
 give algs names w/ colours
 click to see the alg / auto mirrored
 
+implement solving mask Face::Null
 subset chooser like 2LLui - show coverage
 subsets - strip first auf by rotating
 select subset, generate cases that use smallest number of first algs OR shortest OR minimize auf
