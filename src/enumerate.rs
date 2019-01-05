@@ -6,6 +6,7 @@
 //
 // remove rotational symmetry
 // TODO: just check ZBLL cases
+// TODO: test solved cube is fine
 //
 // get CLL, edge lsit of edges for swap and no swap
 // mask -> get list of indexes
@@ -113,8 +114,8 @@ pub struct Case {
 
 #[allow(non_snake_case)]
 pub fn get_cases() -> Vec<Case> {
-    let mut cubes = Vec::new();
 
+    let mut cubes = Vec::new();
     let (EP, EP_PARITY) = get_EP();
 
     for (co_i, co) in CO.iter().enumerate() {
