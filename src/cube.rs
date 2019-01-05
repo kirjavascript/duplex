@@ -448,7 +448,7 @@ impl Move {
 
 #[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
 pub enum Face {
-    U,R,F,B,L,D,
+    U, R, F, B, L, D,
 }
 
 
@@ -572,17 +572,27 @@ impl Cube {
         }
     }
 
-    // pub fn get_ll_index(&self) -> usize {
+    pub fn get_ll_index(&self) -> u64 {
+        fn get_index(face: &Face) -> usize {
+            match *face {
+                Face::U => 0,
+                Face::R => 1,
+                Face::F => 2,
+                Face::L => 3,
+                Face::B => 4,
+                Face::D => 5,
+            }
+        }
 
-        // EO -> 0b0000
-        //13:40 <@j`ey> a[0] << 4 | a[1] << 3..
-        //
-// 1   fn get_coord(cube: &Cube) -> usize {
-// 2     cube.co[..7]
-// 3       .iter()
-// 4       .fold(0usize, |acc, &cur| (acc * 3) + (cur as usize))
-// 5   }
-    // }
+        let edges = self.edges[..4].iter()
+            .map(|e| (get_index(&e.0) * 6) + get_index(&e.1))
+            .fold(0usize, |acc, cur| (acc * 36) + cur) as u64;
+        let corners = self.corners[..4].iter()
+            .map(|e| (get_index(&e.0) * 6) + (get_index(&e.1) * 6) + get_index(&e.2))
+            .fold(0usize, |acc, cur| (acc * 218) + cur) as u64;
+
+        edges << 32 | corners
+    }
 
     pub fn is_ll_solved(&self) -> bool {
         // TODO: benchmark different approaches to doing this

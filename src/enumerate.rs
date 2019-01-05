@@ -107,7 +107,7 @@ fn get_EP() -> ([Transform; 12], [Transform; 12]) {
 }
 
 #[allow(non_snake_case)]
-pub fn test() {
+pub fn get_cubes() -> Vec<Cube> {
     let mut cubes = Vec::new();
 
     let (EP, EP_PARITY) = get_EP();
@@ -156,6 +156,13 @@ pub fn test() {
         }
     }
 
+    let mut c = Cube::new();
+    c.corners[1].twist(Twist::Cw);
+    // c.edges[0].flip();
+
+    c.get_ll_index();
+
     println!("cases: {:#?}", cubes.len());
     // TODO: check all indexes are unique
+    cubes
 }
