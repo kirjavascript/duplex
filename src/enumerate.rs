@@ -4,18 +4,16 @@
 // 10:24 <+Kirjava> but orientation is a tricky one
 // 10:24 <+Kirjava> maybe I do two phase enumeration
 //
-// TODO: get orientaions, permutations
+// remove rotational symmetry
+// TODO: just check ZBLL cases
 //
 // get CLL, edge lsit of edges for swap and no swap
+// mask -> get list of indexes
 //
-// send list of json_ll + index to frontend to filter
 // send mask back to respond with results
-// CO solved and H have edge cases
-//
-// get_ll
-// get_ll_index
-// get_ll_json
 
+use std::collections::HashMap;
+use serde::{Serialize, Deserialize};
 use crate::cube::*;
 
 // ULB UBR URF UFL
@@ -106,8 +104,15 @@ fn get_EP() -> ([Transform; 12], [Transform; 12]) {
     (EP, EP_PARITY)
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct Case {
+    index: String,
+    edges: Vec<Edge>,
+    corners: Vec<Corner>,
+}
+
 #[allow(non_snake_case)]
-pub fn get_cubes() -> Vec<Cube> {
+pub fn get_cases() -> Vec<Case> {
     let mut cubes = Vec::new();
 
     let (EP, EP_PARITY) = get_EP();
@@ -156,13 +161,37 @@ pub fn get_cubes() -> Vec<Cube> {
         }
     }
 
-    let mut c = Cube::new();
-    c.corners[1].twist(Twist::Cw);
-    // c.edges[0].flip();
+    // get unique cases
+    let mut map = HashMap::new();
 
-    c.get_ll_index();
+    let mut f = 0;
+    console!("LL cases {:#?}", cubes.len());
+    for cube in &mut cubes {
+        // vec drain?
 
-    println!("cases: {:#?}", cubes.len());
-    // TODO: check all indexes are unique
-    cubes
+        if let Some(exists) = map.get(&cube.get_ll_index()) {
+            if f == 0 {
+                println!("{}", exists);
+                println!("{}", cube);
+            }
+            f += 1;
+        }
+        map.insert(cube.get_ll_index(), cube.clone());
+    }
+    console!("LL cases unique {:#?}", map.len());
+
+    // convert to vec
+    map.iter()
+        .map(|(k, v)| Case {
+            index: format!("{}", *k),
+            edges: v.edges[..4].iter().fold(vec![], |mut acc, cur| {
+                acc.push(cur.clone());
+                acc
+            }),
+            corners: v.corners[..4].iter().fold(vec![], |mut acc, cur| {
+                acc.push(cur.clone());
+                acc
+            }),
+        })
+        .collect()
 }

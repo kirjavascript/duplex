@@ -451,7 +451,6 @@ pub enum Face {
     U, R, F, B, L, D,
 }
 
-
 #[derive(PartialEq, Serialize, Deserialize, Clone)]
 pub struct Edge(Face, Face);
 
@@ -585,7 +584,9 @@ impl Cube {
         }
 
         let edges = self.edges[..4].iter()
+            // index each edge
             .map(|e| (get_index(&e.0) * 6) + get_index(&e.1))
+            // index all edges
             .fold(0usize, |acc, cur| (acc * 36) + cur) as u64;
         let corners = self.corners[..4].iter()
             .map(|e| (get_index(&e.0) * 6) + (get_index(&e.1) * 6) + get_index(&e.2))

@@ -55,12 +55,6 @@ fetch(ENDPOINT).then(response =>
     };
     exports.web_main();
 
-    console.log(exports);
-
-    // exports.get_func(() => {
-    //     console.log('called func');
-    // });
-
     // wrap exports object
 
     const wasm = Object.keys(exports)
@@ -97,5 +91,9 @@ fetch(ENDPOINT).then(response =>
     };
 
     self.postMessage({ action: 'INIT' });
+
+    const cases = JSON.parse(wasm.enumerate_ll());
+
+    self.postMessage({ action: 'CASES', payload: cases });
 
 }).catch(console.error);

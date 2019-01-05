@@ -1,15 +1,17 @@
 import Worker from './worker';
 let worker;
-const callbacks = {}; // use multiple listeners instead
 
-export function startWorker(onload) {
+export function startWorker({ onload, cases }) {
     worker = new Worker();
 
-    worker.addEventListener('message', ({ data: { action } }) => {
+    worker.addEventListener('message', ({ data: { action, payload } }) => {
         if (action === 'INIT') {
             onload();
+        } else if (action === 'CASES') {
+            cases(payload);
         }
     });
+    return worker;
 }
 
 

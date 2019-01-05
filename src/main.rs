@@ -7,7 +7,6 @@ mod enumerate;
 
 fn main() {
      console!("wasm says hi");
-     enumerate::get_cubes();
 
      // use crate::cube::*;
      // use crate::alg::*;

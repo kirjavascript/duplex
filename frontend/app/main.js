@@ -2,9 +2,13 @@ import React, { Fragment, useEffect } from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
-import Algs, { AlgStore } from './algs';
+import Algs from './algs';
 import Solver from './solver/component';
 import Explore from './explore';
+import Subsets from './subsets';
+
+import { AlgStore } from './algs/store';
+import { CaseStore } from './subsets/store';
 
 const links = ['', 'explore', 'subsets', 'trainer', 'algs'];
 
@@ -30,6 +34,7 @@ function App(props) {
 
             <Route path="/algs" component={Algs} />
             <Route path="/explore" component={Explore} />
+            <Route path="/subsets" component={Subsets} />
         </Fragment>
     );
 }
@@ -37,7 +42,9 @@ function App(props) {
 render((
     <Router>
         <AlgStore>
-            <App />
+            <CaseStore>
+                <App />
+            </CaseStore>
         </AlgStore>
     </Router>
 ), document.body.appendChild(document.createElement('div')));

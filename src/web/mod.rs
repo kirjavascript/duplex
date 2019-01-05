@@ -4,9 +4,12 @@ pub mod interop;
 use lazy_static::lazy_static;
 
 use std::sync::Mutex;
+use self::interop::{ JSString, export_string };
+
 use crate::cube::*;
 use crate::alg::*;
-use self::interop::{ JSString, export_string };
+use crate::enumerate;
+
 
 static mut CUBE: Cube = Cube::new();
 lazy_static! {
@@ -22,10 +25,16 @@ unsafe extern "C" fn load_algs(mut algs: JSString) {
 }
 
 #[no_mangle]
-extern "C" fn explore_alg(mut input: JSString) {
-    // console!("{}", input);
+extern "C" fn enumerate_ll() {
+    use serde_json::json;
+    let cases = enumerate::get_cases();
+    export_string(&json!(cases).to_string());
 }
 
+// #[no_mangle]
+// extern "C" fn explore_alg(mut input: JSString) {
+    // console!("{}", input);
+// }
 
 #[no_mangle]
 unsafe extern "C" fn explore_solve(mut input: JSString) {
