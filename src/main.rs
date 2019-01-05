@@ -3,9 +3,11 @@ mod web;
 mod parser;
 mod cube;
 mod alg;
+mod enumerate;
 
 fn main() {
      console!("wasm says hi");
+     enumerate::test();
 
      // use crate::cube::*;
      // use crate::alg::*;

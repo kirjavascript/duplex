@@ -32,43 +32,6 @@ pub struct Move {
     pub layer: Layer,
 }
 
-// cube
-
-#[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
-pub enum Face {
-    U,R,F,B,L,D,
-}
-
-
-#[derive(PartialEq, Serialize, Deserialize, Clone)]
-pub struct Edge(Face, Face);
-
-impl Edge {
-    pub fn flip(&mut self) {
-        mem::swap(&mut self.0, &mut self.1);
-    }
-}
-
-#[derive(PartialEq, Serialize, Deserialize, Clone)]
-pub struct Corner(Face, Face, Face);
-
-#[derive(PartialEq, Clone, Copy, Debug, Serialize, Deserialize)]
-pub enum Twist {
-    Cw, Acw,
-}
-
-impl Corner {
-    pub fn twist(&mut self, type_: Twist) {
-        mem::swap(&mut self.0, &mut self.1);
-        if type_ == Twist::Acw {
-            mem::swap(&mut self.1, &mut self.2);
-        } else {
-            mem::swap(&mut self.0, &mut self.2);
-        }
-    }
-}
-
-
 // transforms
 
 #[derive(Clone, Debug)]
@@ -481,6 +444,42 @@ impl Move {
     }
 }
 
+// cube
+
+#[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
+pub enum Face {
+    U,R,F,B,L,D,
+}
+
+
+#[derive(PartialEq, Serialize, Deserialize, Clone)]
+pub struct Edge(Face, Face);
+
+impl Edge {
+    pub fn flip(&mut self) {
+        mem::swap(&mut self.0, &mut self.1);
+    }
+}
+
+#[derive(PartialEq, Serialize, Deserialize, Clone)]
+pub struct Corner(Face, Face, Face);
+
+#[derive(PartialEq, Clone, Copy, Debug, Serialize, Deserialize)]
+pub enum Twist {
+    Cw, Acw,
+}
+
+impl Corner {
+    pub fn twist(&mut self, type_: Twist) {
+        mem::swap(&mut self.0, &mut self.1);
+        if type_ == Twist::Acw {
+            mem::swap(&mut self.1, &mut self.2);
+        } else {
+            mem::swap(&mut self.0, &mut self.2);
+        }
+    }
+}
+
 #[derive(PartialEq, Serialize, Deserialize, Clone)]
 pub struct Cube {
     pub edges: [Edge; 12],
@@ -512,35 +511,32 @@ lazy_static! {
 
 impl Cube {
     pub const fn new() -> Self {
+        use self::Face::*;
         Cube {
             edges: [
-                        Edge(Face::U, Face::B),
-                Edge(Face::U, Face::R), Edge(Face::U, Face::F),
-                        Edge(Face::U, Face::L),
-                Edge(Face::B, Face::L), Edge(Face::B, Face::R),
-                Edge(Face::F, Face::R), Edge(Face::F, Face::L),
-                        Edge(Face::D, Face::B),
-                Edge(Face::D, Face::R), Edge(Face::D, Face::F),
-                        Edge(Face::D, Face::L),
+                        Edge(U, B),
+                Edge(U, R), Edge(U, F),
+                        Edge(U, L),
+                Edge(B, L), Edge(B, R),
+                Edge(F, R), Edge(F, L),
+                        Edge(D, B),
+                Edge(D, R), Edge(D, F),
+                        Edge(D, L),
             ],
             corners: [
-                Corner(Face::U, Face::L, Face::B), Corner(Face::U, Face::B, Face::R),
-                Corner(Face::U, Face::R, Face::F), Corner(Face::U, Face::F, Face::L),
-                Corner(Face::D, Face::B, Face::L), Corner(Face::D, Face::R, Face::B),
-                Corner(Face::D, Face::F, Face::R), Corner(Face::D, Face::L, Face::F),
+                Corner(U, L, B), Corner(U, B, R),
+                Corner(U, R, F), Corner(U, F, L),
+                Corner(D, B, L), Corner(D, R, B),
+                Corner(D, F, R), Corner(D, L, F),
             ],
             centres: [
-                Face::U, Face::D, Face::B, Face::R, Face::F, Face::L,
+                U, D, B, R, F, L,
             ],
         }
     }
 
-    pub fn reset(&mut self) {
-        std::mem::replace(self, Cube::new());
-    }
-
-    pub fn replace(&mut self, next: Cube) {
-        std::mem::replace(self, next);
+    pub fn replace(&mut self, next: Cube) -> Cube {
+        std::mem::replace(self, next)
     }
 
     pub fn do_transform(&mut self, transform: &Transform) {

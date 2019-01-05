@@ -1,6 +1,6 @@
 import Worker from './worker';
 let worker;
-const callbacks = {};
+const callbacks = {}; // use multiple listeners instead
 
 export function startWorker(onload) {
     worker = new Worker();
