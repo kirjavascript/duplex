@@ -13,10 +13,12 @@ subset chooser like 2LLui - show coverage
 subsets - strip first auf by rotating
 select subset, generate cases that use smallest number of first algs OR shortest OR minimize auf
 <a>all solutions</a>
-do lazy load subset cubes
-duplex on cll
+<a>alg</a> toggle alg / name
+
+> duplex on cll
 
 * add ability to select a subset, and list solutions that use the smallest quantity of first alg -> this is how to find recog patterns -> add colours to tell algs apart
+* show shortest, reduce first alg
 
 needs checkboxes for [ ] mirror [ ] inverse [ ] minverse
 

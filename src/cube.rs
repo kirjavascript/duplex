@@ -572,6 +572,18 @@ impl Cube {
         }
     }
 
+    // pub fn get_ll_index(&self) -> usize {
+
+        // EO -> 0b0000
+        //13:40 <@j`ey> a[0] << 4 | a[1] << 3..
+        //
+// 1   fn get_coord(cube: &Cube) -> usize {
+// 2     cube.co[..7]
+// 3       .iter()
+// 4       .fold(0usize, |acc, &cur| (acc * 3) + (cur as usize))
+// 5   }
+    // }
+
     pub fn is_ll_solved(&self) -> bool {
         // TODO: benchmark different approaches to doing this
         self.centres[0] == Face::U && (
