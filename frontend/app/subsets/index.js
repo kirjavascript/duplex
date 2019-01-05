@@ -44,15 +44,18 @@ function Corner(props) {
 export default function Subsets() {
     const { cases } = useCases();
 
+    // TODO: use cae_.index
+
     return (
         <Fragment>
-            {cases.map((case_) => {
+            {cases.length} cases <br />
+            {cases.map((case_, i) => {
 
                 return <svg
-                    width="200"
-                    height="200"
+                    width="400"
+                    height="400"
                     viewBox="0 0 99 99"
-                    key={case_.index}
+                    key={i}
                 >
                     <Edge stickers={case_.edges[0]} x={30} y={0} rotate={90} />
                     <Edge stickers={case_.edges[1]} x={60} y={30} rotate={180} />

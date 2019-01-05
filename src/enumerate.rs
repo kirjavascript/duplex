@@ -6,7 +6,7 @@
 //
 // remove rotational symmetry
 // TODO: just check ZBLL cases
-// TODO: test solved cube is fine
+// TODO: get in order
 //
 // get CLL, edge lsit of edges for swap and no swap
 // mask -> get list of indexes
@@ -119,9 +119,9 @@ pub fn get_cases() -> Vec<Case> {
     let (EP, EP_PARITY) = get_EP();
 
     for (co_i, co) in CO.iter().enumerate() {
-        let ep = if co_i == 0 { &EP } else { &EP_PARITY };
         for (cp_i, cp) in CP.iter().enumerate() {
             for ep_i in 0..12 {
+                let ep = if cp_i == 0 { &EP } else { &EP_PARITY };
                 let ep_transform = &ep[ep_i];
                 for eo in &EO {
 
@@ -130,7 +130,7 @@ pub fn get_cases() -> Vec<Case> {
                     // do cp
                     let (a, b) = cp;
                     if a != b {
-                        cube.edges.swap(*a, *b);
+                        cube.corners.swap(*a, *b);
                     }
                     // do co
                     for (i, rot) in co.iter().enumerate() {
@@ -161,6 +161,21 @@ pub fn get_cases() -> Vec<Case> {
             }
         }
     }
+
+    // // convert to vec
+    // cubes.iter()
+    //     .map(|v| Case {
+    //         index: format!("{}", v.get_ll_index()),
+    //         edges: v.edges[..4].iter().fold(vec![], |mut acc, cur| {
+    //             acc.push(cur.clone());
+    //             acc
+    //         }),
+    //         corners: v.corners[..4].iter().fold(vec![], |mut acc, cur| {
+    //             acc.push(cur.clone());
+    //             acc
+    //         }),
+    //     })
+    //     .collect()
 
     // get unique cases
     let mut map = HashMap::new();
