@@ -12,13 +12,6 @@ const faces = {
 
 // TODO: AUF, change colour
 
-// edges: [
-//     Edge(U, B), Edge(U, R), Edge(U, F), Edge(U, L),
-// ],
-// corners: [
-//     Corner(U, L, B), Corner(U, B, R), Corner(U, R, F), Corner(U, F, L),
-// ],
-
 function Edge(props) {
     return (
         <g
@@ -27,17 +20,8 @@ function Edge(props) {
                 rotate(${props.rotate || 0} 6 6)
             `}
         >
-            <rect
-                width="12"
-                height="12"
-                fill={faces[props.stickers[1]]}
-            />
-            <rect
-                x="15"
-                width="12"
-                height="12"
-                fill={faces[props.stickers[0]]}
-            />
+            <rect width="12" height="12" fill={faces[props.stickers[1]]} />
+            <rect x="15" width="12" height="12" fill={faces[props.stickers[0]]} />
         </g>
     );
 }
@@ -50,23 +34,9 @@ function Corner(props) {
                 rotate(${props.rotate || 0} 6 6)
             `}
         >
-            <rect
-                width="12"
-                height="12"
-                fill={faces[props.stickers[0]]}
-            />
-            <rect
-                y="-15"
-                width="12"
-                height="12"
-                fill={faces[props.stickers[2]]}
-            />
-            <rect
-                x="-15"
-                width="12"
-                height="12"
-                fill={faces[props.stickers[1]]}
-            />
+            <rect width="12" height="12" fill={faces[props.stickers[0]]} />
+            <rect y="-15" width="12" height="12" fill={faces[props.stickers[2]]} />
+            <rect x="-15" width="12" height="12" fill={faces[props.stickers[1]]} />
         </g>
     );
 }
