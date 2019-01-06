@@ -452,7 +452,7 @@ pub enum Face {
 }
 
 #[derive(PartialEq, Serialize, Deserialize, Clone)]
-pub struct Edge(Face, Face);
+pub struct Edge(pub Face, pub Face);
 
 impl Edge {
     pub fn flip(&mut self) {
@@ -461,7 +461,7 @@ impl Edge {
 }
 
 #[derive(PartialEq, Serialize, Deserialize, Clone)]
-pub struct Corner(Face, Face, Face);
+pub struct Corner(pub Face, pub Face, pub Face);
 
 #[derive(PartialEq, Clone, Copy, Debug, Serialize, Deserialize)]
 pub enum Twist {

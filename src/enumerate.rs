@@ -4,7 +4,6 @@
 // 10:24 <+Kirjava> but orientation is a tricky one
 // 10:24 <+Kirjava> maybe I do two phase enumeration
 //
-// TODO: just check ZBLL cases
 // TODO: remove rotational symmetry
 //
 // get CLL, edge lsit of edges for swap and no swap
@@ -15,9 +14,6 @@
 use std::collections::HashMap;
 use serde::{Serialize, Deserialize};
 use crate::cube::*;
-
-// ULB UBR URF UFL
-// UB, UR, UF, UL
 
 static CO: [[u8; 4]; 1] = [
     [0, 0, 0, 0], // solved
@@ -30,13 +26,13 @@ static CO: [[u8; 4]; 1] = [
     // [1, 2, 1, 2], // H
 ];
 
-static CP: [(usize, usize); 6] = [
+static CP: [(usize, usize); 1] = [
     (0, 0),
-    (0, 1), // back
-    (1, 2), // right
-    (2, 3), // front
-    (3, 0), // left
-    (0, 2), // diag
+    // (0, 1), // back
+    // (1, 2), // right
+    // (2, 3), // front
+    // (3, 0), // left
+    // (0, 2), // diag
 ];
 
 
@@ -104,29 +100,11 @@ fn get_EP() -> ([Transform; 12], [Transform; 12]) {
     (EP, EP_PARITY)
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Case {
     index: String,
     edges: Vec<Edge>,
     corners: Vec<Corner>,
-}
-
-impl Case {
-    fn cmp_auf(&self, case: &Case) -> bool {
-        let is_same = |edges: &[Edge], corners: &[Corner]| {
-            edges == &case.edges[..] && corners == &case.corners[..]
-        };
-        let edges = &mut self.edges.clone()[..];
-        let corners = &mut self.corners.clone()[..];
-        for _ in 0..4 {
-            edges.rotate_left(1);
-            corners.rotate_left(1);
-            if is_same(edges, corners) {
-                return true
-            }
-        }
-        false
-    }
 }
 
 #[allow(non_snake_case)]
@@ -213,8 +191,10 @@ pub fn get_cases() -> Vec<Case> {
     while index < vec.len() {
         let mut found = false;
         'next: for i in 0..vec.len() {
-            console!("{:#?}", i != index && vec[i].cmp_auf(&vec[index]));
-            if i != index && vec[i].cmp_auf(&vec[index]) {
+            if index == 4 && i == 6 {
+                // console!("{:#?} {:#?}", vec[i], vec[index]);
+            }
+            if i != index && cmp_auf(&vec[i], &vec[index]) {
                 found = true;
                 break 'next
             }
@@ -229,3 +209,77 @@ pub fn get_cases() -> Vec<Case> {
 
     vec
 }
+
+fn cmp_auf(this: &Case, case: &Case) -> bool {
+    let is_same = |edges: &[Edge], corners: &[Corner]| {
+        edges == &case.edges[..] && corners == &case.corners[..]
+    };
+    let edges = &mut this.edges.clone()[..];
+    let corners = &mut this.corners.clone()[..];
+    for _ in 0..4 {
+        rotate(edges, corners);
+        if is_same(edges, corners) {
+            return true
+        }
+    }
+    false
+}
+
+fn rotate(edges: &mut [Edge], corners: &mut [Corner]) {
+    for edge in edges.iter_mut() {
+        rotate_sticker(&mut edge.0);
+        rotate_sticker(&mut edge.1);
+    }
+    for corner in corners.iter_mut() {
+        rotate_sticker(&mut corner.0);
+        rotate_sticker(&mut corner.1);
+        rotate_sticker(&mut corner.2);
+    }
+    edges.rotate_left(1);
+    corners.rotate_left(1);
+}
+
+fn rotate_sticker(sticker: &mut Face) {
+    use crate::cube::Face::*;
+    std::mem::replace(sticker, match sticker {
+        U => U,
+        B => R,
+        R => F,
+        F => L,
+        L => B,
+        _ => unreachable!()
+    });
+}
+
+// ULB UBR URF UFL
+// UB, UR, UF, UL
+
+// Case {
+//     index: "813144912430163",
+//     edges: [
+//         UB,
+//         UF,
+//         UL,
+//         UR
+//     ],
+//     corners: [
+//         ULB,
+//         UBR,
+//         URF,
+//         UFL
+//     ]
+// } Case {
+//     index: "212150138700883",
+//     edges: [
+//         UR,
+//         UF,
+//         UB,
+//         UL
+//     ],
+//     corners: [
+//         ULB,
+//         UBR,
+//         URF,
+//         UFL
+//     ]
+// }
