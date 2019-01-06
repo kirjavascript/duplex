@@ -26,13 +26,13 @@ static CO: [[u8; 4]; 1] = [
     // [1, 2, 1, 2], // H
 ];
 
-static CP: [(usize, usize); 1] = [
+static CP: [(usize, usize); 6] = [
     (0, 0),
-    // (0, 1), // back
-    // (1, 2), // right
-    // (2, 3), // front
-    // (3, 0), // left
-    // (0, 2), // diag
+    (0, 1), // back
+    (1, 2), // right
+    (2, 3), // front
+    (3, 0), // left
+    (0, 2), // diag
 ];
 
 
@@ -100,7 +100,7 @@ fn get_EP() -> ([Transform; 12], [Transform; 12]) {
     (EP, EP_PARITY)
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Case {
     index: String,
     edges: Vec<Edge>,
@@ -146,11 +146,14 @@ pub fn get_cases() -> Vec<Case> {
                     }
 
 
-                    // are all 48 CLL cases needed?
                     let valid_solved = co_i != 0 || (cp_i != 1 && cp_i != 3 && cp_i != 4);
                     let valid_h = co_i != 7 || (cp_i != 1 && cp_i != 4);
 
-                    if valid_solved && valid_h {
+                    let valid_rot = positions.iter().all(|(_, c)| {
+                        !cmp_auf_cube(&c, &cube)
+                    });
+
+                    if valid_rot && valid_solved && valid_h {
                         positions.push((index, cube));
                         index += 1;
                     }
@@ -168,7 +171,7 @@ pub fn get_cases() -> Vec<Case> {
     }
     console!("(unique) {:#?}", map.len());
 
-    // convert to vec
+    // convert to ordered vec
     let mut vec: Vec<(&u64, &(usize, Cube))> = map.iter().collect();
     vec.sort_by(|a, b| (a.1).0.cmp(&(b.1).0));
     let mut vec: Vec<Case> = vec.iter()
@@ -186,30 +189,32 @@ pub fn get_cases() -> Vec<Case> {
         .collect();
 
 
-    // remove rotations
-    let mut index = 0;
-    while index < vec.len() {
-        let mut found = false;
-        'next: for i in 0..vec.len() {
-            if index == 4 && i == 6 {
-                // console!("{:#?} {:#?}", vec[i], vec[index]);
-            }
-            if i != index && cmp_auf(&vec[i], &vec[index]) {
-                found = true;
-                break 'next
-            }
-        }
-        if found {
-            vec.swap_remove(index);
-        } else {
-            index += 1;
-        }
-    }
-    console!("(rotate) {:#?}", vec.len());
+    // // remove rotations
+    // let mut index = 0;
+    // while index < vec.len() {
+    //     let mut found = false;
+    //     'next: for i in index+1..vec.len() {
+    //         // if index == 4 && i == 6 {
+    //         //     console!("{:#?} {:#?}", vec[i], vec[index]);
+    //         // }
+    //         if cmp_auf(&vec[i], &vec[index]) {
+    //             found = true;
+    //             break 'next
+    //         }
+    //     }
+    //     if found {
+    //         vec.swap_remove(index);
+    //     } else {
+    //         index += 1;
+    //     }
+    // }
+    // console!("(rotate) {:#?}", vec.len());
 
     vec
 }
 
+// ULB UBR URF UFL
+// UB, UR, UF, UL
 fn cmp_auf(this: &Case, case: &Case) -> bool {
     let is_same = |edges: &[Edge], corners: &[Corner]| {
         edges == &case.edges[..] && corners == &case.corners[..]
@@ -217,15 +222,36 @@ fn cmp_auf(this: &Case, case: &Case) -> bool {
     let edges = &mut this.edges.clone()[..];
     let corners = &mut this.corners.clone()[..];
     for _ in 0..4 {
-        rotate(edges, corners);
-        if is_same(edges, corners) {
-            return true
+        rotate_stickers(edges, corners);
+        for _ in 0..4 {
+            rotate_edges(edges, corners);
+            if is_same(edges, corners) {
+                return true
+            }
         }
     }
     false
 }
 
-fn rotate(edges: &mut [Edge], corners: &mut [Corner]) {
+fn cmp_auf_cube(this: &Cube, case: &Cube) -> bool {
+    let is_same = |edges: &[Edge], corners: &[Corner]| {
+        edges == &case.edges[..4] && corners == &case.corners[..4]
+    };
+    let edges = &mut this.edges.clone()[..4];
+    let corners = &mut this.corners.clone()[..4];
+    for _ in 0..4 {
+        rotate_stickers(edges, corners);
+        for _ in 0..4 {
+            rotate_edges(edges, corners);
+            if is_same(edges, corners) {
+                return true
+            }
+        }
+    }
+    false
+}
+
+fn rotate_stickers(edges: &mut [Edge], corners: &mut [Corner]) {
     for edge in edges.iter_mut() {
         rotate_sticker(&mut edge.0);
         rotate_sticker(&mut edge.1);
@@ -235,9 +261,13 @@ fn rotate(edges: &mut [Edge], corners: &mut [Corner]) {
         rotate_sticker(&mut corner.1);
         rotate_sticker(&mut corner.2);
     }
-    edges.rotate_left(1);
-    corners.rotate_left(1);
 }
+
+fn rotate_edges(edges: &mut [Edge], corners: &mut [Corner]) {
+    edges.rotate_right(1);
+    corners.rotate_right(1);
+}
+
 
 fn rotate_sticker(sticker: &mut Face) {
     use crate::cube::Face::*;
@@ -250,36 +280,3 @@ fn rotate_sticker(sticker: &mut Face) {
         _ => unreachable!()
     });
 }
-
-// ULB UBR URF UFL
-// UB, UR, UF, UL
-
-// Case {
-//     index: "813144912430163",
-//     edges: [
-//         UB,
-//         UF,
-//         UL,
-//         UR
-//     ],
-//     corners: [
-//         ULB,
-//         UBR,
-//         URF,
-//         UFL
-//     ]
-// } Case {
-//     index: "212150138700883",
-//     edges: [
-//         UR,
-//         UF,
-//         UB,
-//         UL
-//     ],
-//     corners: [
-//         ULB,
-//         UBR,
-//         URF,
-//         UFL
-//     ]
-// }
