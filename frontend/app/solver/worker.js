@@ -33,6 +33,13 @@ fetch(ENDPOINT).then(response =>
         exports.dealloc_rust_string(pointer);
         return string;
     }
+    function joinStringsFromStack() {
+        const strings = [];
+        while (stack.length) {
+            strings.unshift(getStringFromStack());
+        }
+        return strings.join('');
+    }
     function createString(str) {
         const encoder = new TextEncoder();
         const encodedString = encoder.encode(str);
@@ -50,7 +57,7 @@ fetch(ENDPOINT).then(response =>
     // init console, call main
 
     ref.console_stack = (method) => {
-        const message = getStringFromStack();
+        const message = joinStringsFromStack();
         console[method]('> ' + message);
     };
     exports.web_main();
@@ -66,10 +73,8 @@ fetch(ENDPOINT).then(response =>
                             typeof arg === 'string' ? createString(arg) : arg
                         ));
                     const ret = exports[cur](...wrappedArgs);
-                    if (stack.length > 2) {
-                        throw new Error('export_string must only be called once per function');
-                    } else if (stack.length) {
-                        return getStringFromStack();
+                    if (stack.length) {
+                        return joinStringsFromStack();
                     } else {
                         return ret;
                     }
@@ -91,6 +96,8 @@ fetch(ENDPOINT).then(response =>
     };
 
     self.postMessage({ action: 'INIT' });
+
+    // console.log(wasm.enumerate_ll());
 
     const cases = JSON.parse(wasm.enumerate_ll());
 

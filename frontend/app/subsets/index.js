@@ -52,8 +52,8 @@ export default function Subsets() {
             {cases.map((case_, i) => {
 
                 return <svg
-                    width="400"
-                    height="400"
+                    width="100"
+                    height="100"
                     viewBox="0 0 99 99"
                     key={i}
                 >

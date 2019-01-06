@@ -69,23 +69,6 @@ impl Drop for JSString {
     }
 }
 
-// exports to js
-
-#[no_mangle]
-extern "C" fn dealloc_rust_string(ptr: *mut c_char) {
-    unsafe { let _ = CString::from_raw(ptr); }
-}
-
-pub fn export_string(rust_string: &str) {
-    let rust_string_length = rust_string.len();
-    let c_string = std::ffi::CString::new(rust_string)
-        .expect("must be a valid C string");
-    unsafe {
-        stack_push(rust_string_length);
-        stack_push(c_string.into_raw() as usize);
-    }
-}
-
 // console
 
 pub fn console_log(string: &str, type_: usize) {
@@ -107,6 +90,30 @@ macro_rules! console {
         #[cfg(not(target_arch = "wasm32"))]
         println!($x);
     };
+}
+
+// exports to js
+
+#[no_mangle]
+extern "C" fn dealloc_rust_string(ptr: *mut c_char) {
+    unsafe { let _ = CString::from_raw(ptr); }
+}
+
+fn export_string_raw(rust_string: &str) {
+    let rust_string_length = rust_string.len();
+    let c_string = std::ffi::CString::new(rust_string)
+        .expect("must be a valid C string");
+    unsafe {
+        stack_push(rust_string_length);
+        stack_push(c_string.into_raw() as usize);
+    }
+}
+
+pub fn export_string(rust_string: &str) {
+    rust_string.as_bytes()
+        .chunks(10000)
+        .map(|buf| unsafe { std::str::from_utf8_unchecked(buf) })
+        .for_each(export_string_raw);
 }
 
 // panic

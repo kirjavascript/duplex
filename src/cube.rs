@@ -507,7 +507,6 @@ lazy_static! {
         cube
     };
 }
-
 impl Cube {
     pub const fn new() -> Self {
         use self::Face::*;

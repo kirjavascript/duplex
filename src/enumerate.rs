@@ -4,9 +4,8 @@
 // 10:24 <+Kirjava> but orientation is a tricky one
 // 10:24 <+Kirjava> maybe I do two phase enumeration
 //
-// remove rotational symmetry
 // TODO: just check ZBLL cases
-// TODO: get in order
+// TODO: remove rotational symmetry
 //
 // get CLL, edge lsit of edges for swap and no swap
 // mask -> get list of indexes
@@ -20,15 +19,15 @@ use crate::cube::*;
 // ULB UBR URF UFL
 // UB, UR, UF, UL
 
-static CO: [[u8; 4]; 8] = [
+static CO: [[u8; 4]; 1] = [
     [0, 0, 0, 0], // solved
-    [2, 2, 2, 0], // sune
-    [0, 1, 1, 1], // antisune
-    [0, 1, 0, 2], // L
-    [2, 1, 0, 0], // U
-    [1, 2, 0, 0], // T
-    [1, 1, 2, 2], // Bruno
-    [1, 2, 1, 2], // H
+    // [2, 2, 2, 0], // sune
+    // [0, 1, 1, 1], // antisune
+    // [0, 1, 0, 2], // L
+    // [2, 1, 0, 0], // U
+    // [1, 2, 0, 0], // T
+    // [1, 1, 2, 2], // Bruno
+    // [1, 2, 1, 2], // H
 ];
 
 static CP: [(usize, usize); 6] = [
@@ -41,15 +40,15 @@ static CP: [(usize, usize); 6] = [
 ];
 
 
-static EO: [[u8; 4]; 8] = [
+static EO: [[u8; 4]; 1] = [
     [0, 0, 0, 0],
-    [0, 1, 0, 1],
-    [1, 0, 1, 0],
-    [1, 1, 0, 0],
-    [0, 1, 1, 0],
-    [0, 0, 1, 1],
-    [1, 0, 0, 1],
-    [1, 1, 1, 1],
+    // [0, 1, 0, 1],
+    // [1, 0, 1, 0],
+    // [1, 1, 0, 0],
+    // [0, 1, 1, 0],
+    // [0, 0, 1, 1],
+    // [1, 0, 0, 1],
+    // [1, 1, 1, 1],
 ];
 
 macro_rules! edge_cycles {
@@ -112,12 +111,31 @@ pub struct Case {
     corners: Vec<Corner>,
 }
 
+impl Case {
+    fn cmp_auf(&self, case: &Case) -> bool {
+        let is_same = |edges: &[Edge], corners: &[Corner]| {
+            edges == &case.edges[..] && corners == &case.corners[..]
+        };
+        let edges = &mut self.edges.clone()[..];
+        let corners = &mut self.corners.clone()[..];
+        for _ in 0..4 {
+            edges.rotate_left(1);
+            corners.rotate_left(1);
+            if is_same(edges, corners) {
+                return true
+            }
+        }
+        false
+    }
+}
+
 #[allow(non_snake_case)]
 pub fn get_cases() -> Vec<Case> {
 
-    let mut cubes = Vec::new();
+    let mut positions = Vec::new();
     let (EP, EP_PARITY) = get_EP();
 
+    let mut index = 0;
     for (co_i, co) in CO.iter().enumerate() {
         for (cp_i, cp) in CP.iter().enumerate() {
             for ep_i in 0..12 {
@@ -155,50 +173,28 @@ pub fn get_cases() -> Vec<Case> {
                     let valid_h = co_i != 7 || (cp_i != 1 && cp_i != 4);
 
                     if valid_solved && valid_h {
-                        cubes.push(cube);
+                        positions.push((index, cube));
+                        index += 1;
                     }
                 }
             }
         }
     }
 
-    // // convert to vec
-    // cubes.iter()
-    //     .map(|v| Case {
-    //         index: format!("{}", v.get_ll_index()),
-    //         edges: v.edges[..4].iter().fold(vec![], |mut acc, cur| {
-    //             acc.push(cur.clone());
-    //             acc
-    //         }),
-    //         corners: v.corners[..4].iter().fold(vec![], |mut acc, cur| {
-    //             acc.push(cur.clone());
-    //             acc
-    //         }),
-    //     })
-    //     .collect()
-
-    // get unique cases
+    // get unique indexes
     let mut map = HashMap::new();
 
-    let mut f = 0;
-    console!("LL cases {:#?}", cubes.len());
-    for cube in &mut cubes {
-        // vec drain?
-
-        if let Some(exists) = map.get(&cube.get_ll_index()) {
-            if f == 0 {
-                println!("{}", exists);
-                println!("{}", cube);
-            }
-            f += 1;
-        }
-        map.insert(cube.get_ll_index(), cube.clone());
+    console!("LL cases {:#?}", positions.len());
+    for (index, cube) in &mut positions {
+        map.insert(cube.get_ll_index(), (*index, cube.clone()));
     }
-    console!("LL cases unique {:#?}", map.len());
+    console!("(unique) {:#?}", map.len());
 
     // convert to vec
-    map.iter()
-        .map(|(k, v)| Case {
+    let mut vec: Vec<(&u64, &(usize, Cube))> = map.iter().collect();
+    vec.sort_by(|a, b| (a.1).0.cmp(&(b.1).0));
+    let mut vec: Vec<Case> = vec.iter()
+        .map(|(k, (_, v))| Case {
             index: format!("{}", *k),
             edges: v.edges[..4].iter().fold(vec![], |mut acc, cur| {
                 acc.push(cur.clone());
@@ -209,5 +205,27 @@ pub fn get_cases() -> Vec<Case> {
                 acc
             }),
         })
-        .collect()
+        .collect();
+
+
+    // remove rotations
+    let mut index = 0;
+    while index < vec.len() {
+        let mut found = false;
+        'next: for i in 0..vec.len() {
+            console!("{:#?}", i != index && vec[i].cmp_auf(&vec[index]));
+            if i != index && vec[i].cmp_auf(&vec[index]) {
+                found = true;
+                break 'next
+            }
+        }
+        if found {
+            vec.swap_remove(index);
+        } else {
+            index += 1;
+        }
+    }
+    console!("(rotate) {:#?}", vec.len());
+
+    vec
 }
