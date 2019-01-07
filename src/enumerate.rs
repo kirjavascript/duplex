@@ -1,16 +1,3 @@
-// used in trainer + subsets
-//
-// 10:23 <+Kirjava> I know how to enumerate when the mask is just permutation
-// 10:24 <+Kirjava> but orientation is a tricky one
-// 10:24 <+Kirjava> maybe I do two phase enumeration
-//
-// TODO: remove rotational symmetry
-//
-// get CLL, edge lsit of edges for swap and no swap
-// mask -> get list of indexes
-//
-// send mask back to respond with results
-
 
 // ULB UBR URF UFL
 // UB, UR, UF, UL
@@ -166,11 +153,11 @@ pub fn get_cases() -> Vec<Case> {
     // get unique indexes
     let mut map = HashMap::new();
 
-    console!("LL cases {:#?}", positions.len());
+    let pos_len = positions.len();
     for (index, cube) in &mut positions {
         map.insert(cube.get_ll_index(), (*index, cube.clone()));
     }
-    console!("(unique) {:#?}", map.len());
+    console!("LL cases {:?}", (pos_len, map.len()));
 
     // convert to ordered vec
     let mut vec: Vec<(&u64, &(usize, Cube))> = map.iter().collect();
@@ -191,6 +178,56 @@ pub fn get_cases() -> Vec<Case> {
 
     vec
 }
+
+// Code to generate indices;
+
+// fn cmp_auf_cube(this: &Cube, case: &Cube) -> bool {
+//     let is_same = |edges: &[Edge], corners: &[Corner]| {
+//         edges == &case.edges[..4] && corners == &case.corners[..4]
+//     };
+//     let edges = &mut this.edges.clone()[..4];
+//     let corners = &mut this.corners.clone()[..4];
+//     for _ in 0..4 {
+//         rotate_stickers(edges, corners);
+//         for _ in 0..4 {
+//             rotate_edges(edges, corners);
+//             if is_same(edges, corners) {
+//                 return true
+//             }
+//         }
+//     }
+//     false
+// }
+
+// fn rotate_stickers(edges: &mut [Edge], corners: &mut [Corner]) {
+//     for edge in edges.iter_mut() {
+//         rotate_sticker(&mut edge.0);
+//         rotate_sticker(&mut edge.1);
+//     }
+//     for corner in corners.iter_mut() {
+//         rotate_sticker(&mut corner.0);
+//         rotate_sticker(&mut corner.1);
+//         rotate_sticker(&mut corner.2);
+//     }
+// }
+
+// fn rotate_edges(edges: &mut [Edge], corners: &mut [Corner]) {
+//     edges.rotate_right(1);
+//     corners.rotate_right(1);
+// }
+
+
+// fn rotate_sticker(sticker: &mut Face) {
+//     use crate::cube::Face::*;
+//     std::mem::replace(sticker, match sticker {
+//         U => U,
+//         B => R,
+//         R => F,
+//         F => L,
+//         L => B,
+//         _ => unreachable!()
+//     });
+// }
 
 static ROTATE_INDEX: [u64; 212] = [
     4816698677396563u64, 836810182231123u64,

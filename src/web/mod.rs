@@ -31,6 +31,17 @@ extern "C" fn enumerate_ll() {
     export_string(&json!(cases).to_string());
 }
 
+#[no_mangle]
+unsafe extern "C" fn run_algs() {
+    // JSFunc
+    console!("combining algs...");
+
+    // inverse solution
+    //22:33 <+Kirjava> so if I invert the cases
+// 22:33 <+Kirjava> I can't check for the ones that that are solved in just a single alg
+// do them first (all mirrors/inverses)
+}
+
 // #[no_mangle]
 // extern "C" fn explore_alg(mut input: JSString) {
     // console!("{}", input);

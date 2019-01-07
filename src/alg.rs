@@ -3,7 +3,8 @@ use crate::parser::parse_moves;
 use serde::{Serialize, Deserialize};
 
 #[derive(Debug, Serialize, Deserialize)]
-struct JSONAlg {
+pub struct JSONAlg {
+    index: usize,
     name: String,
     moves: String,
     mirror: bool,
@@ -15,7 +16,7 @@ pub fn create_algset(data: String) -> Vec<Alg> {
     let mut algs = Vec::new();
     for json_alg in json_algs {
         // TODO: error handling
-        let alg = Alg::new(&json_alg.moves, &json_alg.name).unwrap();
+        let alg = Alg::new(&json_alg).unwrap();
         if json_alg.mirror {
             algs.push(alg.mirror());
         }
@@ -32,18 +33,27 @@ pub fn create_algset(data: String) -> Vec<Alg> {
 
 #[derive(Debug)]
 pub struct Alg {
+    // pub index: usize,
     pub name: String,
     pub moves: Vec<Move>,
     pub transform: Transform,
+    pub mirror: bool,
+    pub invert: bool,
 }
 
 impl Alg {
-    pub fn new(input: &str, name: &str) -> Result<Self, String> {
-         let moves = parse_moves(input)?;
+    pub fn new(json_alg: &JSONAlg) -> Result<Self, String> {
+         let moves = parse_moves(&json_alg.moves)?;
          let transform = moves_to_transform(&moves);
          match transform.is_ll_transform() {
-             true => Ok(Alg { moves, transform, name: name.to_owned() }),
-             false => Err(format!("Not an LL alg: {}", input)),
+             true => Ok(Alg {
+                 moves,
+                 transform,
+                 name: json_alg.name.to_owned(),
+                 mirror: false,
+                 invert: false
+             }),
+             false => Err(format!("Not an LL alg: {}", &json_alg.moves)),
          }
     }
 
@@ -77,7 +87,13 @@ impl Alg {
             }
         }).collect::<Vec<Move>>();
         let transform = moves_to_transform(&moves);
-        Alg { moves, transform, name: format!("mirror {}", self.name) }
+        Alg {
+            moves,
+            transform,
+            name: format!("mirror {}", self.name),
+            mirror: !self.mirror,
+            invert: self.invert,
+        }
     }
 
     pub fn invert(&self) -> Self {
@@ -86,6 +102,12 @@ impl Alg {
             order: m.order.flip(),
         }).collect::<Vec<Move>>();
         let transform = moves_to_transform(&moves);
-        Alg { moves, transform, name: format!("inverted {}", self.name) }
+        Alg {
+            moves,
+            transform,
+            name: format!("inverted {}", self.name),
+            mirror: self.mirror,
+            invert: !self.invert,
+        }
     }
 }

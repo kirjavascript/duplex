@@ -101,4 +101,6 @@ fetch(ENDPOINT).then(response =>
 
     self.postMessage({ action: 'CASES', payload: cases });
 
+    wasm.run_algs();
+
 }).catch(console.error);

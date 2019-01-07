@@ -49,7 +49,7 @@ export default function Subsets() {
     return (
         <Fragment>
             {cases.length} cases <br />
-            {cases.map((case_, i) => {
+            {cases.slice(0, 100).map((case_, i) => {
 
                 return <svg
                     width="100"
