@@ -97,8 +97,6 @@ fetch(ENDPOINT).then(response =>
 
     self.postMessage({ action: 'INIT' });
 
-    // console.log(wasm.enumerate_ll());
-
     const cases = JSON.parse(wasm.enumerate_ll());
 
     self.postMessage({ action: 'CASES', payload: cases });
