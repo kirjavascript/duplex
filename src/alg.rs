@@ -33,7 +33,7 @@ pub fn create_algset(data: String) -> Vec<Alg> {
 
 #[derive(Debug)]
 pub struct Alg {
-    // pub index: usize,
+    pub index: usize,
     pub name: String,
     pub moves: Vec<Move>,
     pub transform: Transform,
@@ -47,6 +47,7 @@ impl Alg {
          let transform = moves_to_transform(&moves);
          match transform.is_ll_transform() {
              true => Ok(Alg {
+                 index: json_alg.index,
                  moves,
                  transform,
                  name: json_alg.name.to_owned(),
@@ -88,9 +89,10 @@ impl Alg {
         }).collect::<Vec<Move>>();
         let transform = moves_to_transform(&moves);
         Alg {
+            index: self.index,
             moves,
             transform,
-            name: format!("mirror {}", self.name),
+            name: self.name.clone(),
             mirror: !self.mirror,
             invert: self.invert,
         }
@@ -103,11 +105,26 @@ impl Alg {
         }).collect::<Vec<Move>>();
         let transform = moves_to_transform(&moves);
         Alg {
+            index: self.index,
             moves,
             transform,
-            name: format!("inverted {}", self.name),
+            name: self.name.clone(),
             mirror: self.mirror,
             invert: !self.invert,
+        }
+    }
+
+    pub fn to_json(&self) -> JSONAlg {
+        let moves = self.moves.iter()
+            .map(|x|format!("{:?}", x))
+            .collect::<Vec<String>>()
+            .join(" ");
+        JSONAlg {
+            index: self.index,
+            name: self.name.clone(),
+            moves,
+            mirror: self.mirror,
+            invert: self.invert,
         }
     }
 }

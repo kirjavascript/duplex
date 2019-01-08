@@ -88,6 +88,7 @@ fetch(ENDPOINT).then(response =>
     self.onmessage = ({ data: { action, payload } }) => {
         if (action === 'LOAD_ALGS') {
             wasm.load_algs(JSON.stringify(payload));
+            wasm.run_algs();
         } else if (action === 'EXPLORE_SOLVE') {
             console.time('solve');
             wasm.explore_solve(JSON.stringify(payload));
@@ -100,7 +101,5 @@ fetch(ENDPOINT).then(response =>
     const cases = JSON.parse(wasm.enumerate_ll());
 
     self.postMessage({ action: 'CASES', payload: cases });
-
-    wasm.run_algs();
 
 }).catch(console.error);

@@ -5,6 +5,7 @@ use lazy_static::lazy_static;
 
 use std::sync::Mutex;
 use self::interop::{ JSString, export_string };
+use serde_json::json;
 
 use crate::cube::*;
 use crate::alg::*;
@@ -26,7 +27,6 @@ unsafe extern "C" fn load_algs(mut algs: JSString) {
 
 #[no_mangle]
 extern "C" fn enumerate_ll() {
-    use serde_json::json;
     let cases = enumerate::get_cases();
     export_string(&json!(cases).to_string());
 }
@@ -35,6 +35,28 @@ extern "C" fn enumerate_ll() {
 unsafe extern "C" fn run_algs() {
     // JSFunc
     console!("combining algs...");
+
+    let do_auf = |index| {
+        match index {
+            1 => CUBE.do_transform(&UTRANS),
+            2 => CUBE.do_transform(&UDBLTRANS),
+            3 => CUBE.do_transform(&UPRITRANS),
+            _ => {},
+        }
+    };
+
+    // get solutions for just one alg (AUF at end, because we invert later)
+
+    let algs = ALGS.lock().unwrap();
+    for alg in algs.iter() {
+        for auf in 0..4 {
+            CUBE.replace(Cube::new());
+            CUBE.do_transform(&alg.transform);
+            do_auf(auf);
+            let sltn = (CUBE.get_ll_index(), auf, alg.invert().to_json());
+            console!("{}", json!(sltn).to_string());
+        }
+    }
 
     // inverse solution
     //22:33 <+Kirjava> so if I invert the cases
