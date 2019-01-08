@@ -47,7 +47,7 @@ unsafe extern "C" fn run_algs() {
         1 => 3,
         3 => 1,
         _ => index,
-    }
+    };
 
     // TODO: get cases as static ref, use as whitelist for sending cases to the frontend
 
