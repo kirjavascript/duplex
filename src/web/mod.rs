@@ -39,16 +39,23 @@ unsafe extern "C" fn run_algs() {
     // JSFunc
     console!("combining algs...");
 
-    let do_auf = |index| {
-        match index {
-            1 => CUBE.do_transform(&UTRANS),
-            2 => CUBE.do_transform(&UDBLTRANS),
-            3 => CUBE.do_transform(&UPRITRANS),
-            _ => {},
-        }
+    let do_auf = |index| match index {
+        1 => CUBE.do_transform(&UTRANS),
+        2 => CUBE.do_transform(&UDBLTRANS),
+        3 => CUBE.do_transform(&UPRITRANS),
+        _ => {},
+    };
+
+    let invert_auf = |index| match index {
+        1 => 3,
+        3 => 1,
+        _ => index,
     };
 
     // get indexes
+
+    let cases = CASES.lock().unwrap();
+    // let indices =
 
     // get solutions for just one alg (AUF at end, because we invert later)
 
@@ -58,8 +65,11 @@ unsafe extern "C" fn run_algs() {
             CUBE.replace(Cube::new());
             CUBE.do_transform(&alg.transform);
             do_auf(auf);
-            let sltn = (CUBE.get_ll_index(), auf, alg.invert().to_json());
-            console!("{}", json!(sltn).to_string());
+            console!("{}", json!({
+                "index": CUBE.get_ll_index().to_string(),
+                "auf": invert_auf(auf),
+                "alg": alg.invert().to_json(),
+            }).to_string());
         }
     }
 

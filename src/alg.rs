@@ -4,7 +4,6 @@ use serde::{Serialize, Deserialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct JSONAlg {
-    index: usize,
     name: String,
     moves: String,
     mirror: bool,
@@ -33,7 +32,6 @@ pub fn create_algset(data: String) -> Vec<Alg> {
 
 #[derive(Debug)]
 pub struct Alg {
-    pub index: usize,
     pub name: String,
     pub moves: Vec<Move>,
     pub transform: Transform,
@@ -47,7 +45,6 @@ impl Alg {
          let transform = moves_to_transform(&moves);
          match transform.is_ll_transform() {
              true => Ok(Alg {
-                 index: json_alg.index,
                  moves,
                  transform,
                  name: json_alg.name.to_owned(),
@@ -89,7 +86,6 @@ impl Alg {
         }).collect::<Vec<Move>>();
         let transform = moves_to_transform(&moves);
         Alg {
-            index: self.index,
             moves,
             transform,
             name: self.name.clone(),
@@ -105,7 +101,6 @@ impl Alg {
         }).collect::<Vec<Move>>();
         let transform = moves_to_transform(&moves);
         Alg {
-            index: self.index,
             moves,
             transform,
             name: self.name.clone(),
@@ -120,7 +115,6 @@ impl Alg {
             .collect::<Vec<String>>()
             .join(" ");
         JSONAlg {
-            index: self.index,
             name: self.name.clone(),
             moves,
             mirror: self.mirror,

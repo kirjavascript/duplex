@@ -18,7 +18,7 @@ export function startWorker({ onload, cases }) {
 export function loadAlgs(algs) {
     worker.postMessage({
         action: 'LOAD_ALGS',
-        payload: algs.map(({...args}, i) => ({index: i, ...args})),
+        payload: algs,
     });
 }
 

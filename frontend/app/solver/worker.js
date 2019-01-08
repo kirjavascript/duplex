@@ -1,7 +1,5 @@
 /* eslint-disable */
-const ENDPOINT = __DEV__
-    ? 'http://lh:8000/duplex.wasm'
-    : 'http://duplex.kirjava.xyz/duplex.wasm';
+const ENDPOINT = location.origin + '/duplex.wasm';
 
 const stack = [];
 const ref = { console_stack(method) { console.error('unreachable'); } };
