@@ -30,7 +30,7 @@ fetch(ENDPOINT).then(response =>
             length,
         );
         const string = String.fromCharCode(...buffer);
-        exports.dealloc_rust_string(pointer);
+        exports.dealloc_str(pointer);
         return string;
     }
     function joinStringsFromStack() {
@@ -43,8 +43,8 @@ fetch(ENDPOINT).then(response =>
     function createString(str) {
         const encoder = new TextEncoder();
         const encodedString = encoder.encode(str);
-        const stringPtr = exports.alloc_js_string(encodedString.length);
-        const mutStringPtr = exports.get_mut_js_string(stringPtr);
+        const stringPtr = exports.alloc_str(encodedString.length);
+        const mutStringPtr = exports.get_mut_str(stringPtr);
         const asBytes = new Uint8Array(
             exports.memory.buffer,
             mutStringPtr,

@@ -9,16 +9,17 @@ use serde_json::json;
 
 use crate::cube::*;
 use crate::alg::*;
-use crate::enumerate;
+use crate::enumerate::{ self, Case };
 
 
 static mut CUBE: Cube = Cube::new();
 lazy_static! {
     static ref ALGS: Mutex<Vec<Alg>> = Mutex::new(Vec::new());
+    static ref CASES: Mutex<Vec<Case>> = Mutex::new(Vec::new());
 }
 
 #[no_mangle]
-unsafe extern "C" fn load_algs(mut algs: JSString) {
+unsafe extern "C" fn load_algs(algs: JSString) {
     let algset = create_algset(algs.to_string());
     console!("loaded {} transforms", algset.len());
     ALGS.lock().unwrap().clear();
@@ -28,7 +29,9 @@ unsafe extern "C" fn load_algs(mut algs: JSString) {
 #[no_mangle]
 extern "C" fn enumerate_ll() {
     let cases = enumerate::get_cases();
-    export_string(&json!(cases).to_string());
+    export_string(&json!(&cases).to_string());
+    CASES.lock().unwrap().clear();
+    CASES.lock().unwrap().extend(cases);
 }
 
 #[no_mangle]
@@ -44,6 +47,8 @@ unsafe extern "C" fn run_algs() {
             _ => {},
         }
     };
+
+    // get indexes
 
     // get solutions for just one alg (AUF at end, because we invert later)
 
@@ -70,7 +75,7 @@ unsafe extern "C" fn run_algs() {
 // }
 
 #[no_mangle]
-unsafe extern "C" fn explore_solve(mut input: JSString) {
+unsafe extern "C" fn explore_solve(input: JSString) {
     console!("solving start");
 
     let position: Cube = serde_json::from_str(&input.to_string())

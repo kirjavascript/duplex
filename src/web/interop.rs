@@ -16,7 +16,6 @@ use std::panic;
 
 // imported functions
 
-#[no_mangle]
 extern "C" {
     pub fn stack_push(num: usize);
     fn console_stack(type_: usize); // 0 - log, 2 - warn, 3 - error
@@ -33,7 +32,7 @@ extern "C" fn web_main() {
 // importing strings from JS
 
 #[no_mangle]
-unsafe extern "C" fn alloc_js_string(cap: usize) -> JSString {
+unsafe extern "C" fn alloc_str(cap: usize) -> JSString {
     let mut d = Vec::with_capacity(cap);
     d.set_len(cap);
     let s = Box::new(String::from_utf8_unchecked(d));
@@ -41,7 +40,7 @@ unsafe extern "C" fn alloc_js_string(cap: usize) -> JSString {
 }
 
 #[no_mangle]
-extern "C" fn get_mut_js_string(mut string: JSString) -> *mut u8 {
+extern "C" fn get_mut_str(string: JSString) -> *mut u8 {
     string.as_mut_ptr()
 }
 
@@ -49,12 +48,12 @@ extern "C" fn get_mut_js_string(mut string: JSString) -> *mut u8 {
 pub struct JSString(pub *mut String);
 
 impl JSString {
-    pub fn to_string(&mut self) -> String {
+    pub fn to_string(mut self) -> String {
         let boxed_string = unsafe { Box::from_raw(self.0) };
         self.0 = ptr::null_mut();
         *boxed_string
     }
-    fn as_mut_ptr(&mut self) -> *mut u8 {
+    fn as_mut_ptr(mut self) -> *mut u8 {
         let ptr = unsafe { (&mut *self.0).as_mut_vec() }.as_mut_ptr();
         self.0 = ptr::null_mut();
         ptr
@@ -67,6 +66,30 @@ impl Drop for JSString {
             unsafe { Box::from_raw(self.0); }
         }
     }
+}
+
+// exportings strings
+
+fn export_string_raw(rust_string: &str) {
+    let rust_string_length = rust_string.len();
+    let c_string = std::ffi::CString::new(rust_string)
+        .expect("must be a valid C string");
+    unsafe {
+        stack_push(rust_string_length);
+        stack_push(c_string.into_raw() as usize);
+    }
+}
+
+pub fn export_string(rust_string: &str) {
+    rust_string.as_bytes()
+        .chunks(10000)
+        .map(|buf| unsafe { std::str::from_utf8_unchecked(buf) })
+        .for_each(export_string_raw);
+}
+
+#[no_mangle]
+extern "C" fn dealloc_str(ptr: *mut c_char) {
+    unsafe { let _ = CString::from_raw(ptr); }
 }
 
 // console
@@ -92,29 +115,6 @@ macro_rules! console {
     };
 }
 
-// exports to js
-
-#[no_mangle]
-extern "C" fn dealloc_rust_string(ptr: *mut c_char) {
-    unsafe { let _ = CString::from_raw(ptr); }
-}
-
-fn export_string_raw(rust_string: &str) {
-    let rust_string_length = rust_string.len();
-    let c_string = std::ffi::CString::new(rust_string)
-        .expect("must be a valid C string");
-    unsafe {
-        stack_push(rust_string_length);
-        stack_push(c_string.into_raw() as usize);
-    }
-}
-
-pub fn export_string(rust_string: &str) {
-    rust_string.as_bytes()
-        .chunks(10000)
-        .map(|buf| unsafe { std::str::from_utf8_unchecked(buf) })
-        .for_each(export_string_raw);
-}
 
 // panic
 
