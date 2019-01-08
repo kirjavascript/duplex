@@ -37,7 +37,7 @@ extern "C" fn enumerate_ll() {
 #[no_mangle]
 unsafe extern "C" fn run_algs() {
     // JSFunc
-    console!("combining algs...");
+    console!("combining algs");
 
     let do_auf = |index| match index {
         1 => CUBE.do_transform(&UTRANS),
@@ -55,7 +55,9 @@ unsafe extern "C" fn run_algs() {
     // get indexes
 
     let cases = CASES.lock().unwrap();
-    // let indices =
+    let indices: Vec<u64> = cases.iter().map(|x| {
+        x.index.parse::<u64>().unwrap()
+    }).collect();
 
     // get solutions for just one alg (AUF at end, because we invert later)
 
@@ -65,23 +67,42 @@ unsafe extern "C" fn run_algs() {
             CUBE.replace(Cube::new());
             CUBE.do_transform(&alg.transform);
             do_auf(auf);
-            console!("{}", json!({
-                "index": CUBE.get_ll_index().to_string(),
-                "auf": invert_auf(auf),
-                "alg": alg.invert().to_json(),
-            }).to_string());
+            // console!("{}", json!({
+            //     "index": CUBE.get_ll_index().to_string(),
+            //     "auf": invert_auf(auf),
+            //     "alg": alg.invert().to_json(),
+            // }).to_string());
+            console!("hit");
         }
     }
 
+    // get solutions for both algs
+
+    for first_alg in algs.iter() {
+        for first_auf in 0..4 {
+            for second_alg in algs.iter() {
+                for second_auf in 0..4 {
+                    CUBE.replace(Cube::new());
+                    CUBE.do_transform(&first_alg.transform);
+                    do_auf(first_auf);
+                    CUBE.do_transform(&second_alg.transform);
+                    do_auf(second_auf);
+
+                }
+            }
+        }
+    }
+    console!("tried {} combinations", algs.len() * algs.len() * 16);
+
     // inverse solution
     //22:33 <+Kirjava> so if I invert the cases
-// 22:33 <+Kirjava> I can't check for the ones that that are solved in just a single alg
-// do them first (all mirrors/inverses)
+    // 22:33 <+Kirjava> I can't check for the ones that that are solved in just a single alg
+    // do them first (all mirrors/inverses)
 }
 
 // #[no_mangle]
 // extern "C" fn explore_alg(mut input: JSString) {
-    // console!("{}", input);
+// console!("{}", input);
 // }
 
 #[no_mangle]
@@ -123,10 +144,10 @@ unsafe extern "C" fn explore_solve(input: JSString) {
 
                     if CUBE.is_ll_solved() {
                         console!("success: {} {:?} {} {:?}",
-                            first_auf,
-                            first_alg.moves,
-                            second_auf,
-                            second_alg.moves
+                                 first_auf,
+                                 first_alg.moves,
+                                 second_auf,
+                                 second_alg.moves
                         );
                     }
                 }

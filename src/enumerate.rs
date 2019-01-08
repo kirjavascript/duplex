@@ -93,7 +93,7 @@ fn get_EP() -> ([Transform; 12], [Transform; 12]) {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Case {
-    index: String,
+    pub index: String,
     edges: Vec<Edge>,
     corners: Vec<Corner>,
 }
