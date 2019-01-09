@@ -83,14 +83,15 @@ fetch(ENDPOINT).then(response =>
 
     // userland
 
+    console.time('startup')
     self.onmessage = ({ data: { action, payload } }) => {
         if (action === 'LOAD_ALGS') {
             wasm.load_algs(JSON.stringify(payload));
-            wasm.run_algs();
+            const solutions = JSON.parse(wasm.run_algs());
+            console.timeEnd('startup')
+            self.postMessage({ action: 'SOLUTIONS', payload: solutions });
         } else if (action === 'EXPLORE_SOLVE') {
-            console.time('solve');
             wasm.explore_solve(JSON.stringify(payload));
-            console.timeEnd('solve');
         }
     };
 

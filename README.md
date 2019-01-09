@@ -15,6 +15,8 @@ trim AUF for Vec<Move>
 give algs names w/ colours
 click to see the alg / auto mirrored -> show middle case
 
+rotate cube LL UI
+
 implement solving mask Face::Null
 subset chooser like 2LLui - show coverage
 subsets - strip first auf by rotating
@@ -26,6 +28,7 @@ LLs like sprites from flex -group by first alg
 
 <+Kirjava> that's something I'm wondering about DXLL. can you learn rules that allow you to solve cases you haven't learnt in a one by one fashion
 <+Kirjava> like something that applies to a group of cases
+SPA mode website
 
 > duplex on cll
 

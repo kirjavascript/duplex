@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useCallback } from 'react';
-import { exploreSolve } from '#app/solver';
+// import { exploreSolve } from '#app/solver';
 import LL, { llToCube } from './ll';
 
 export default function Explore() {
@@ -42,7 +42,7 @@ export default function Explore() {
                     load alg
                 </button>
                 <button type="button" onClick={() => {
-                    exploreSolve(llToCube({ corners, edges }));
+                    // exploreSolve(llToCube({ corners, edges }));
                 }}>
                     solve
                 </button>

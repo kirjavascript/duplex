@@ -162,7 +162,7 @@ pub fn get_cases() -> Vec<Case> {
     // convert to ordered vec
     let mut vec: Vec<(&u64, &(usize, Cube))> = map.iter().collect();
     vec.sort_by(|a, b| (a.1).0.cmp(&(b.1).0));
-    let mut vec: Vec<Case> = vec.iter()
+    let vec: Vec<Case> = vec.iter()
         .map(|(k, (_, v))| Case {
             index: format!("{}", *k),
             edges: v.edges[..4].iter().fold(vec![], |mut acc, cur| {
@@ -177,7 +177,7 @@ pub fn get_cases() -> Vec<Case> {
         .collect();
 
     // remove solved case
-    vec.swap_remove(0);
+    // vec.swap_remove(0);
 
     vec
 }
@@ -232,7 +232,8 @@ pub fn get_cases() -> Vec<Case> {
 //     });
 // }
 
-static ROTATE_INDEX: [u64; 212] = [
+static ROTATE_INDEX: [u64; 213] = [
+    807432605926483u64, // <-- solved
     4816698677396563u64, 836810182231123u64,
     809043218662483u64, 4815216913679443u64,
     2425046138618963u64, 504680361231443u64,

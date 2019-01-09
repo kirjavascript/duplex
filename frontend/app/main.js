@@ -3,12 +3,13 @@ import { render } from 'react-dom';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import Algs from './algs';
-import Solver from './solver/component';
+import Solver from './solver';
 import Explore from './explore';
 import Subsets from './subsets';
 
 import { AlgStore } from './algs/store';
 import { CaseStore } from './subsets/store';
+import { SolutionStore } from './solver/store';
 
 const links = ['', 'explore', 'subsets', 'trainer', 'algs'];
 
@@ -43,7 +44,9 @@ render((
     <Router>
         <AlgStore>
             <CaseStore>
-                <App />
+                <SolutionStore>
+                    <App />
+                </SolutionStore>
             </CaseStore>
         </AlgStore>
     </Router>

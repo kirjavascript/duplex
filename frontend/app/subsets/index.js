@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { useSolutions } from '#app/solver/store';
 import { useCases } from './store';
 
 const faces = {
@@ -43,28 +44,48 @@ function Corner(props) {
 
 export default function Subsets() {
     const { cases } = useCases();
+    const { solutions, coverage } = useSolutions();
 
     return (
         <Fragment>
             {cases.length} cases <br />
             {cases.slice(0, 100).map((case_, i) => {
+                let s
 
-                return <svg
-                    width="100"
-                    height="100"
-                    viewBox="0 0 99 99"
-                    key={case_.index}
-                >
-                    <Edge stickers={case_.edges[0]} x={30} y={0} rotate={90} />
-                    <Edge stickers={case_.edges[1]} x={60} y={30} rotate={180} />
-                    <Edge stickers={case_.edges[2]} x={30} y={60} rotate={270} />
-                    <Edge stickers={case_.edges[3]} x={0} y={30} />
-                    <Corner stickers={case_.corners[0]} x={15} y={15} />
-                    <Corner stickers={case_.corners[1]} x={45} y={15} rotate={90} />
-                    <Corner stickers={case_.corners[2]} x={45} y={45} rotate={180} />
-                    <Corner stickers={case_.corners[3]} x={15} y={45} rotate={270} />
-                    <rect x="30" y="30" width="12" height="12" fill={faces.U} />
-                </svg>
+                if (solutions[case_.index]) {
+                    s = solutions[case_.index].map(d => (
+                        `${d.solution.map((d) => (
+                            typeof d === 'number' ? ['','U','U\'','U2'][d] : d.moves
+                        )).join` `}\n`
+                    ))
+                }
+
+                return (
+                    <div
+                        key={case_.index}
+                    >
+                        <svg
+                            width="100"
+                            height="100"
+                            viewBox="0 0 99 99"
+                        >
+                            <Edge stickers={case_.edges[0]} x={30} y={0} rotate={90} />
+                            <Edge stickers={case_.edges[1]} x={60} y={30} rotate={180} />
+                            <Edge stickers={case_.edges[2]} x={30} y={60} rotate={270} />
+                            <Edge stickers={case_.edges[3]} x={0} y={30} />
+                            <Corner stickers={case_.corners[0]} x={15} y={15} />
+                            <Corner stickers={case_.corners[1]} x={45} y={15} rotate={90} />
+                            <Corner stickers={case_.corners[2]} x={45} y={45} rotate={180} />
+                            <Corner stickers={case_.corners[3]} x={15} y={45} rotate={270} />
+                            <rect x="30" y="30" width="12" height="12" fill={faces.U} />
+                        </svg>
+                        <br />
+                        <pre>
+                            {case_.index}
+                            {s}
+                        </pre>
+                    </div>
+                )
             })}
         </Fragment>
     );

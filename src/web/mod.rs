@@ -4,8 +4,10 @@ pub mod interop;
 use lazy_static::lazy_static;
 
 use std::sync::Mutex;
+use std::collections::{ HashSet, HashMap };
 use self::interop::{ JSString, export_string };
 use serde_json::json;
+use serde_json::value::Value;
 
 use crate::cube::*;
 use crate::alg::*;
@@ -19,7 +21,7 @@ lazy_static! {
 }
 
 #[no_mangle]
-unsafe extern "C" fn load_algs(algs: JSString) {
+extern "C" fn load_algs(algs: JSString) {
     let algset = create_algset(algs.to_string());
     console!("loaded {} transforms", algset.len());
     ALGS.lock().unwrap().clear();
@@ -55,24 +57,45 @@ unsafe extern "C" fn run_algs() {
     // get indexes
 
     let cases = CASES.lock().unwrap();
-    let indices: Vec<u64> = cases.iter().map(|x| {
+    let indices: HashSet<u64> = cases.iter().map(|x| {
         x.index.parse::<u64>().unwrap()
     }).collect();
 
     // get solutions for just one alg (AUF at end, because we invert later)
 
+    let mut solutions: HashMap<u64, Vec<Value>> = HashMap::new();
+
+    let mut add_solution = |index, solution| {
+        match solutions.get_mut(&index) {
+            Some(vec) => {
+                vec.push(solution);
+            },
+            None => {
+                solutions.insert(index, vec![solution]);
+            },
+        }
+    };
+
+    let mut hits = 0;
     let algs = ALGS.lock().unwrap();
     for alg in algs.iter() {
         for auf in 0..4 {
             CUBE.replace(Cube::new());
             CUBE.do_transform(&alg.transform);
             do_auf(auf);
-            // console!("{}", json!({
-            //     "index": CUBE.get_ll_index().to_string(),
-            //     "auf": invert_auf(auf),
-            //     "alg": alg.invert().to_json(),
-            // }).to_string());
-            console!("hit");
+
+            let index = CUBE.get_ll_index();
+            if indices.contains(&index) {
+                hits += 1;
+                let solution = json!({
+                    "index": index.to_string(),
+                    "solution": [
+                        invert_auf(auf),
+                        alg.invert().to_json(),
+                    ]
+                });
+                add_solution(index, solution);
+            }
         }
     }
 
@@ -87,17 +110,33 @@ unsafe extern "C" fn run_algs() {
                     do_auf(first_auf);
                     CUBE.do_transform(&second_alg.transform);
                     do_auf(second_auf);
-
+                    let index = CUBE.get_ll_index();
+                    if indices.contains(&index) {
+                        hits += 1;
+                        let solution = json!({
+                            "index": index.to_string(),
+                            "solution": [
+                                invert_auf(second_auf),
+                                second_alg.invert().to_json(),
+                                invert_auf(first_auf),
+                                first_alg.invert().to_json()
+                            ]
+                        });
+                        add_solution(index, solution);
+                    }
                 }
             }
         }
     }
     console!("tried {} combinations", algs.len() * algs.len() * 16);
+    console!("found {} solutions", hits);
 
-    // inverse solution
-    //22:33 <+Kirjava> so if I invert the cases
-    // 22:33 <+Kirjava> I can't check for the ones that that are solved in just a single alg
-    // do them first (all mirrors/inverses)
+    // convert u64 to string in case JSON does anything weird
+    let solutions = solutions.iter()
+        .map(|s| (s.0.to_string(), s.1))
+        .collect::<HashMap<String, &Vec<Value>>>();
+
+    export_string(&json!(solutions).to_string());
 }
 
 // #[no_mangle]

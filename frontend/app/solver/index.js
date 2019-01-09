@@ -1,30 +1,38 @@
+
+import React, { useEffect } from 'react';
+import { useAlgs } from '#app/algs/store';
+import { useCases } from '#app/subsets/store';
+import { useSolutions } from './store';
 import Worker from './worker';
-let worker;
 
-export function startWorker({ onload, cases }) {
-    worker = new Worker();
+export default function Solver() {
+    const { algs } = useAlgs();
+    const { cases, setCases } = useCases();
+    const { solutions, setSolutions } = useSolutions();
 
-    worker.addEventListener('message', ({ data: { action, payload } }) => {
-        if (action === 'INIT') {
-            onload();
-        } else if (action === 'CASES') {
-            cases(payload);
-        }
-    });
-    return worker;
-}
+    useEffect(() => {
+        const worker = new Worker();
 
+        worker.addEventListener('message', ({ data: { action, payload } }) => {
+            if (action === 'INIT') {
+                worker.postMessage({
+                    action: 'LOAD_ALGS',
+                    payload: algs,
+                });
+            } else if (action === 'CASES') {
+                setCases(payload);
+            } else if (action === 'SOLUTIONS') {
+                // const coverage = Object.keys(payload).length;
+                // console.log(coverage);
+                setSolutions(payload);
+            }
+        });
 
-export function loadAlgs(algs) {
-    worker.postMessage({
-        action: 'LOAD_ALGS',
-        payload: algs,
-    });
-}
+        // worker.postMessage({
+        //     action: 'EXPLORE_SOLVE',
+        //     payload: transform,
+        // });
+    }, []);
 
-export function exploreSolve(transform) {
-    worker.postMessage({
-        action: 'EXPLORE_SOLVE',
-        payload: transform,
-    });
+    return false;
 }
