@@ -41,13 +41,6 @@ function App(props) {
 }
 
 render((
-    <Router>
-        <AlgStore>
-            <CaseStore>
-                <SolutionStore>
-                    <App />
-                </SolutionStore>
-            </CaseStore>
-        </AlgStore>
-    </Router>
+    [<App />, SolutionStore, CaseStore, AlgStore, Router]
+        .reduce((children, Element) => <Element>{children}</Element>)
 ), document.body.appendChild(document.createElement('div')));
