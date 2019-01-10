@@ -1,17 +1,8 @@
-// used in trainer + subsets
-//
-// 10:23 <+Kirjava> I know how to enumerate when the mask is just permutation
-// 10:24 <+Kirjava> but orientation is a tricky one
-// 10:24 <+Kirjava> maybe I do two phase enumeration
-//
-// get CLL, edge lsit of edges for swap and no swap
-// mask -> get list of indexes
-//
-// send mask back to respond with results
+remove index deduping
+combineProviders reduceRight
 
 list alg coverage /add mirror F/B
 
-trim AUF for Vec<Move>
 give algs names w/ colours
 click to see the alg / auto mirrored -> show middle case
 

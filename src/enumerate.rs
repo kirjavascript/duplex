@@ -2,7 +2,6 @@
 // ULB UBR URF UFL
 // UB, UR, UF, UL
 
-use std::collections::HashMap;
 use serde::{Serialize, Deserialize};
 use crate::cube::*;
 
@@ -104,7 +103,7 @@ pub fn get_cases() -> Vec<Case> {
     let mut positions = Vec::new();
     let (EP, EP_PARITY) = get_EP();
 
-    let mut index = 0;
+    // let mut index = 0;
     for (co_i, co) in CO.iter().enumerate() {
         for (cp_i, cp) in CP.iter().enumerate() {
             for ep_i in 0..12 {
@@ -140,30 +139,19 @@ pub fn get_cases() -> Vec<Case> {
                     let valid_solved = co_i != 0 || (cp_i != 1 && cp_i != 3 && cp_i != 4);
                     let valid_h = co_i != 7 || (cp_i != 1 && cp_i != 4);
 
-                    if valid_solved && valid_h &&
-                        !ROTATE_INDEX.contains(&cube.get_ll_index())  {
-                            positions.push((index, cube));
-                            index += 1;
+                    if valid_solved && valid_h {
+                        let ll_index = cube.get_ll_index();
+                        if !ROTATE_INDEX.contains(&ll_index)  {
+                            positions.push((ll_index, cube));
+                        }
                     }
                 }
             }
         }
     }
 
-    // get unique indexes
-    let mut map = HashMap::new();
-
-    let pos_len = positions.len();
-    for (index, cube) in &mut positions {
-        map.insert(cube.get_ll_index(), (*index, cube.clone()));
-    }
-    console!("LL cases {:?}", (pos_len, map.len()));
-
-    // convert to ordered vec
-    let mut vec: Vec<(&u64, &(usize, Cube))> = map.iter().collect();
-    vec.sort_by(|a, b| (a.1).0.cmp(&(b.1).0));
-    let vec: Vec<Case> = vec.iter()
-        .map(|(k, (_, v))| Case {
+    let vec: Vec<Case> = positions.iter()
+        .map(|(k, v)| Case {
             index: format!("{}", *k),
             edges: v.edges[..4].iter().fold(vec![], |mut acc, cur| {
                 acc.push(cur.clone());
@@ -176,8 +164,8 @@ pub fn get_cases() -> Vec<Case> {
         })
         .collect();
 
-    // remove solved case
-    // vec.swap_remove(0);
+
+    console!("LL cases {:?}", vec.len());
 
     vec
 }
