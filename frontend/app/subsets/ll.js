@@ -40,9 +40,9 @@ export default function LL({ case_ }) {
 
     return (
         <svg
-            width="100"
-            height="100"
-            viewBox="0 0 99 99"
+            width="120"
+            height="120"
+            viewBox="0 0 72 72"
         >
             <Edge stickers={case_.edges[0]} x={30} y={0} rotate={90} />
             <Edge stickers={case_.edges[1]} x={60} y={30} rotate={180} />

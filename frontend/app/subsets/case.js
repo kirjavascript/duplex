@@ -1,26 +1,49 @@
+import React, { Fragment } from 'react';
+
 import LL from './ll';
 
+const auf = ['','U ','U2 ','U\' '];
+
+function getName(solution) {
+    return (
+        <span className="blue">
+            {solution.invert?'invert ':''}{solution.mirror?'mirror ':''}
+            {solution.name}
+        </span>
+    );
+}
+
+function Moves({ data }) {
+    const { solution } = data;
+    const showName = true;
+    // TODO: tooltip hover of actual moves?
+    return (
+        <Fragment>
+            {auf[solution[0]]}
+            {showName ? getName(solution[1]) : solution[1].moves}
+            {solution.length > 2 && <Fragment>
+                {'\n'}{auf[solution[2]]}
+                {showName ? getName(solution[3]) : solution[3].moves}
+            </Fragment>}
+        </Fragment>
+    );
+}
+
 export default function Case({ case_, solutions }) {
-
-    let s
-
-    if (solutions) {
-        s = solutions.map(d => (
-            `${d.solution.map((d) => (
-                typeof d === 'number' ? ['','U','U2','U\''][d] : d.moves
-            )).join` `}\n`
-        ))
-    }
-
     return (
         <div
-            className="case"
-            key={case_.index}
+            className="case visible"
         >
             <LL case_={case_} />
             <br />
             <pre>
-                {case_.index}
+                {solutions[0] && <Moves data={solutions[0]} />}
+                {false && solutions.map((data, i) => (
+                    <Fragment key={i}>
+                        <Moves data={data} />
+                        <hr />
+                    </Fragment>
+                ))}
             </pre>
             {solutions.length} solutions
         </div>

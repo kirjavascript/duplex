@@ -11,10 +11,25 @@ export default function Subsets() {
     // star cases that use a single alg
     // trim AUF
     // select solution
+    // starred first
+    // reduce auf / transforms / movecount
 
     return (
         <div className="subsets">
-            {cases.length} cases {cases.length - coverage} unsolved {Math.round((coverage/cases.length)*100)}% coverage<br />
+            <div className="info">
+                <span className="data">
+                    {cases.length}
+                </span>
+                cases
+                <span className="data">
+                    {cases.length - coverage}
+                </span>
+                unsolved
+                <span className="data">
+                    {cases.length ? Math.round((coverage/cases.length)*100) : 0}%
+                </span>
+                coverage
+            </div>
             <div className="cases">
                 {cases.slice(0, 100).map((case_, i) => {
                     return (
