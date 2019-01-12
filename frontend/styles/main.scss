@@ -88,3 +88,19 @@ input {
         text-align: center;
     }
 }
+
+.subsets {
+    .cases {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        .case {
+            width: 200px;
+            border: 5px solid steelblue;
+            border-radius: 15px;
+            padding: 10px;
+            margin: 5px;
+        }
+    }
+}

@@ -13,17 +13,19 @@ export default function Subsets() {
     // select solution
 
     return (
-        <Fragment>
+        <div className="subsets">
             {cases.length} cases {cases.length - coverage} unsolved {Math.round((coverage/cases.length)*100)}% coverage<br />
-            {cases.slice(0, 100).map((case_, i) => {
-                return (
-                    <Case
-                        key={case_.index}
-                        case_={case_}
-                        solutions={solutions[case_.index]}
-                    />
-                )
-            })}
-        </Fragment>
+            <div className="cases">
+                {cases.slice(0, 100).map((case_, i) => {
+                    return (
+                        <Case
+                            key={case_.index}
+                            case_={case_}
+                            solutions={solutions[case_.index] || []}
+                        />
+                    )
+                })}
+            </div>
+        </div>
     );
 }

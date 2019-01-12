@@ -18,12 +18,11 @@ export default function Case({ case_, solutions }) {
             key={case_.index}
         >
             <LL case_={case_} />
+            <br />
+            <pre>
+                {case_.index}
+            </pre>
+            {solutions.length} solutions
         </div>
     )
 }
-
-            // <br />
-            // <pre>
-            //     {case_.index}
-            //     {s}
-            // </pre>
