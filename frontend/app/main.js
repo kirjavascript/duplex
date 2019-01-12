@@ -14,25 +14,30 @@ import { SolutionStore } from './solver/store';
 const links = ['', 'explore', 'subsets', 'trainer', 'algs'];
 
 function App(props) {
-
     return (
         <Fragment>
             <Solver />
-            <Route component={({location}) => (
-                <div className="menu">
-                    {links.map(link => (
-                        <Link
-                            className={
-                                location.pathname === '/' + link ? 'active' : ''
-                            }
-                            key={link}
-                            to={'/' + link}>
-                            {link || 'about'}
-                        </Link>
-                    ))}
-                </div>
-            )} />
-
+            <Route
+                component={({location}) => (
+                    <div className="menu" ref={(node) => {
+                        if (node) {
+                            const { height } = node.getBoundingClientRect();
+                            document.body.style.marginTop = height + 'px';
+                        }
+                    }}>
+                        {links.map(link => (
+                            <Link
+                                className={
+                                    location.pathname === '/' + link ? 'active' : ''
+                                }
+                                key={link}
+                                to={'/' + link}>
+                                {link || 'about'}
+                            </Link>
+                        ))}
+                    </div>
+                )}
+            />
             <Route path="/algs" component={Algs} />
             <Route path="/explore" component={Explore} />
             <Route path="/subsets" component={Subsets} />
@@ -40,7 +45,11 @@ function App(props) {
     );
 }
 
-render((
-    [<App />, SolutionStore, CaseStore, AlgStore, Router]
+if (typeof WebAssembly !== 'object') {
+    document.body.innerHTML = 'this website requires WebAssembly';
+} else {
+    render((
+        [<App />, SolutionStore, CaseStore, AlgStore, Router]
         .reduce((children, Element) => <Element>{children}</Element>)
-), document.body.appendChild(document.createElement('div')));
+    ), document.body.appendChild(document.createElement('div')));
+}

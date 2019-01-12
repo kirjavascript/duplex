@@ -1,6 +1,4 @@
-4876226923314921
-
-list alg coverage /add mirror F/B
+add mirror F/B
 
 give algs names w/ colours
 click to see the alg / auto mirrored -> show middle case
@@ -26,7 +24,6 @@ SPA mode website
 * add ability to select a subset, and list solutions that use the smallest quantity of first alg -> this is how to find recog patterns -> add colours to tell algs apart
 * show shortest, reduce first alg
 
-for algs, look at OLL/CMLL
 subset chooser (filter)
 gamification (checkbox for learnt subset / case) |
 2x2x3 left as exercise for the reader |
