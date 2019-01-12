@@ -55,7 +55,7 @@ export default function Subsets() {
                 if (solutions[case_.index]) {
                     s = solutions[case_.index].map(d => (
                         `${d.solution.map((d) => (
-                            typeof d === 'number' ? ['','U','U\'','U2'][d] : d.moves
+                            typeof d === 'number' ? ['','U','U2','U\''][d] : d.moves
                         )).join` `}\n`
                     ))
                 }

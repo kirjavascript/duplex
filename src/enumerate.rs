@@ -140,7 +140,7 @@ pub fn get_cases() -> Vec<Case> {
 
                     if valid_solved && valid_h {
                         let ll_index = cube.get_ll_index();
-                        if !ROTATE_INDEX.contains(&ll_index)  {
+                        if !ROTATE_INDEX.contains(&ll_index) {
                             positions.push((ll_index, cube));
                         }
                     }

@@ -112,6 +112,8 @@ unsafe extern "C" fn run_algs() {
                     do_auf(second_auf);
                     let index = CUBE.get_ll_index();
                     if indices.contains(&index) {
+                        // console!("{}", CUBE);
+                        console!("{:?}", (&first_alg.moves, first_auf, &second_alg.moves, second_auf));
                         hits += 1;
                         let solution = json!({
                             "index": index.to_string(),

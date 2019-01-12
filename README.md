@@ -1,5 +1,4 @@
-remove index deduping
-combineProviders reduceRight
+4876226923314921
 
 list alg coverage /add mirror F/B
 
@@ -15,6 +14,7 @@ select subset, generate cases that use smallest number of first algs OR shortest
 <a>all solutions</a>
 <a>alg</a> toggle alg / name
 show inbetween state for solution
+show cancelled version of alg if it exists
 LLs like sprites from flex -group by first alg
 
 <+Kirjava> that's something I'm wondering about DXLL. can you learn rules that allow you to solve cases you haven't learnt in a one by one fashion
