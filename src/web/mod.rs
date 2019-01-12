@@ -77,7 +77,11 @@ unsafe extern "C" fn run_algs() {
     };
 
     let mut hits = 0;
-    let algs = ALGS.lock().unwrap();
+    // invert algs before and after
+    let algs: Vec<Alg> = ALGS.lock().unwrap()
+        .iter()
+        .map(|a| a.invert())
+        .collect();
     for alg in algs.iter() {
         for auf in 0..4 {
             CUBE.replace(Cube::new());
@@ -112,8 +116,6 @@ unsafe extern "C" fn run_algs() {
                     do_auf(second_auf);
                     let index = CUBE.get_ll_index();
                     if indices.contains(&index) {
-                        // console!("{}", CUBE);
-                        console!("{:?}", (&first_alg.moves, first_auf, &second_alg.moves, second_auf));
                         hits += 1;
                         let solution = json!({
                             "index": index.to_string(),

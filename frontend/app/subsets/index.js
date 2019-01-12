@@ -44,11 +44,11 @@ function Corner(props) {
 
 export default function Subsets() {
     const { cases } = useCases();
-    const { solutions, coverage } = useSolutions();
+    const { solutions, length: coverage } = useSolutions();
 
     return (
         <Fragment>
-            {cases.length} cases <br />
+            {cases.length} cases {Math.round((coverage/cases.length)*100)}% coverage<br />
             {cases.slice(0, 100).map((case_, i) => {
                 let s
 

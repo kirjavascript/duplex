@@ -22,8 +22,6 @@ export default function Solver() {
             } else if (action === 'CASES') {
                 setCases(payload);
             } else if (action === 'SOLUTIONS') {
-                // const coverage = Object.keys(payload).length;
-                // console.log(coverage);
                 setSolutions(payload);
             }
         });
