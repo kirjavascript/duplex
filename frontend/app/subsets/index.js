@@ -13,6 +13,7 @@ export default function Subsets() {
     // select solution
     // starred first
     // reduce auf / transforms / movecount
+    // inverse / mirror weight 0..4
 
     return (
         <div className="subsets">
@@ -30,6 +31,7 @@ export default function Subsets() {
                 </span>
                 coverage
             </div>
+
             <div className="cases">
                 {cases.slice(0, 100).map((case_, i) => {
                     return (

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 
 import LL from './ll';
 
@@ -15,17 +15,23 @@ function getName(solution) {
 
 function Moves({ data }) {
     const { solution } = data;
-    const showName = true;
-    // TODO: tooltip hover of actual moves?
+    const [showName, setName] = useState(true);
     return (
-        <Fragment>
+        <span
+            onClick={() => { setName(!showName); }}
+            className="moves"
+        >
             {auf[solution[0]]}
-            {showName ? getName(solution[1]) : solution[1].moves}
+            {showName ? getName(solution[1]) : (
+                <span className="blue">{solution[1].moves}</span>
+            )}
             {solution.length > 2 && <Fragment>
                 {'\n'}{auf[solution[2]]}
-                {showName ? getName(solution[3]) : solution[3].moves}
+                {showName ? getName(solution[3]) :  (
+                    <span className="blue">{solution[3].moves}</span>
+                )}
             </Fragment>}
-        </Fragment>
+        </span>
     );
 }
 

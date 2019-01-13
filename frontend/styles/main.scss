@@ -11,7 +11,7 @@ html, body {
     margin: 0;
     padding: 0;
     font-family: 'Source Sans Pro', sans-serif;
-    height: 100%;
+    cursor: default;
 }
 
 a, .link {
@@ -111,8 +111,9 @@ input {
             border-radius: 15px;
             padding: 20px 0;
             margin: 5px;
-            pre {
+            .moves {
                 font-size: 16px;
+                cursor: pointer;
             }
             &.visible {
                 border: 5px solid steelblue;

@@ -14,6 +14,7 @@ select subset, generate cases that use smallest number of first algs OR shortest
 show inbetween state for solution
 show cancelled version of alg if it exists
 LLs like sprites from flex -group by first alg
+trainer: just alg mode
 
 <+Kirjava> that's something I'm wondering about DXLL. can you learn rules that allow you to solve cases you haven't learnt in a one by one fashion
 <+Kirjava> like something that applies to a group of cases
