@@ -58,24 +58,24 @@ impl Alg {
     pub fn mirror(&self) -> Self {
         let moves = self.moves.iter().map(|m| {
             match m {
-                Move { layer: Layer::F, .. } => Move {
-                    layer: Layer::B,
+                Move { layer: Layer::R, .. } => Move {
+                    layer: Layer::L,
                     order: m.order.flip(),
                 },
-                Move { layer: Layer::B, .. } => Move {
+                Move { layer: Layer::L, .. } => Move {
                     layer: Layer::R,
                     order: m.order.flip(),
                 },
-                Move { layer: Layer::Fw, .. } => Move {
-                    layer: Layer::Bw,
+                Move { layer: Layer::Rw, .. } => Move {
+                    layer: Layer::Lw,
                     order: m.order.flip(),
                 },
-                Move { layer: Layer::Bw, .. } => Move {
-                    layer: Layer::Fw,
+                Move { layer: Layer::Lw, .. } => Move {
+                    layer: Layer::Rw,
                     order: m.order.flip(),
                 },
-                Move { layer: Layer::Z, .. } => Move {
-                    layer: Layer::Z,
+                Move { layer: Layer::X, .. } => Move {
+                    layer: Layer::X,
                     order: m.order.clone(),
                 },
                 _ => Move {
