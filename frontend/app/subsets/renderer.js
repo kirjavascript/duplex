@@ -3,6 +3,7 @@ import { useWindowSize, useElementYPos } from './render-hooks';
 
 const boxWidth = 320;
 const boxHeight = 320;
+const leeway = boxHeight;
 const margin = 5;
 
 export default function Renderer({ caseList, children }) {
@@ -35,7 +36,8 @@ export default function Renderer({ caseList, children }) {
                 const left = x * rawWidth;
                 const top = y * rawHeight;
                 const bottom = top + boxHeight;
-                const onScreen = bottom + posY > 0 && top + posY < height;
+                const onScreen = bottom + posY +leeway > 0
+                    && (top + posY) - leeway < height;
                 if (onScreen) {
                     keyIndex += 1;
                 }
