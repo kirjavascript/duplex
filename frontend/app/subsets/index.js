@@ -18,7 +18,7 @@ export default function Subsets() {
     // inverse / mirror weight 0..4
 
 
-    const caseList = cases.slice(0, 100).map((case_) => ({
+    const caseList = cases.map((case_) => ({
         case_,
         solutions: solutions[case_.index] || [],
     }));
