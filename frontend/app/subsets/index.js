@@ -8,7 +8,6 @@ export default function Subsets() {
     const { cases } = useCases();
     const { solutions, length: coverage } = useSolutions();
 
-
     // TODO: AUF, change colour
     // star cases that use a single alg
     // trim AUF
@@ -16,7 +15,6 @@ export default function Subsets() {
     // starred first
     // reduce auf / transforms / movecount
     // inverse / mirror weight 0..4
-
 
     const caseList = cases.map((case_) => ({
         case_,
@@ -41,26 +39,8 @@ export default function Subsets() {
             </div>
 
             <Renderer caseList={caseList}>
-                {({ case_, solutions }) => (
-                    <Case
-                        key={case_.index}
-                        case_={case_}
-                        solutions={solutions[case_.index] || []}
-                    />
-                )}
+                {(obj) => <Case {...obj} />}
             </Renderer>
-
-            <div className="cases">
-                {false && cases.slice(0, 100).map((case_, i) => {
-                    return (
-                        <Case
-                            key={case_.index}
-                            case_={case_}
-                            solutions={solutions[case_.index] || []}
-                        />
-                    )
-                })}
-            </div>
         </div>
     );
 }

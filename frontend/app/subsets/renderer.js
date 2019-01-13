@@ -1,10 +1,9 @@
 import React, { Fragment, useRef } from 'react';
-import { useWindowSize, useWindowPos, useElementYPos } from './render-hooks';
+import { useWindowSize, useElementYPos } from './render-hooks';
 
 const boxWidth = 320;
 const boxHeight = 320;
 const margin = 5;
-
 
 export default function Renderer({ caseList, children }) {
 
