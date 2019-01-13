@@ -31,7 +31,7 @@ export default [
     { name: 'brunoswap', moves: `R U2 R' U2 R' F R2 U R' U' F'`, mirror: true, invert: true },
     { name: 'tswap', moves: `F R U' R' U' R U2 R' U' F'`, mirror: true, invert: true },
     { name: 'almostJ', moves: `R' U' R U R' F' R U R' U' R' F R2`, mirror: true, invert: true },
-    { name: 'fspamfprime', moves: `F R U R' U' R U' R' U R U R' F'`, mirror: true, invert: true },
+    { name: 'fspam', moves: `F R U R' U' R U' R' U R U R' F'`, mirror: true, invert: true },
     { name: 'doublesledge', moves: `R U R' U R' F R F' U2 R' F R F'`, mirror: true, invert: true },
     { name: 'ruff', moves: `R' U' F U R U' R' F' R`, mirror: true, invert: true },
     { name: 'asdf', moves: `F R U R' U' R F' r U R' U' r'`, mirror: true, invert: true },

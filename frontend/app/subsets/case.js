@@ -36,6 +36,7 @@ function Moves({ data }) {
 }
 
 function findSolution(solutions) {
+    // TODO: improve
     // if just one, just choose which has the shortest moves
     const stars = solutions.filter(({solution}) => {
         return solution.length === 2;
