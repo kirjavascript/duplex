@@ -10,12 +10,12 @@ pub struct JSONAlg {
     invert: bool,
 }
 
-pub fn create_algset(data: String) -> Vec<Alg> {
+pub fn create_algset(data: String) -> Result<Vec<Alg>, String> {
     let json_algs: Vec<JSONAlg> = serde_json::from_str(&data).unwrap();
     let mut algs = Vec::new();
     for json_alg in json_algs {
         // TODO: error handling
-        let alg = Alg::new(&json_alg).unwrap();
+        let alg = Alg::new(&json_alg)?;
         if json_alg.mirror {
             algs.push(alg.mirror());
         }
@@ -27,7 +27,7 @@ pub fn create_algset(data: String) -> Vec<Alg> {
         }
         algs.push(alg);
     }
-    algs
+    Ok(algs)
 }
 
 #[derive(Debug)]
@@ -41,7 +41,9 @@ pub struct Alg {
 
 impl Alg {
     pub fn new(json_alg: &JSONAlg) -> Result<Self, String> {
-         let moves = parse_moves(&json_alg.moves)?;
+         let moves = parse_moves(&json_alg.moves).map_err(|err| {
+            format!("{} ({})", err, json_alg.name)
+         })?;
          let transform = moves_to_transform(&moves);
          match transform.is_ll_transform() {
              true => Ok(Alg {
@@ -51,7 +53,7 @@ impl Alg {
                  mirror: false,
                  invert: false
              }),
-             false => Err(format!("Not an LL alg: {}", &json_alg.moves)),
+             false => Err(format!("Not an LL alg {} ({})", &json_alg.moves, &json_alg.name)),
          }
     }
 

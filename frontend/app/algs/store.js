@@ -5,6 +5,7 @@ const ctx = createContext();
 
 export const AlgStore = ({  children }) => {
     const [algs, setAlgs] = useState(defaultList);
+    const [parseError, setParseError] = useState();
 
     const addAlg = useCallback((obj) => {
         setAlgs(state => [...state, {
@@ -60,6 +61,8 @@ export const AlgStore = ({  children }) => {
             updateName,
             toggleMirror,
             toggleInvert,
+            parseError,
+            setParseError,
         }}
         children={children}
     />

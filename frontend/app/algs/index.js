@@ -18,14 +18,38 @@ export default function Algs() {
         updateName,
         toggleMirror,
         toggleInvert,
-        deleteAlg
+        deleteAlg,
+        parseError,
+        setParseError,
     } = useAlgs();
 
-    const { loadAlgs } = useSolver();
+    const {
+        loadAlgs,
+    } = useSolver();
 
     return (
         <Fragment>
             TODO: storage/csv
+            <button
+                type="button"
+                onClick={() => {
+                    setParseError();
+                    loadAlgs(algs);
+                }}
+            >
+                reload algs
+            </button>
+            <button
+                type="button"
+                onClick={addAlg}
+            >
+                add
+            </button>
+            {parseError && (
+                <pre style={{color:'red'}}>
+                    {parseError}
+                </pre>
+            )}
             {algs.map((alg, i) => (
                 <div key={i} className="alg">
                     <input
@@ -59,20 +83,6 @@ export default function Algs() {
                     </button>
                 </div>
             ))}
-            <button
-                type="button"
-                onClick={() => {
-                    loadAlgs(algs);
-                }}
-            >
-                reload algs
-            </button>
-            <button
-                type="button"
-                onClick={addAlg}
-            >
-                add
-            </button>
         </Fragment>
     );
 }

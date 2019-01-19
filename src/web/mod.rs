@@ -22,10 +22,16 @@ lazy_static! {
 
 #[no_mangle]
 extern "C" fn load_algs(algs: JSString) {
-    let algset = create_algset(algs.to_string());
-    console!("loaded {} transforms", algset.len());
-    ALGS.lock().unwrap().clear();
-    ALGS.lock().unwrap().extend(algset);
+    match create_algset(algs.to_string()) {
+        Ok(algset) => {
+            console!("loaded {} transforms", algset.len());
+            ALGS.lock().unwrap().clear();
+            ALGS.lock().unwrap().extend(algset);
+        },
+        Err(err) => {
+            export_string(&err);
+        },
+    }
 }
 
 #[no_mangle]

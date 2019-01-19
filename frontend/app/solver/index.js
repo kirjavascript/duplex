@@ -30,7 +30,7 @@ export function useSolver() {
 }
 
 export default function Solver({ children }) {
-    const { algs } = useAlgs();
+    const { algs, setParseError } = useAlgs();
     const { cases, setCases } = useCases();
     const { solutions, setSolutions } = useSolutions();
     const workerRef = useRef();
@@ -44,6 +44,8 @@ export default function Solver({ children }) {
                     action: 'LOAD_ALGS',
                     payload: algs,
                 });
+            } else if (action === 'PARSE_ERROR') {
+                setParseError(payload);
             } else if (action === 'CASES') {
                 setCases(payload);
             } else if (action === 'SOLUTIONS') {

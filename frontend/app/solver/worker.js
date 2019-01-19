@@ -83,13 +83,17 @@ fetch(ENDPOINT).then(response =>
 
     // userland
 
-    console.time('startup')
     self.onmessage = ({ data: { action, payload } }) => {
         if (action === 'LOAD_ALGS') {
-            wasm.load_algs(JSON.stringify(payload));
-            const solutions = JSON.parse(wasm.run_algs());
-            console.timeEnd('startup')
-            self.postMessage({ action: 'SOLUTIONS', payload: solutions });
+            console.time('solution time');
+            const error = wasm.load_algs(JSON.stringify(payload));
+            if (error) {
+                self.postMessage({ action: 'PARSE_ERROR', payload: error });
+            } else {
+                const solutions = JSON.parse(wasm.run_algs());
+                self.postMessage({ action: 'SOLUTIONS', payload: solutions });
+            }
+            console.timeEnd('solution time');
         } else if (action === 'EXPLORE_SOLVE') {
             wasm.explore_solve(JSON.stringify(payload));
         }
