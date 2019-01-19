@@ -1,14 +1,39 @@
+import React, {
+    createContext,
+    useContext,
+    useEffect,
+    useState,
+    useCallback,
+    useRef,
+} from 'react';
 
-import React, { useEffect } from 'react';
 import { useAlgs } from '#app/algs/store';
 import { useCases } from '#app/subsets/store';
 import { useSolutions } from './store';
 import Worker from './worker';
 
-export default function Solver() {
+const ctx = createContext();
+
+export function useSolver() {
+    const { workerRef: { current: worker } } = useContext(ctx);
+
+    function loadAlgs(algs) {
+        worker.postMessage({
+            action: 'LOAD_ALGS',
+            payload: algs,
+        });
+    }
+
+    return {
+        loadAlgs,
+    };
+}
+
+export default function Solver({ children }) {
     const { algs } = useAlgs();
     const { cases, setCases } = useCases();
     const { solutions, setSolutions } = useSolutions();
+    const workerRef = useRef();
 
     useEffect(() => {
         const worker = new Worker();
@@ -26,11 +51,14 @@ export default function Solver() {
             }
         });
 
-        // worker.postMessage({
-        //     action: 'EXPLORE_SOLVE',
-        //     payload: transform,
-        // });
+        workerRef.current = worker;
+
     }, []);
 
-    return false;
+    return <ctx.Provider
+        value={{
+            workerRef,
+        }}
+        children={children}
+    />;
 }

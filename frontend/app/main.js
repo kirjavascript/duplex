@@ -16,7 +16,6 @@ const links = ['', 'explore', 'subsets', 'trainer', 'algs'];
 function App(props) {
     return (
         <Fragment>
-            <Solver />
             <Route
                 component={({location}) => (
                     <div className="menu" ref={(node) => {
@@ -49,7 +48,7 @@ if (typeof WebAssembly !== 'object') {
     document.body.innerHTML = 'this website requires WebAssembly';
 } else {
     render((
-        [<App />, SolutionStore, CaseStore, AlgStore, Router]
+        [<App />, Solver, SolutionStore, CaseStore, AlgStore, Router]
         .reduce((children, Element) => <Element>{children}</Element>)
     ), document.body.appendChild(document.createElement('div')));
 }

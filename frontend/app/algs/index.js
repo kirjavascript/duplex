@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-// import { loadAlgs } from '#app/solver';
+import { useSolver } from '#app/solver';
 import { useAlgs, AlgStore } from './store';
 
 function Checkbox({ checked, onChange }) {
@@ -20,6 +20,8 @@ export default function Algs() {
         toggleInvert,
         deleteAlg
     } = useAlgs();
+
+    const { loadAlgs } = useSolver();
 
     return (
         <Fragment>
@@ -60,7 +62,7 @@ export default function Algs() {
             <button
                 type="button"
                 onClick={() => {
-                    // loadAlgs(algs);
+                    loadAlgs(algs);
                 }}
             >
                 reload algs
