@@ -3,6 +3,7 @@ import { useSolutions } from '#app/solver/store';
 import { useCases } from './store';
 import Case from './case';
 import Renderer from './renderer';
+import Select from './select';
 
 export default function Subsets() {
     const { cases } = useCases();
@@ -15,6 +16,7 @@ export default function Subsets() {
     // starred first
     // reduce auf / transforms / movecount
     // inverse / mirror weight 0..4
+    // hide cases you've already seen
 
     const caseList = cases.map((case_) => ({
         case_,
@@ -23,6 +25,7 @@ export default function Subsets() {
 
     return (
         <div className="subsets">
+            <Select />
             <div className="info">
                 <span className="data">
                     {cases.length}

@@ -96,6 +96,8 @@ fetch(ENDPOINT).then(response =>
             console.timeEnd('solution time');
         } else if (action === 'EXPLORE_SOLVE') {
             wasm.explore_solve(JSON.stringify(payload));
+        } else if (action == 'LOAD_SUBSET') {
+            wasm.load_subset(JSON.stringify(payload));
         }
     };
 

@@ -62,8 +62,8 @@ pub fn parse_moves(data: &str) -> Result<Vec<Move>, String> {
         Err(format!(
             "{}\n{}^ parse error at position {}",
             data,
-            String::from_utf8(vec![b' '; pos + 1]).unwrap(),
-            pos,
+            String::from_utf8(vec![b' '; pos]).unwrap(),
+            pos + 1,
         ))
     } else {
         Ok(moves)

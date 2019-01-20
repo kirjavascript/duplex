@@ -24,8 +24,15 @@ export function useSolver() {
         });
     }
 
+    function loadSubset(subset) {
+        worker.postMessage({
+            action: 'LOAD_SUBSET',
+            payload: subset,
+        });
+    }
+
     return {
-        loadAlgs,
+        loadAlgs, loadSubset,
     };
 }
 

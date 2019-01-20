@@ -35,6 +35,12 @@ extern "C" fn load_algs(algs: JSString) {
 }
 
 #[no_mangle]
+extern "C" fn load_subset(subset: JSString) {
+    let subset_mask: Case = serde_json::from_str(&subset.to_string()).unwrap();
+    console!("{:?}", subset_mask);
+}
+
+#[no_mangle]
 extern "C" fn enumerate_ll() {
     let cases = enumerate::get_cases();
     export_string(&json!(&cases).to_string());
