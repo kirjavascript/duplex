@@ -448,7 +448,7 @@ impl Move {
 
 #[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
 pub enum Face {
-    U, R, F, B, L, D,
+    U, R, F, B, L, D, X,
 }
 
 #[derive(PartialEq, Serialize, Deserialize, Clone)]
@@ -579,6 +579,7 @@ impl Cube {
                 Face::L => 3,
                 Face::B => 4,
                 Face::D => 5,
+                Face::X => unreachable!(),
             }
         }
 

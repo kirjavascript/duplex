@@ -92,8 +92,8 @@ fn get_EP() -> ([Transform; 12], [Transform; 12]) {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Case {
     pub index: String,
-    edges: Vec<Edge>,
-    corners: Vec<Corner>,
+    pub edges: Vec<Edge>,
+    pub corners: Vec<Corner>,
 }
 
 #[allow(non_snake_case)]
@@ -169,55 +169,71 @@ pub fn get_cases() -> Vec<Case> {
     vec
 }
 
-// Code to generate indices;
+// Code for generate indices / subsets;
 
-// fn cmp_auf_cube(this: &Cube, case: &Cube) -> bool {
-//     let is_same = |edges: &[Edge], corners: &[Corner]| {
-//         edges == &case.edges[..4] && corners == &case.corners[..4]
-//     };
-//     let edges = &mut this.edges.clone()[..4];
-//     let corners = &mut this.corners.clone()[..4];
-//     for _ in 0..4 {
-//         rotate_stickers(edges, corners);
-//         for _ in 0..4 {
-//             rotate_edges(edges, corners);
-//             if is_same(edges, corners) {
-//                 return true
-//             }
-//         }
-//     }
-//     false
-// }
+pub fn check_mask(mask: &Case, case: &Case) -> bool {
+    let is_same = |edges: &[Edge], corners: &[Corner]| {
+        for (i, edge) in edges.iter().enumerate() {
+            let case_edge = &case.edges[i];
+            if edge.0 != Face::X && edge.0 != case_edge.0
+                || edge.1 != Face::X && edge.1 != case_edge.1 {
+                return false
+            }
+        }
+        for (i, corner) in corners.iter().enumerate() {
+            let case_corner = &case.corners[i];
+            if corner.0 != Face::X && corner.0 != case_corner.0
+                || corner.1 != Face::X && corner.1 != case_corner.1
+                || corner.2 != Face::X && corner.2 != case_corner.2 {
+                return false
+            }
+        }
+        true
+    };
+    let edges = &mut mask.edges.clone();
+    let corners = &mut mask.corners.clone();
+    for _ in 0..4 {
+        rotate_stickers(edges, corners);
+        for _ in 0..4 {
+            rotate_edges(edges, corners);
+            if is_same(edges, corners) {
+                return true
+            }
+        }
+    }
+    false
+}
 
-// fn rotate_stickers(edges: &mut [Edge], corners: &mut [Corner]) {
-//     for edge in edges.iter_mut() {
-//         rotate_sticker(&mut edge.0);
-//         rotate_sticker(&mut edge.1);
-//     }
-//     for corner in corners.iter_mut() {
-//         rotate_sticker(&mut corner.0);
-//         rotate_sticker(&mut corner.1);
-//         rotate_sticker(&mut corner.2);
-//     }
-// }
+fn rotate_stickers(edges: &mut [Edge], corners: &mut [Corner]) {
+    for edge in edges.iter_mut() {
+        rotate_sticker(&mut edge.0);
+        rotate_sticker(&mut edge.1);
+    }
+    for corner in corners.iter_mut() {
+        rotate_sticker(&mut corner.0);
+        rotate_sticker(&mut corner.1);
+        rotate_sticker(&mut corner.2);
+    }
+}
 
-// fn rotate_edges(edges: &mut [Edge], corners: &mut [Corner]) {
-//     edges.rotate_right(1);
-//     corners.rotate_right(1);
-// }
+fn rotate_edges(edges: &mut [Edge], corners: &mut [Corner]) {
+    edges.rotate_right(1);
+    corners.rotate_right(1);
+}
 
 
-// fn rotate_sticker(sticker: &mut Face) {
-//     use crate::cube::Face::*;
-//     std::mem::replace(sticker, match sticker {
-//         U => U,
-//         B => R,
-//         R => F,
-//         F => L,
-//         L => B,
-//         _ => unreachable!()
-//     });
-// }
+fn rotate_sticker(sticker: &mut Face) {
+    use crate::cube::Face::*;
+    std::mem::replace(sticker, match sticker {
+        U => U,
+        B => R,
+        R => F,
+        F => L,
+        L => B,
+        X => X,
+        _ => unreachable!(),
+    });
+}
 
 static ROTATE_INDEX: [u64; 213] = [
     807432605926483u64, // <-- solved

@@ -55,7 +55,7 @@ fetch(ENDPOINT).then(response =>
     // init console, call main
 
     ref.console_stack = (method) => {
-        const message = joinStringsFromStack();
+        const message = getStringFromStack();
         console[method]('> ' + message);
     };
     exports.web_main();
@@ -97,7 +97,9 @@ fetch(ENDPOINT).then(response =>
         } else if (action === 'EXPLORE_SOLVE') {
             wasm.explore_solve(JSON.stringify(payload));
         } else if (action == 'LOAD_SUBSET') {
-            wasm.load_subset(JSON.stringify(payload));
+            const subsetJSON = wasm.load_subset(JSON.stringify(payload));
+            const subset = JSON.parse(subsetJSON);
+            self.postMessage({ action: 'SUBSET', payload: subset });
         }
     };
 

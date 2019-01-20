@@ -10,6 +10,7 @@ fn main() {
 
      // use crate::cube::*;
      // use crate::alg::*;
+     // use crate::enumerate::*;
 
      // let alg = Alg::new("M'U'MU2M'U'M", "name").unwrap();
 

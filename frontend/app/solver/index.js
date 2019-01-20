@@ -38,7 +38,7 @@ export function useSolver() {
 
 export default function Solver({ children }) {
     const { algs, setParseError } = useAlgs();
-    const { cases, setCases } = useCases();
+    const { cases, setCases, setSubset } = useCases();
     const { solutions, setSolutions } = useSolutions();
     const workerRef = useRef();
 
@@ -57,6 +57,8 @@ export default function Solver({ children }) {
                 setCases(payload);
             } else if (action === 'SOLUTIONS') {
                 setSolutions(payload);
+            } else if (action === 'SUBSET') {
+                setSubset(payload);
             }
         });
 

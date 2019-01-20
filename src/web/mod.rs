@@ -37,7 +37,12 @@ extern "C" fn load_algs(algs: JSString) {
 #[no_mangle]
 extern "C" fn load_subset(subset: JSString) {
     let subset_mask: Case = serde_json::from_str(&subset.to_string()).unwrap();
-    console!("{:?}", subset_mask);
+    let cases = CASES.lock().unwrap();
+    let subset: Vec<String> = cases.iter()
+        .filter(|case| enumerate::check_mask(&subset_mask, &case))
+        .map(|case| case.index.clone())
+        .collect();
+    export_string(&json!(&subset).to_string());
 }
 
 #[no_mangle]
@@ -48,9 +53,9 @@ extern "C" fn enumerate_ll() {
     CASES.lock().unwrap().extend(cases);
 }
 
+
 #[no_mangle]
 unsafe extern "C" fn run_algs() {
-    // JSFunc
     console!("combining algs");
 
     let do_auf = |index| match index {

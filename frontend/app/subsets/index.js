@@ -6,8 +6,9 @@ import Renderer from './renderer';
 import Select from './select';
 
 export default function Subsets() {
-    const { cases } = useCases();
+    const { cases, subset } = useCases();
     const { solutions, length: coverage } = useSolutions();
+    const hasSubset = subset.length > 0;
 
     // TODO: AUF, change colour
     // star cases that use a single alg
@@ -18,7 +19,11 @@ export default function Subsets() {
     // inverse / mirror weight 0..4
     // hide cases you've already seen
 
-    const caseList = cases.map((case_) => ({
+    const filtered = cases.filter((case_) => {
+        return !hasSubset || subset.includes(case_.index);
+    });
+
+    const caseList = filtered.map((case_) => ({
         case_,
         solutions: solutions[case_.index] || [],
     }));
@@ -26,6 +31,7 @@ export default function Subsets() {
     return (
         <div className="subsets">
             <Select />
+            {JSON.stringify(subset.length)}
             <div className="info">
                 <span className="data">
                     {cases.length}

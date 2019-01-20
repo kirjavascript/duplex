@@ -95,7 +95,7 @@ extern "C" fn dealloc_str(ptr: *mut c_char) {
 // console
 
 pub fn console_log(string: &str, type_: usize) {
-    export_string(string);
+    export_string_raw(string);
     unsafe { console_stack(type_); }
 }
 
