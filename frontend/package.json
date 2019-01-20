@@ -33,6 +33,7 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
+    "immer": "^1.10.5",
     "react": "^16.8.0-alpha.0",
     "react-dom": "^16.8.0-alpha.0",
     "react-router-dom": "^4.3.1"

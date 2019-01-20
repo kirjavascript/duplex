@@ -31,12 +31,19 @@ export default function Subsets() {
     return (
         <div className="subsets">
             <Select />
-            {JSON.stringify(subset.length)}
             <div className="info">
                 <span className="data">
                     {cases.length}
                 </span>
                 cases
+                {hasSubset && (
+                    <Fragment>
+                        <span className="data">
+                            {subset.length}
+                        </span>
+                        in subset
+                    </Fragment>
+                )}
                 <span className="data">
                     {cases.length - coverage}
                 </span>

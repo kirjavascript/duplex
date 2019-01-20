@@ -74,3 +74,10 @@ export default function LL({
         </svg>
     );
 }
+
+LL.default = {
+    corners: [ [ 'U', 'L', 'B' ], [ 'U', 'B', 'R' ], [ 'U', 'R', 'F' ], [ 'U', 'F', 'L' ] ],
+    edges: [ [ 'U', 'B' ], [ 'U', 'R' ], [ 'U', 'F' ], [ 'U', 'L' ] ],
+};
+
+LL.faces = faces;
