@@ -4,6 +4,7 @@ import { useCases } from './store';
 import Case from './case';
 import Renderer from './renderer';
 import Select from './select';
+import SubsetList from './subset-list';
 
 export default function Subsets() {
     const { cases, subset } = useCases();
@@ -30,28 +31,33 @@ export default function Subsets() {
 
     return (
         <div className="subsets">
-            <Select />
-            <div className="info">
-                <span className="data">
-                    {cases.length}
-                </span>
-                cases
-                {hasSubset && (
-                    <Fragment>
+            <div className="config">
+                <Select />
+                <div className="info">
+                    <div>
                         <span className="data">
-                            {subset.length}
+                            {cases.length}
                         </span>
-                        in subset
-                    </Fragment>
-                )}
-                <span className="data">
-                    {cases.length - coverage}
-                </span>
-                unsolved
-                <span className="data">
-                    {cases.length ? Math.round((coverage/cases.length)*100) : 0}%
-                </span>
-                coverage
+                        cases
+                        <span className="data">
+                            {cases.length - coverage}
+                        </span>
+                        unsolved
+                        <span className="data">
+                            {cases.length ? Math.round((coverage/cases.length)*100) : 0}%
+                        </span>
+                        coverage
+                    </div>
+                    {hasSubset && (
+                        <div>
+                            <span className="data">
+                                {subset.length}
+                            </span>
+                            in subset
+                        </div>
+                    )}
+                    <SubsetList />
+                </div>
             </div>
 
             <Renderer caseList={caseList}>

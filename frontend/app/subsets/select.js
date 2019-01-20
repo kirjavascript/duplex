@@ -1,22 +1,32 @@
 import React, { Fragment, useState } from 'react';
-import { useSolver } from '#app/solver';
 import produce from 'immer';
+import { useSolver } from '#app/solver';
 import LL from './ll';
+import { useCases } from './store';
 
-// useLL
-
-function Picker({ sticker, setSticker }) {
+function Picker() {
+    const { sticker, setSticker } = useCases();
     const [faces] = useState(() => {
         return Object.keys(LL.faces)
             .map(key => ({ key, value: LL.faces[key] }));
     });
     return (
         <div className="picker">
+            <div
+                className="sticker"
+                style={{
+                    backgroundColor: LL.faces[sticker],
+                    border: '5px solid white',
+                    marginRight: '5px',
+                }}
+            />
             {faces.map((face, i) => (
                 <div
                     key={i}
                     className="sticker"
-                    style={{backgroundColor: face.value}}
+                    style={{
+                        backgroundColor: face.value,
+                    }}
                     onClick={() => {
                         setSticker(face.key);
                     }}
@@ -29,17 +39,10 @@ function Picker({ sticker, setSticker }) {
 export default function Select() {
 
     const { loadSubset } = useSolver();
-
-    const [ll, setLL] = useState(LL.default);
-    const [sticker, setSticker] = useState('X');
-
-    const reset = () => {
-        setLL(LL.default);
-        loadSubset({ index: '0', ...LL.default });
-    };
+    const { ll, setLL, sticker } = useCases();
 
     return (
-        <Fragment>
+        <div className="select">
             <LL
                 case_={ll}
                 width={280}
@@ -50,15 +53,10 @@ export default function Select() {
                     });
                     setLL(newPos);
                     loadSubset({ index: '0', ...newPos });
+                    console.log(JSON.stringify(newPos, 0,4).replace(/"/g,'\''));
                 }}
             />
-            <Picker
-                sticker={sticker}
-                setSticker={setSticker}
-            />
-            <button onClick={reset}>
-                reset
-            </button>
-        </Fragment>
+            <Picker />
+        </div>
     );
 }
