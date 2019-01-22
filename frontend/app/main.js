@@ -2,6 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
+import About from './about';
 import Algs from './algs';
 import Solver from './solver';
 import Explore from './explore';
@@ -11,7 +12,7 @@ import { AlgStore } from './algs/store';
 import { CaseStore } from './subsets/store';
 import { SolutionStore } from './solver/store';
 
-const links = ['', 'explore', 'subsets', 'trainer', 'algs'];
+const links = ['', 'subsets', 'trainer', 'algs'];
 
 function App(props) {
     return (
@@ -37,6 +38,7 @@ function App(props) {
                     </div>
                 )}
             />
+            <Route exact path="/" component={About} />
             <Route path="/algs" component={Algs} />
             <Route path="/explore" component={Explore} />
             <Route path="/subsets" component={Subsets} />

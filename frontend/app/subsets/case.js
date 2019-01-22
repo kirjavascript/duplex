@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react';
+import Modal from './modal';
 
 import LL from './ll';
 
@@ -62,11 +63,11 @@ function findSolution(solutions) {
         best: ranked.length ? ranked[0].data : undefined,
     };
 }
-// 1217172485964883
 
 export default function Case({ case_, solutions }) {
 
     const { best } = findSolution(solutions);
+    const [showModal, setShowModal] = useState(false);
 
     return (
         <div
@@ -83,10 +84,9 @@ export default function Case({ case_, solutions }) {
                     </Fragment>
                 ))}
             </pre>
-            {solutions.length} solutions
-            <pre>
-                {JSON.stringify(findSolution(solutions).solution, 0, 4)}
-            </pre>
+            <span className="modal-trigger">
+                {solutions.length} solutions
+            </span>
             <div className="index">{case_.index}</div>
         </div>
     )

@@ -53,7 +53,6 @@ export default function Select() {
                     });
                     setLL(newPos);
                     loadSubset({ index: '0', ...newPos });
-                    console.log(JSON.stringify(newPos, 0,4).replace(/"/g,'\''));
                 }}
             />
             <Picker />

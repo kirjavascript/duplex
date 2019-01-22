@@ -70,6 +70,10 @@ input {
     a {
         font-size: 20px;
         padding: 10px 40px;
+
+        @media only screen and (max-width: 650px) {
+            padding: 10px 5px;
+        }
         display: block;
 
         &.active {
@@ -95,5 +99,14 @@ input {
     }
     .actions {
         text-align: center;
+    }
+}
+
+.about {
+    width: 800px;
+    margin: 0 auto;
+    padding-top: 40px;
+    ul {
+        list-style: none;
     }
 }

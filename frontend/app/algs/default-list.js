@@ -36,6 +36,7 @@ export default [
     { name: 'ruff', moves: `R' U' F U R U' R' F' R`, mirror: true, invert: true },
     { name: 'fruit', moves: `F R U R' U' R F' r U R' U' r'`, mirror: true, invert: true },
     { name: 'asdf', moves: `R U R' U' R' F R2 U R' U' F'`, mirror: true, invert: true },
+    // { name: 'diagT', moves: ` R2U'RFR'UR2U'R'F'R `, mirror: true, invert: true },
     // { name: 'checkcomm', moves: `L'R'D2RU2R'D2RU2L`, mirror: true, invert: true },
     // { name: 'snappy', moves: `R2U'RFR'UR2U'R'F'R`, mirror: true, invert: true },
     // { name: 'otherfruf', moves: `F R2 D R' U R D' R2 U' F'`, mirror: true, invert: true },
