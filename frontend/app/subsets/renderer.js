@@ -2,7 +2,7 @@ import React, { Fragment, useRef } from 'react';
 import { useWindowSize, useElementYPos } from './render-hooks';
 
 const boxWidth = 300;
-const boxHeight = 320;
+const boxHeight = 300;
 const leeway = boxHeight;
 const margin = 10;
 

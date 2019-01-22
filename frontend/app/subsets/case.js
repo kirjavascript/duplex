@@ -1,6 +1,5 @@
 import React, { Fragment, useState } from 'react';
 import Modal from './modal';
-
 import LL from './ll';
 
 const auf = ['','U ','U2 ','U\' '];
@@ -84,10 +83,22 @@ export default function Case({ case_, solutions }) {
                     </Fragment>
                 ))}
             </pre>
-            <span className="modal-trigger">
+            <p>
                 {solutions.length} solutions
-            </span>
-            <div className="index">{case_.index}</div>
+                <br />
+                <span
+                    onClick={() => setShowModal(true)}
+                    className="modal-trigger"
+                >
+                    {' '}(see all)
+                </span>
+            </p>
+            {showModal && (
+                <Modal
+                    case_={case_}
+                    solutions={solutions}
+                />
+            )}
         </div>
     )
 }
