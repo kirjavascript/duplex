@@ -14,7 +14,7 @@ export default function About() {
                 good systems for creating 2x3x3 blocks are already well known (F2L, RouxDFDB, Petrus, Heise) and will not be described here.
             </p>
             <p>
-                the last layer is comprised of one look then a combination of two algs. the solutions for each case are generated from a list of about 40 algs.  an advantage of this approach is that since we can generate combinations from a known good list of algs, we can eliminate bad cases entirely.
+                the last layer is comprised of one look then a combination of two algs. the solutions for each case are generated from a list of about 40 algs.  an advantage of this approach is that since we can generate combinations from a known good list of algs, we can eliminate bad cases <span className="blue">almost*</span> entirely.
             </p>
             <p>
                 since several solutions exist for each case, arranging them by TODO: sorting
@@ -45,6 +45,7 @@ trainer: just alg mode
 +Kirjava> that's something I'm wondering about DXLL. can you learn rules that allow you to solve cases you haven't learnt in a one by one fashion
 +Kirjava> like something that applies to a group of cases
 SPA mode website
+provide algsets from 2ll
 
 > duplex on cll
 

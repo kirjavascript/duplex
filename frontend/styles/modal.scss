@@ -1,0 +1,25 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(192,192,192,0.5);
+    z-index: 2;
+    .modal-box {
+        position: absolute;
+        background-color: white;
+        border-radius: 15px;
+        top: 20px;
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+        @media only screen and (min-width: 750px) {
+            width: 80vw;
+            top: 10%;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+}

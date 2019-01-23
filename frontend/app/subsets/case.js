@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useCallback } from 'react';
 import Modal from './modal';
 import LL from './ll';
 
@@ -68,6 +68,10 @@ export default function Case({ case_, solutions }) {
     const { best } = findSolution(solutions);
     const [showModal, setShowModal] = useState(false);
 
+    const closeModal = useCallback(() => {
+        setShowModal(false);
+    }, []);
+
     return (
         <div
             className="case visible"
@@ -93,12 +97,12 @@ export default function Case({ case_, solutions }) {
                     {' '}(see all)
                 </span>
             </p>
-            {showModal && (
                 <Modal
+                    show={showModal}
+                    close={closeModal}
                     case_={case_}
                     solutions={solutions}
                 />
-            )}
         </div>
     )
 }
