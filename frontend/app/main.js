@@ -5,8 +5,8 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import About from './about';
 import Algs from './algs';
 import Solver from './solver';
-import Explore from './explore';
 import Subsets from './subsets';
+import Trainer from './trainer';
 
 import { AlgStore } from './algs/store';
 import { CaseStore } from './subsets/store';
@@ -40,8 +40,8 @@ function App(props) {
             />
             <Route exact path="/" component={About} />
             <Route path="/algs" component={Algs} />
-            <Route path="/explore" component={Explore} />
             <Route path="/subsets" component={Subsets} />
+            <Route path="/trainer" component={Trainer} />
         </Fragment>
     );
 }

@@ -1,4 +1,4 @@
-import React, { Component, useRef, useEffect, useState } from 'react';
+import React, { Component, Fragment, useRef, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import LL from './ll';
 
@@ -6,7 +6,7 @@ export default function Modal({ show = false, ...props }) {
     return show && <ModalDOM {...props} />
 }
 
-function ModalDOM({ case_, solutions, close }) {
+function ModalDOM({ case_, solutions, children }) {
     const container = useRef();
     const [display, setDisplay] = useState(false);
 
@@ -23,14 +23,7 @@ function ModalDOM({ case_, solutions, close }) {
     return display && createPortal((
         <div className="modal">
             <div className="modal-box">
-                <LL case_={case_} />
-
-                <button
-                    type="button"
-                    onClick={close}
-                >
-                    close
-                </button>
+                {children()}
             </div>
         </div>
     ), container.current);

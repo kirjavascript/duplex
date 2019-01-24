@@ -18,6 +18,15 @@ static mut CUBE: Cube = Cube::new();
 lazy_static! {
     static ref ALGS: Mutex<Vec<Alg>> = Mutex::new(Vec::new());
     static ref CASES: Mutex<Vec<Case>> = Mutex::new(Vec::new());
+    static ref SUBSET: Mutex<Vec<String>> = Mutex::new(Vec::new());
+}
+
+#[no_mangle]
+extern "C" fn enumerate_ll() {
+    let cases = enumerate::get_cases();
+    export_string(&json!(&cases).to_string());
+    CASES.lock().unwrap().clear();
+    CASES.lock().unwrap().extend(cases);
 }
 
 #[no_mangle]
@@ -35,6 +44,13 @@ extern "C" fn load_algs(algs: JSString) {
 }
 
 #[no_mangle]
+extern "C" fn get_random_from_subset() {
+    let subset = SUBSET.lock().unwrap();
+    let index = &subset[interop::range_random(0..subset.len())];
+    console!("{}", index);
+}
+
+#[no_mangle]
 extern "C" fn load_subset(subset: JSString) {
     let subset_mask: Case = serde_json::from_str(&subset.to_string()).unwrap();
     let cases = CASES.lock().unwrap();
@@ -43,16 +59,9 @@ extern "C" fn load_subset(subset: JSString) {
         .map(|case| case.index.clone())
         .collect();
     export_string(&json!(&subset).to_string());
+    SUBSET.lock().unwrap().clear();
+    SUBSET.lock().unwrap().extend(subset);
 }
-
-#[no_mangle]
-extern "C" fn enumerate_ll() {
-    let cases = enumerate::get_cases();
-    export_string(&json!(&cases).to_string());
-    CASES.lock().unwrap().clear();
-    CASES.lock().unwrap().extend(cases);
-}
-
 
 #[no_mangle]
 unsafe extern "C" fn run_algs() {
@@ -158,62 +167,4 @@ unsafe extern "C" fn run_algs() {
         .collect::<HashMap<String, &Vec<Value>>>();
 
     export_string(&json!(solutions).to_string());
-}
-
-// #[no_mangle]
-// extern "C" fn explore_alg(mut input: JSString) {
-// console!("{}", input);
-// }
-
-#[no_mangle]
-unsafe extern "C" fn explore_solve(input: JSString) {
-    console!("solving start");
-
-    let position: Cube = serde_json::from_str(&input.to_string())
-        .expect("malformed cube");
-
-    // TODO: setup
-
-    let do_auf = |index| {
-        match index {
-            1 => CUBE.do_transform(&UTRANS),
-            2 => CUBE.do_transform(&UDBLTRANS),
-            3 => CUBE.do_transform(&UPRITRANS),
-            _ => {},
-        }
-    };
-    let algs = ALGS.lock().unwrap();
-    for first_auf in 0..4 {
-        for first_alg in algs.iter() {
-            // first check without a second alg
-            CUBE.replace(position.clone());
-            do_auf(first_auf);
-            CUBE.do_transform(&first_alg.transform);
-
-            if CUBE.is_ll_solved() {
-                console!("success: {} {:?}", first_auf, first_alg.moves);
-            }
-
-            for second_auf in 0..4 {
-                for second_alg in algs.iter() {
-                    CUBE.replace(position.clone());
-                    do_auf(first_auf);
-                    CUBE.do_transform(&first_alg.transform);
-                    do_auf(second_auf);
-                    CUBE.do_transform(&second_alg.transform);
-
-                    if CUBE.is_ll_solved() {
-                        console!("success: {} {:?} {} {:?}",
-                                 first_auf,
-                                 first_alg.moves,
-                                 second_auf,
-                                 second_alg.moves
-                        );
-                    }
-                }
-            }
-        }
-    }
-
-    console!("solving done");
 }

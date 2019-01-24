@@ -1,6 +1,6 @@
 use std::ffi::CString;
 use std::os::raw::c_char;
-use std::ops::Drop;
+use std::ops::{ Drop, Range };
 use std::ptr;
 use std::panic;
 
@@ -17,8 +17,9 @@ use std::panic;
 // imported functions
 
 extern "C" {
-    pub fn stack_push(num: usize);
+    fn stack_push(num: usize);
     fn console_stack(type_: usize); // 0 - log, 2 - warn, 3 - error
+    pub fn math_random() -> f64;
 }
 
 // called on init
@@ -115,6 +116,17 @@ macro_rules! console {
     };
 }
 
+// random
+
+pub fn range_random(range: Range<usize>) -> usize {
+    let (start, end) = (
+        range.start as f64,
+        (range.end - 1) as f64,
+    );
+    unsafe {
+        ((math_random() * end) + start) as usize
+    }
+}
 
 // panic
 

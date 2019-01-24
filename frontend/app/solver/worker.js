@@ -14,7 +14,8 @@ fetch(ENDPOINT).then(response =>
         console_stack: (type) => {
             const method = ['log', 'warn', 'error'][type];
             ref.console_stack(method);
-        }
+        },
+        math_random: () => Math.random(),
     }})
 ).then(results => {
     // interop

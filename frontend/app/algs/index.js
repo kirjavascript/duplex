@@ -2,11 +2,14 @@ import React, { Fragment } from 'react';
 import { useSolver } from '#app/solver';
 import { useAlgs, AlgStore } from './store';
 
-function Checkbox({ checked, onChange }) {
+function Checkbox({ checked, onChange, name }) {
     return (
-        <span className="link" onClick={onChange}>
-            {checked?'yes':'no'}
-        </span>
+        <div className="checkbox">
+            {name}
+            <span className="link" onClick={onChange}>
+                {checked?'yes':'no'}
+            </span>
+        </div>
     );
 }
 
@@ -65,15 +68,15 @@ export default function Algs() {
                         placeholder="moves"
                         onChange={(e) => { updateMoves(i, e.target.value); }}
                     />
-                    mirror
                     <Checkbox
                         checked={alg.mirror}
                         onChange={() => { toggleMirror(i); }}
+                        name="mirror"
                     />
-                    invert
                     <Checkbox
                         checked={alg.invert}
                         onChange={() => { toggleInvert(i); }}
+                        name="invert"
                     />
                     <button
                         type="button"

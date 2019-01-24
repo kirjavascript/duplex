@@ -27,16 +27,19 @@ export default function About() {
 
 
             <pre>{`
+
+
+TODO:
+
+trainer
+choose alg
+storage / clear all
+
 add mirror F/B
 
-give algs names w/ colours
 click to see the alg / auto mirrored -> show middle case
-
-rotate cube LL UI
-
 subsets - strip first auf by rotating
 select subset, generate cases that use smallest number of first algs OR shortest OR minimize auf
-a>all solutions/a>
 show inbetween state for solution
 show cancelled version of alg if it exists
 group by first alg
@@ -44,21 +47,13 @@ trainer: just alg mode
 
 +Kirjava> that's something I'm wondering about DXLL. can you learn rules that allow you to solve cases you haven't learnt in a one by one fashion
 +Kirjava> like something that applies to a group of cases
-SPA mode website
 provide algsets from 2ll
-
-> duplex on cll
 
 * add ability to select a subset, and list solutions that use the smallest quantity of first alg -> this is how to find recog patterns -> add colours to tell algs apart
 * show shortest, reduce first alg
 
-gamification (checkbox for learnt subset / case) |
 done before: 270 / OLLCP
-recommend cases / list recommended
-you only have to learn the first alg
 no bad algs™
-leaderboard / worst case
-stats / users / main
 
 G:
 0 [F, U, R, U', R', F'] 2 [F', L', U, L', D', L, U2, L', D, L2, U, F]

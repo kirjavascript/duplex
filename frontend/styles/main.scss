@@ -17,7 +17,7 @@ html, body {
     cursor: default;
 }
 
-div {
+div, input, button {
     box-sizing: border-box;
 }
 
@@ -88,6 +88,18 @@ input {
     display: flex;
     justify-content: center;
     margin-bottom: 5px;
+
+    @media only screen and (max-width: 850px) {
+        display: block;
+        margin: 10px 0;
+        text-align: center;
+        input, button {
+            width: 80vw;
+        }
+        .checkbox {
+            margin: 5px 0;
+        }
+    }
     .moves {
         flex-grow: 1;
     }
@@ -104,9 +116,12 @@ input {
 }
 
 .about {
-    width: 800px;
+    max-width: 800px;
+    padding: 40px 20px;
     margin: 0 auto;
-    padding-top: 40px;
+    @media only screen and (max-width: 650px) {
+        padding: 10px;
+    }
     ul {
         list-style: none;
     }

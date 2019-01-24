@@ -27,6 +27,11 @@ export const block = {
     'edges': [ [ 'U', 'B' ], [ 'X', 'X' ], [ 'X', 'X' ], [ 'U', 'L' ] ]
 };
 
+export const ell = {
+    corners: [ [ 'U', 'L', 'B' ], [ 'U', 'B', 'R' ], [ 'U', 'R', 'F' ], [ 'U', 'F', 'L' ] ],
+    edges: [ [ 'X', 'X' ],[ 'X', 'X' ],[ 'X', 'X' ], [ 'X', 'X' ] ],
+};
+
 export default function () {
 
     const { loadSubset } = useSolver();
@@ -46,6 +51,7 @@ export default function () {
             <button onClick={setSubset(zbll)}> ZBLL </button>
             <button onClick={setSubset(block)}> 1x2x2 </button>
             <button onClick={setSubset(coSolved)}> CO solved </button>
+            <button onClick={setSubset(ell)}> ELL </button>
         </div>
     );
 }

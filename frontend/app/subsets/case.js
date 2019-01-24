@@ -13,7 +13,7 @@ function getName(solution) {
     );
 }
 
-function Moves({ data }) {
+export function Moves({ data }) {
     const { solution } = data;
     const [showName, setName] = useState(true);
     return (
@@ -80,12 +80,6 @@ export default function Case({ case_, solutions }) {
             <br />
             <pre>
                 {best && <Moves data={best} />}
-                {false && solutions.map((data, i) => (
-                    <Fragment key={i}>
-                        <Moves data={data} />
-                        <hr />
-                    </Fragment>
-                ))}
             </pre>
             <p>
                 {solutions.length} solutions
@@ -97,12 +91,32 @@ export default function Case({ case_, solutions }) {
                     {' '}(see all)
                 </span>
             </p>
-                <Modal
-                    show={showModal}
-                    close={closeModal}
-                    case_={case_}
-                    solutions={solutions}
-                />
+            <Modal
+                show={showModal}
+                case_={case_}
+                solutions={solutions}
+            >
+                {() => (
+                    <Fragment>
+                        <LL case_={case_} />
+
+                        <button
+                            type="button"
+                            onClick={closeModal}
+                        >
+                            close
+                        </button>
+
+                        <br />
+                        {solutions.map((data, i) => (
+                            <Fragment key={i}>
+                                <Moves data={data} />
+                                <hr />
+                            </Fragment>
+                        ))}
+                    </Fragment>
+                )}
+            </Modal>
         </div>
     )
 }

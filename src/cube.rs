@@ -595,20 +595,6 @@ impl Cube {
         edges << 32 | corners
     }
 
-    pub fn is_ll_solved(&self) -> bool {
-        // TODO: benchmark different approaches to doing this
-        self.centres[0] == Face::U && (
-            (self.edges[0..4] == SOLVED0.edges[0..4] &&
-             self.corners[0..4] == SOLVED0.corners[0..4]) ||
-            (self.edges[0..4] == SOLVED1.edges[0..4] &&
-             self.corners[0..4] == SOLVED1.corners[0..4]) ||
-            (self.edges[0..4] == SOLVED2.edges[0..4] &&
-             self.corners[0..4] == SOLVED2.corners[0..4]) ||
-            (self.edges[0..4] == SOLVED3.edges[0..4] &&
-             self.corners[0..4] == SOLVED3.corners[0..4])
-        )
-    }
-
     pub fn is_f2l_solved(&self) -> bool {
         self.centres[0] == Face::U && (
             (self.edges[4..] == SOLVED0.edges[4..] &&
