@@ -11,6 +11,7 @@ import Trainer from './trainer';
 import { AlgStore } from './algs/store';
 import { CaseStore } from './subsets/store';
 import { SolutionStore } from './solver/store';
+import { TrainerStore } from './trainer/store';
 
 const links = ['', 'subsets', 'trainer', 'algs'];
 
@@ -50,7 +51,7 @@ if (typeof WebAssembly !== 'object') {
     document.body.innerHTML = 'this website requires WebAssembly';
 } else {
     render((
-        [<App />, Solver, SolutionStore, CaseStore, AlgStore, Router]
+        [<App />, Solver, TrainerStore, SolutionStore, CaseStore, AlgStore, Router]
         .reduce((children, Element) => <Element>{children}</Element>)
     ), document.body.appendChild(document.createElement('div')));
 }

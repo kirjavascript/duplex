@@ -99,8 +99,16 @@ fetch(ENDPOINT).then(response =>
             wasm.explore_solve(JSON.stringify(payload));
         } else if (action == 'LOAD_SUBSET') {
             const subsetJSON = wasm.load_subset(JSON.stringify(payload));
-            const subset = JSON.parse(subsetJSON);
-            self.postMessage({ action: 'SUBSET', payload: subset });
+            self.postMessage({
+                action: 'SUBSET',
+                payload: JSON.parse(subsetJSON),
+            });
+        } else if (action == 'LOAD_TRAINER_CASE') {
+            const caseJSON = wasm.get_random_from_subset();
+            self.postMessage({
+                action: 'TRAINER_CASE',
+                payload: JSON.parse(caseJSON),
+            });
         }
     };
 

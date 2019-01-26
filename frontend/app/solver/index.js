@@ -9,6 +9,7 @@ import React, {
 
 import { useAlgs } from '#app/algs/store';
 import { useCases } from '#app/subsets/store';
+import { useTrainer } from '#app/trainer/store';
 import { useSolutions } from './store';
 import Worker from './worker';
 
@@ -31,14 +32,21 @@ export function useSolver() {
         });
     }
 
+    function loadTrainerCase() {
+        worker.postMessage({
+            action: 'LOAD_TRAINER_CASE',
+        });
+    }
+
     return {
-        loadAlgs, loadSubset,
+        loadAlgs, loadSubset, loadTrainerCase,
     };
 }
 
 export default function Solver({ children }) {
     const { algs, setParseError } = useAlgs();
     const { cases, setCases, setSubset } = useCases();
+    const { setTrainerCase } = useTrainer();
     const { solutions, setSolutions } = useSolutions();
     const workerRef = useRef();
 
@@ -55,10 +63,18 @@ export default function Solver({ children }) {
                 setParseError(payload);
             } else if (action === 'CASES') {
                 setCases(payload);
+                worker.postMessage({
+                    action: 'LOAD_TRAINER_CASE',
+                });
             } else if (action === 'SOLUTIONS') {
                 setSolutions(payload);
             } else if (action === 'SUBSET') {
                 setSubset(payload);
+                worker.postMessage({
+                    action: 'LOAD_TRAINER_CASE',
+                });
+            } else if (action === 'TRAINER_CASE') {
+                setTrainerCase(payload);
             }
         });
 

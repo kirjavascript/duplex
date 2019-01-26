@@ -46,8 +46,14 @@ extern "C" fn load_algs(algs: JSString) {
 #[no_mangle]
 extern "C" fn get_random_from_subset() {
     let subset = SUBSET.lock().unwrap();
-    let index = &subset[interop::range_random(0..subset.len())];
-    console!("{}", index);
+    let cases = CASES.lock().unwrap();
+    if subset.is_empty() {
+        export_string(&json!(&cases[interop::range_random(0..cases.len())]).to_string());
+    } else {
+        let index = &subset[interop::range_random(0..subset.len())];
+        let case = cases.iter().find(|c| &c.index == index);
+        export_string(&json!(case).to_string());
+    }
 }
 
 #[no_mangle]
