@@ -25,15 +25,18 @@ export default function About() {
                 subsets of DXLL can likely be incorporated into other systems
             </p>
             <p>
-                I managed to learn OLLCP with a <a href="https://www.speedsolving.com/wiki/index.php/OLLCP_(few_algs)" target="_blank">similar system</a> over the course of a few months. other methods from the same lineage are <a href="http://www.lar5.com/cube/270" target="_blank">Petrus270</a> and <a href="https://www.speedsolving.com/forum/threads/suneoll.23222/" target="_blank">SuneOLL</a>.
+                I managed to learn OLLCP with a <a href="https://www.speedsolving.com/wiki/index.php/OLLCP_(few_algs)" target="_blank">similar system</a> over the course of a few months. other methods from the same lineage are <a href="http://lar5.com/cube/270" target="_blank">Petrus270</a> and <a href="https://www.speedsolving.com/forum/threads/suneoll.23222/" target="_blank">SuneOLL</a>.
+            </p>
+            <p>
+                <a href="http://www.github.com/kirjavascript/duplex">view the source</a>
             </p>
 
             <pre>
                 {`
 TODO:
 
-add mirror F/B
-move parse error in desktop mode
+add mirror F/B - per alg
+sort by
 
 why doesnt 1217172485964883 have a 1 alg solution
 subsets - strip first auf by rotating
@@ -42,6 +45,7 @@ group by first alg
 
 can you learn rules that allow you to solve cases you haven't learnt in a one by one fashion, like something that applies to a group of cases
 provide algsets from 2ll
+add beginner method
 
 * add ability to select a subset, and list solutions that use the smallest quantity of first alg -> this is how to find recog patterns
 * show shortest, reduce first alg

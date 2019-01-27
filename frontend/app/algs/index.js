@@ -48,12 +48,12 @@ export default function Algs() {
                 >
                     add new
                 </button>
+                {parseError && (
+                    <pre className="parse-error">
+                        {parseError}
+                    </pre>
+                )}
             </div>
-            {parseError && (
-                <pre style={{color:'red'}}>
-                    {parseError}
-                </pre>
-            )}
             {algs.map((alg, i) => (
                 <div key={i} className="alg">
                     <input

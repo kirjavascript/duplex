@@ -19,8 +19,13 @@ html, body {
     cursor: default;
 }
 
-div, input, button {
+div, input, button, pre {
     box-sizing: border-box;
+}
+
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 a, .link {
@@ -102,7 +107,6 @@ input {
         list-style: none;
     }
     pre {
-        white-space: pre-wrap;
-        word-wrap: break-word;
+        color: #CCC;
     }
 }
