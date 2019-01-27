@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import { useSolutions } from '#app/solver/store';
 import { useCases } from './store';
 import Case from './case';
@@ -55,6 +56,9 @@ export default function Subsets() {
                                 {subset.length}
                             </span>
                             in subset
+                            <Link to="/trainer">
+                                {' '}view in trainer
+                            </Link>
                         </div>
                     )}
                     <SubsetList />

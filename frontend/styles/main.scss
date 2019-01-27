@@ -1,6 +1,7 @@
 @import './subsets.scss';
 @import './modal.scss';
 @import './trainer.scss';
+@import './algs.scss';
 
 @font-face{
     font-family: 'Source Sans Pro';
@@ -87,27 +88,6 @@ input {
             background-color: steelblue;
             color: white;
         }
-    }
-}
-
-.alg {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 5px;
-
-    @media only screen and (max-width: 850px) {
-        display: block;
-        margin: 10px 0;
-        text-align: center;
-        input, button {
-            width: 80vw;
-        }
-        .checkbox {
-            margin: 5px 0;
-        }
-    }
-    .moves {
-        flex-grow: 1;
     }
 }
 

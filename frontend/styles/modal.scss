@@ -14,12 +14,34 @@
         bottom: 20px;
         left: 20px;
         right: 20px;
+        padding: 40px;
         @media only screen and (min-width: 750px) {
             width: 80vw;
             top: 10%;
             bottom: 10%;
             left: 50%;
             transform: translateX(-50%);
+        }
+
+        .moves {
+            padding: 5px 0;
+            display: block;
+        }
+        .close {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .ll {
+            position: absolute;
+            top: 40px;
+            right: 60px;
+        }
+        .solutions {
+            overflow-y: scroll;
+            height: 100%;
+            position: relative;
         }
     }
 }

@@ -1,0 +1,41 @@
+.algs {
+    padding: 7.5px 0 35px 0;
+
+    .alg {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 5px;
+
+        .moves {
+            flex-grow: 1;
+        }
+    }
+
+    .options {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        background-color: white;
+        right: 0;
+        padding: 5px 0;
+    }
+
+    @media only screen and (max-width: 850px) {
+        text-align: center;
+        .options {
+            position: relative;
+            padding: 7.5px 0 5px 0;
+        }
+        .alg {
+            display: block;
+            margin: 10px 0;
+            text-align: center;
+            input, button {
+                width: 80vw;
+            }
+            .checkbox {
+                margin: 5px 0;
+            }
+        }
+    }
+}

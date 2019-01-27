@@ -99,24 +99,20 @@ export default function Case({ case_, solutions }) {
                 {() => (
                     <Fragment>
                         <LL case_={case_} />
-
-                        <div className="index">
-                            {case_.index}
-                        </div>
                         <button
                             type="button"
                             onClick={closeModal}
+                            className="close"
                         >
                             close
                         </button>
-
-                        <br />
-                        {solutions.map((data, i) => (
-                            <Fragment key={i}>
-                                <Moves data={data} />
-                                <hr />
-                            </Fragment>
-                        ))}
+                        <div className="solutions">
+                            {solutions.map((data, i) => (
+                                <Fragment key={i}>
+                                    <Moves data={data} />
+                                </Fragment>
+                            ))}
+                        </div>
                     </Fragment>
                 )}
             </Modal>

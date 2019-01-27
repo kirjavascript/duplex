@@ -31,23 +31,24 @@ export default function Algs() {
     } = useSolver();
 
     return (
-        <Fragment>
-            TODO: storage/csv
-            <button
-                type="button"
-                onClick={() => {
-                    setParseError();
-                    loadAlgs(algs);
-                }}
-            >
-                reload algs
-            </button>
-            <button
-                type="button"
-                onClick={addAlg}
-            >
-                add
-            </button>
+        <div className="algs">
+            <div className="options">
+                <button
+                    type="button"
+                    onClick={() => {
+                        setParseError();
+                        loadAlgs(algs);
+                    }}
+                >
+                    reload algs
+                </button>
+                <button
+                    type="button"
+                    onClick={addAlg}
+                >
+                    add new
+                </button>
+            </div>
             {parseError && (
                 <pre style={{color:'red'}}>
                     {parseError}
@@ -86,6 +87,6 @@ export default function Algs() {
                     </button>
                 </div>
             ))}
-        </Fragment>
+        </div>
     );
 }
