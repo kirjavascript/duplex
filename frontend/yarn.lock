@@ -2185,6 +2185,13 @@ csso@~2.3.1:
     clap "^1.0.9"
     source-map "^0.5.3"
 
+cube-notation-normalizer@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/cube-notation-normalizer/-/cube-notation-normalizer-1.0.0.tgz#a7f3235416c3fed92f35e33edbd4dc9cb3d05c81"
+  integrity sha512-s/3WUwURc0ap89qPw/wz2h4w5Nki4lzWu/xVUATKbsYda/K0b4hRE/MJ/tClueEORPAbsqm6+tzzzmg1zChVnA==
+  dependencies:
+    lodash "^4.17.4"
+
 currently-unhandled@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/currently-unhandled/-/currently-unhandled-0.4.1.tgz#988df33feab191ef799a61369dd76c17adf957ea"

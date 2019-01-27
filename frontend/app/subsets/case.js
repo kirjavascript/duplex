@@ -100,6 +100,9 @@ export default function Case({ case_, solutions }) {
                     <Fragment>
                         <LL case_={case_} />
 
+                        <div className="index">
+                            {case_.index}
+                        </div>
                         <button
                             type="button"
                             onClick={closeModal}

@@ -1,5 +1,6 @@
 @import './subsets.scss';
 @import './modal.scss';
+@import './trainer.scss';
 
 @font-face{
     font-family: 'Source Sans Pro';
@@ -36,6 +37,11 @@ a, .link {
 
 .blue {
     color: steelblue;
+}
+
+.grey {
+    color: #AAA;
+    font-weight: 600;
 }
 
 button {
@@ -105,16 +111,6 @@ input {
     }
 }
 
-.explore {
-    .ll {
-        display: block;
-        margin: 50px auto;
-    }
-    .actions {
-        text-align: center;
-    }
-}
-
 .about {
     max-width: 800px;
     padding: 40px 20px;
@@ -124,5 +120,9 @@ input {
     }
     ul {
         list-style: none;
+    }
+    pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
     }
 }

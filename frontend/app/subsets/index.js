@@ -11,7 +11,8 @@ export default function Subsets() {
     const { solutions, length: coverage } = useSolutions();
     const hasSubset = subset.length > 0;
 
-    // TODO: AUF, change colour
+    // TODO: AUF
+    // show coverage of subset
     // star cases that use a single alg
     // trim AUF
     // select solution

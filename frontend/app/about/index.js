@@ -25,43 +25,34 @@ export default function About() {
                 subsets of DXLL can likely be incorporated into other systems
             </p>
 
-
-            <pre>{`
-
-
+            <pre>
+                {`
 TODO:
 
-trainer
 choose alg
 storage / clear all
 
 add mirror F/B
-
-click to see the alg / auto mirrored -> show middle case
+why doesnt 1217172485964883 have a 1 alg solution
+find *any* 1 alg solution
 subsets - strip first auf by rotating
 select subset, generate cases that use smallest number of first algs OR shortest OR minimize auf
-show inbetween state for solution
-show cancelled version of alg if it exists
 group by first alg
-trainer: just alg mode
 
-+Kirjava> that's something I'm wondering about DXLL. can you learn rules that allow you to solve cases you haven't learnt in a one by one fashion
-+Kirjava> like something that applies to a group of cases
+can you learn rules that allow you to solve cases you haven't learnt in a one by one fashion, like something that applies to a group of cases
 provide algsets from 2ll
 
 * add ability to select a subset, and list solutions that use the smallest quantity of first alg -> this is how to find recog patterns -> add colours to tell algs apart
 * show shortest, reduce first alg
 
-done before: 270 / OLLCP
-no bad algs™
+similar: 270 / OLLCP
 
-G:
-0 [F, U, R, U', R', F'] 2 [F', L', U, L', D', L, U2, L', D, L2, U, F]
-0 [F', U', L2, D', L, U2, L', D, L, U', L, F] 2 [F, R, U, R', U', F']
-        speedswolving:
+speedswolving:
 https://www.speedsolving.com/forum/threads/developing-a-better-ll-system.36791/
+                `}
+            </pre>
 
-            `}</pre>
         </div>
+
     );
 }

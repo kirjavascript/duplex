@@ -39,7 +39,7 @@ export function useSolver() {
     }
 
     return {
-        loadAlgs, loadSubset, loadTrainerCase,
+        loadAlgs, loadSubset, loadTrainerCase, worker,
     };
 }
 
