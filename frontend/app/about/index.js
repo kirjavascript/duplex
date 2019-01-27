@@ -33,6 +33,7 @@ export default function About() {
 TODO:
 
 add mirror F/B
+move parse error in desktop mode
 
 why doesnt 1217172485964883 have a 1 alg solution
 subsets - strip first auf by rotating
