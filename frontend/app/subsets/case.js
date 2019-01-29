@@ -37,20 +37,19 @@ export function Moves({ data }) {
 
 function findSolution(solutions) {
     // TODO: improve
-    // if just one, just choose which has the shortest moves
-    const stars = solutions.filter(({solution}) => {
+    const star = solutions.find(({solution}) => {
         return solution.length === 2;
     });
-    const ranked = (stars.length ? stars : solutions).map((data) => {
+    const ranked = solutions.map((data) => {
         const { solution: [auf0, solution0, auf1, solution1 = {}] } = data;
-        const aufs = +(auf0>0&&1) + +(auf1>0&&1);
-        const transforms = solution0.mirror + solution0.invert
-            + solution1.mirror + solution1.invert;
+        // const aufs = +(auf0>0&&1) + +(auf1>0&&1);
+        const transforms = !!solution0.mirror + !!solution0.invert
+            + !!solution1.mirror + !!solution1.invert;
 
         return {
             // score,
             // length,
-            weight: transforms + aufs,
+            weight: transforms,
             data,
         };
     }).sort((a, b) => a.weight - b.weight);
@@ -58,7 +57,7 @@ function findSolution(solutions) {
     // order
     // filter
     return {
-        stars: !!stars.length,
+        star,
         best: ranked.length ? ranked[0].data : undefined,
     };
 }

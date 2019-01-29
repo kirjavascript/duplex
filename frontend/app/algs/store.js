@@ -1,11 +1,12 @@
 import React, { createContext, useState, useCallback, useContext } from 'react';
 import produce from 'immer';
+import useLocalState from '#app/localstate';
 import defaultList from './default-list';
 
 const ctx = createContext();
 
 export const AlgStore = ({  children }) => {
-    const [algs, setAlgs] = useState(defaultList);
+    const [algs, setAlgs] = useLocalState('algs', defaultList);
     const [parseError, setParseError] = useState();
 
     const setAlgsMut = (cb) => setAlgs(produce(cb));

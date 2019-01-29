@@ -31,12 +31,14 @@ export default function About() {
                 entirely.
             </p>
             <p>
+                initially for learning, only the first alg has to be learnt - since it must reduce to a case you already know.
 
                 since several solutions exist for each case, arranging them by __TODO: sorting__
 
                 the LL picker on the subsets page allows you to create custom subsets.
 
-                initially for learning, only the first alg has to be learnt - since it must reduce to a case you already know.
+                updates to the alg list are automatically saved - <span className="blue pointer" onClick={() => { localStorage.clear(); location.reload(); }}>click here</span> to clear all data.
+
             </p>
             <p>
                 subsets of DXLL can likely be incorporated into other systems
@@ -52,13 +54,11 @@ export default function About() {
                 {`
 TODO:
 
-add corner orientations (17 hours ago)
-mention cases you already know (17 hours ago)
-
 sort by (least transforms, shortest)
-storage
+why doesnt 1217172485964883 have a 1 alg solution (rotate during solving to get more LL indexes) get_isomorphic_indexes
 
-why doesnt 1217172485964883 have a 1 alg solution (rotate during solving to get more LL indexes)
+---
+
 subsets - strip first auf by rotating
 select subset, generate cases that use smallest number of first algs OR shortest OR minimize auf
 group by first alg
