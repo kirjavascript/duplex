@@ -32,6 +32,10 @@
         }
     }
 
+    .ll.click rect {
+        cursor: pointer;
+    }
+
     .config {
         width: 80vw;
         display: flex;

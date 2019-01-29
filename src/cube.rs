@@ -579,7 +579,7 @@ impl Cube {
                 Face::L => 3,
                 Face::B => 4,
                 Face::D => 5,
-                Face::X => unreachable!(),
+                Face::X => unreachable!("not possible to index X"),
             }
         }
 

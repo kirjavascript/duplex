@@ -1,4 +1,5 @@
 import React, { createContext, useState, useCallback, useContext } from 'react';
+import produce from 'immer';
 import defaultList from './default-list';
 
 const ctx = createContext();
@@ -7,8 +8,10 @@ export const AlgStore = ({  children }) => {
     const [algs, setAlgs] = useState(defaultList);
     const [parseError, setParseError] = useState();
 
+    const setAlgsMut = (cb) => setAlgs(produce(cb));
+
     const addAlg = useCallback((obj) => {
-        setAlgs(state => [...state, {
+        setAlgsMut(state => [...state, {
             moves: '',
             name: '',
             mirror: true,
@@ -17,38 +20,40 @@ export const AlgStore = ({  children }) => {
     }, []);
 
     const updateMoves = useCallback((index, str) => {
-        setAlgs(state => {
+        setAlgsMut(state => {
             state[index].moves = str;
-            return state;
         });
     }, []);
 
     const updateName = useCallback((index, str) => {
-        setAlgs(state => {
+        setAlgsMut(state => {
             state[index].name = str;
-            return state;
         });
     }, []);
 
     const toggleMirror = useCallback((index) => {
-        setAlgs(state => {
-            state[index].mirror = !state[index].mirror;
-            return state;
+        setAlgsMut(state => {
+            const { mirror } = state[index];
+            if (!mirror) {
+                state[index].mirror = 'FB';
+            } else if (mirror === 'FB') {
+                state[index].mirror = 'LR';
+            } else {
+                state[index].mirror = null;
+            }
         });
     }, []);
 
 
     const toggleInvert = useCallback((index) => {
-        setAlgs(state => {
+        setAlgsMut(state => {
             state[index].invert = !state[index].invert;
-            return state;
         });
     }, []);
 
     const deleteAlg = useCallback((index) => {
-        setAlgs(state => {
+        setAlgsMut(state => {
             state.splice(index, 1);
-            return state;
         });
     }, []);
 

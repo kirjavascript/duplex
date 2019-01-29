@@ -3,10 +3,15 @@ use crate::parser::parse_moves;
 use serde::{Serialize, Deserialize};
 
 #[derive(Debug, Serialize, Deserialize)]
+enum MirrorType {
+    FB, LR, Yes,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct JSONAlg {
     name: String,
     moves: String,
-    mirror: bool,
+    mirror: Option<MirrorType>,
     invert: bool,
 }
 
@@ -15,14 +20,14 @@ pub fn create_algset(data: String) -> Result<Vec<Alg>, String> {
     let mut algs = Vec::new();
     for json_alg in json_algs {
         let alg = Alg::new(&json_alg)?;
-        if json_alg.mirror {
-            algs.push(alg.mirror());
-        }
         if json_alg.invert {
             algs.push(alg.invert());
         }
-        if json_alg.mirror && json_alg.invert {
-            algs.push(alg.mirror().invert());
+        if let Some(type_) = json_alg.mirror {
+            algs.push(alg.mirror(&type_));
+            if json_alg.invert {
+                algs.push(alg.mirror(&type_).invert());
+            }
         }
         algs.push(alg);
     }
@@ -56,8 +61,12 @@ impl Alg {
          }
     }
 
-    pub fn mirror(&self) -> Self {
-        let moves = self.moves.iter().map(Self::mirror_lr).collect::<Vec<Move>>();
+    fn mirror(&self, type_: &MirrorType) -> Self {
+        let moves = self.moves.iter().map(|m| match type_ {
+                MirrorType::FB => Self::mirror_fb(m),
+                MirrorType::LR => Self::mirror_lr(m),
+                _ => unreachable!(),
+            }).collect::<Vec<Move>>();
         let transform = moves_to_transform(&moves);
         Alg {
             moves,
@@ -91,7 +100,11 @@ impl Alg {
         JSONAlg {
             name: self.name.clone(),
             moves,
-            mirror: self.mirror,
+            mirror: if self.mirror {
+                Some(MirrorType::Yes)
+            } else {
+                None
+            },
             invert: self.invert,
         }
     }

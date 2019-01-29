@@ -23,7 +23,7 @@ function Picker() {
             {faces.map((face, i) => (
                 <div
                     key={i}
-                    className="sticker"
+                    className="sticker pointer"
                     style={{
                         backgroundColor: face.value,
                     }}

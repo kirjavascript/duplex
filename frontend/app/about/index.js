@@ -1,7 +1,10 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 
 
 export default function About() {
+
+    const [almost, setAlmost] = useState(false);
+
     return (
         <div className="about">
             <p>duplex is an experimental speedcubing method</p>
@@ -14,10 +17,24 @@ export default function About() {
                 good systems for creating 2x3x3 blocks are already well known (F2L, RouxDFDB, Petrus, Heise) and will not be described here.
             </p>
             <p>
-                the last layer is comprised of one look then a combination of two algs. the solutions for each case are generated from a list of about 40 algs.  an advantage of this approach is that since we can generate combinations from a known good list of algs, we can eliminate bad cases <span className="blue">almost*</span> entirely.
+                the last layer is comprised of one look then a combination of two algs. the solutions for each case are generated from a list of about 40 algs.  an advantage of this approach is that since we can generate combinations from a known good list of algs, we can eliminate bad cases
+                {' '}{!almost ? (
+                    <span
+                        className="blue pointer"
+                        onClick={() => { setAlmost(true); }}
+                    >almost*</span>
+                ) : (
+                    <span className="blue">
+                        *(about 3% of cases remain unsolved. this is still a work in progress - a better algset or alternative solution may resolve this. one thing you can do if you hit one of these cases is do a random alg from outside the list and it's likely you will come across another case you know ^_^)
+                    </span>
+                )}{' '}
+                entirely.
             </p>
             <p>
-                since several solutions exist for each case, arranging them by TODO: sorting
+
+                since several solutions exist for each case, arranging them by __TODO: sorting__
+
+                the LL picker on the subsets page allows you to create custom subsets.
 
                 initially for learning, only the first alg has to be learnt - since it must reduce to a case you already know.
             </p>
@@ -35,10 +52,13 @@ export default function About() {
                 {`
 TODO:
 
-add mirror F/B - per alg
-sort by
+add corner orientations (17 hours ago)
+mention cases you already know (17 hours ago)
 
-why doesnt 1217172485964883 have a 1 alg solution
+sort by (least transforms, shortest)
+storage
+
+why doesnt 1217172485964883 have a 1 alg solution (rotate during solving to get more LL indexes)
 subsets - strip first auf by rotating
 select subset, generate cases that use smallest number of first algs OR shortest OR minimize auf
 group by first alg

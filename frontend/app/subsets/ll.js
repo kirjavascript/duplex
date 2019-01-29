@@ -55,7 +55,7 @@ export default function LL({
             width={width}
             height={height}
             viewBox="0 0 72 72"
-            className="ll"
+            className={onClick ? 'll click' : 'll'}
             onClick={onClick && ((e) => {
                 const type = e.target.getAttribute('type');
                 const perm = +e.target.getAttribute('perm');
