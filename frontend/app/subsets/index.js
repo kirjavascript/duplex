@@ -8,19 +8,10 @@ import Select from './select';
 import SubsetList from './subset-list';
 
 export default function Subsets() {
-    const { cases, subset } = useCases();
+    const { cases, subset, select, setSelect } = useCases();
     const { solutions, length: coverage } = useSolutions();
     const hasSubset = subset.length > 0;
 
-    // TODO: AUF
-    // show coverage of subset
-    // star cases that use a single alg
-    // trim AUF
-    // select solution
-    // starred first
-    // reduce auf / transforms / movecount
-    // inverse / mirror weight 0..4
-    // hide cases you've already seen
 
     const filtered = cases.filter((case_) => {
         return !hasSubset || subset.includes(case_.index);
@@ -62,6 +53,15 @@ export default function Subsets() {
                         </div>
                     )}
                     <SubsetList />
+                    <select
+                        value={select}
+                        onChange={(e) => {
+                            setSelect(e.target.value);
+                        }}
+                    >
+                        <option value="transform">least transforms</option>
+                        <option value="length">shortest movecount</option>
+                    </select>
                 </div>
             </div>
 

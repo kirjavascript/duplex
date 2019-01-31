@@ -1,6 +1,9 @@
 import React, { Fragment, useState, useCallback } from 'react';
+// import normalize from 'cube-notation-normalizer';
 import Modal from './modal';
 import LL from './ll';
+import { useCases } from './store';
+import { solutionToString } from '../trainer';
 
 const auf = ['','U ','U2 ','U\' '];
 
@@ -36,26 +39,22 @@ export function Moves({ data }) {
 }
 
 function findSolution(solutions) {
-    // TODO: improve
+    const { select } = useCases();
+
     const star = solutions.find(({solution}) => {
         return solution.length === 2;
     });
     const ranked = solutions.map((data) => {
         const { solution: [auf0, solution0, auf1, solution1 = {}] } = data;
-        // const aufs = +(auf0>0&&1) + +(auf1>0&&1);
-        const transforms = !!solution0.mirror + !!solution0.invert
-            + !!solution1.mirror + !!solution1.invert;
 
-        return {
-            // score,
-            // length,
-            weight: transforms,
-            data,
-        };
+        const weight = select === 'transform'
+            ? (!!solution0.mirror + !!solution0.invert
+                + !!solution1.mirror + !!solution1.invert)
+            : solutionToString(data).split(' ').length;
+
+        return { weight, data };
     }).sort((a, b) => a.weight - b.weight);
 
-    // order
-    // filter
     return {
         star,
         best: ranked.length ? ranked[0].data : undefined,

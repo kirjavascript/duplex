@@ -11,10 +11,11 @@
         background-color: white;
         border-radius: 15px;
         top: 20px;
-        bottom: 20px;
+        bottom: 30px;
         left: 20px;
         right: 20px;
         padding: 40px;
+        padding-bottom: 50px;
         @media only screen and (min-width: 750px) {
             width: 80vw;
             top: 10%;
@@ -29,7 +30,7 @@
         }
         .close {
             position: absolute;
-            bottom: 5px;
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
         }

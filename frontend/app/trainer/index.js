@@ -10,7 +10,7 @@ import { useTrainer } from './store';
 
 const auf = ['', 'U', 'U2', 'U\''];
 
-function solutionToString(solution) {
+export function solutionToString(solution) {
     return solution.solution.map(part => {
         if (typeof part === 'number') {
             return auf[part];

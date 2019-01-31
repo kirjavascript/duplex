@@ -54,11 +54,13 @@ export default function About() {
                 {`
 TODO:
 
-sort by (least transforms, shortest)
 why doesnt 1217172485964883 have a 1 alg solution (rotate during solving to get more LL indexes) get_isomorphic_indexes
+localstorage solutions (maybe)
+starred, show coverage of subset
 
 ---
 
+hide cases you've already seen / learnt
 subsets - strip first auf by rotating
 select subset, generate cases that use smallest number of first algs OR shortest OR minimize auf
 group by first alg

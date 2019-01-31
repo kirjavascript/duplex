@@ -28,6 +28,50 @@ pre {
     word-wrap: break-word;
 }
 
+button {
+    color: white;
+    font-weight: 400;
+    padding: 2px 40px;
+    background-color: steelblue;
+    border: none;
+    font-size: 18px;
+    margin: 0 5px;
+}
+
+input, select {
+    color: steelblue;
+    padding: 2px 10px;
+    font-weight: 500;
+    background-color: white;
+    border: 2px solid steelblue;
+    margin: 0 5px;
+    font-size: 18px;
+}
+
+select {
+    appearance: none;
+    min-width: 250px;
+    background-image: url('data:image/svg+xml;utf8,<svg width="10" height="5" xmlns="http://www.w3.org/2000/svg" ><path d="M0,0H10L5,5Z" fill="steelblue"/></svg>');
+    background-repeat: no-repeat;
+    background-position: top 50% right 10px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    &:-ms-expand {
+        display: none;
+    }
+    // hide focus bar
+    &:-moz-focusring {
+        color: transparent;
+        text-shadow: 0 0 0 steelblue;
+    }
+
+    option {
+        padding: 8px 10px;
+        background-color: white;
+        color: steelblue;
+    }
+}
+
 a, .link {
     color: steelblue;
     text-decoration: none;
@@ -52,26 +96,6 @@ a, .link {
 .grey {
     color: #AAA;
     font-weight: 600;
-}
-
-button {
-    color: white;
-    font-weight: 400;
-    padding: 2px 40px;
-    background-color: steelblue;
-    border: none;
-    font-size: 18px;
-    margin: 0 5px;
-}
-
-input {
-    color: steelblue;
-    padding: 2px 10px;
-    font-weight: 500;
-    background-color: white;
-    border: 2px solid steelblue;
-    margin: 0 5px;
-    font-size: 18px;
 }
 
 .menu {

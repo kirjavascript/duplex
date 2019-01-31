@@ -13,6 +13,7 @@ export const CaseStore = ({  children }) => {
     const [subset, setSubset] = useState([]);
     const [ll, setLL] = useState(solved);
     const [sticker, setSticker] = useState('X');
+    const [select, setSelect] = useState('transform');
 
     return <ctx.Provider
         value={{
@@ -20,6 +21,7 @@ export const CaseStore = ({  children }) => {
             subset, setSubset,
             ll, setLL,
             sticker, setSticker,
+            select, setSelect,
         }}
         children={children}
     />
