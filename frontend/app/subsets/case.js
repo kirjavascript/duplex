@@ -14,7 +14,7 @@ function getName(solution) {
     );
 }
 
-export function Moves({ data }) {
+export function Moves({ data, trimAUF }) {
     const { solution } = data;
     const [showName, setName] = useState(true);
     return (
@@ -22,7 +22,7 @@ export function Moves({ data }) {
             onClick={() => { setName(!showName); }}
             className="moves"
         >
-            {auf[solution[0]]}
+            {!trimAUF && auf[solution[0]]}
             {showName ? getName(solution[1]) : (
                 <span className="blue">{solution[1].moves}</span>
             )}
@@ -69,14 +69,16 @@ export default function Case({ case_, solutions }) {
         setShowModal(false);
     }, []);
 
+    const rotate = chosen && chosen.solution[0] * 90;
+
     return (
         <div
             className="case visible"
         >
-            <LL case_={case_} />
+            <LL case_={case_} rotate={rotate} />
             <br />
             <pre>
-                {chosen && <Moves data={chosen} />}
+                {chosen && <Moves data={chosen} trimAUF />}
             </pre>
             <p>
                 {solutions.length} solutions

@@ -50,7 +50,6 @@ export default function About() {
 TODO:
 
 sort by canonical / first alg
-strip auf
 
 ---
 

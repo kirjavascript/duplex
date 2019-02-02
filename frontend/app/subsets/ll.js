@@ -45,6 +45,7 @@ export default function LL({
     case_,
     width = 120,
     height = 120,
+    rotate = 0,
     onClick,
 }) {
 
@@ -56,6 +57,7 @@ export default function LL({
             height={height}
             viewBox="0 0 72 72"
             className={onClick ? 'll click' : 'll'}
+            transform={rotate > 0 ? `rotate(${rotate})` : undefined}
             onClick={onClick && ((e) => {
                 const type = e.target.getAttribute('type');
                 const perm = +e.target.getAttribute('perm');
