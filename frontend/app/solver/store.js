@@ -8,7 +8,7 @@ export const useSolutions = () => {
 
 export const SolutionStore = ({  children }) => {
     const [solutions, setSolutions] = useState([]);
-    const [solving, setSolving] = useState(false);
+    const [solving, setSolving] = useState(true);
 
     return <ctx.Provider
         value={{

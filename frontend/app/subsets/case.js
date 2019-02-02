@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useCallback } from 'react';
+import { useSolutions } from '#app/solver/store';
 import Modal from './modal';
 import LL from './ll';
 import { useCases } from './store';
@@ -62,6 +63,7 @@ function findSolution(solutions) {
 
 export default function Case({ case_, solutions }) {
 
+    const { solving } = useSolutions();
     const chosen = findSolution(solutions);
     const [showModal, setShowModal] = useState(false);
 
@@ -80,16 +82,22 @@ export default function Case({ case_, solutions }) {
             <pre>
                 {chosen && <Moves data={chosen} trimAUF />}
             </pre>
-            <p>
-                {solutions.length} solutions
-                <br />
-                <span
-                    onClick={() => setShowModal(true)}
-                    className="modal-trigger"
-                >
-                    {' '}(see all)
+            {solving ? (
+                <span className="blue">
+                    solving...
                 </span>
-            </p>
+            ) : (
+                <p>
+                    {solutions.length} solutions
+                    <br />
+                    <span
+                        onClick={() => setShowModal(true)}
+                        className="modal-trigger"
+                    >
+                        {' '}(see all)
+                    </span>
+                </p>
+            )}
             <Modal
                 show={showModal}
                 case_={case_}

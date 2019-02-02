@@ -6,10 +6,42 @@ import Case from './case';
 import Renderer from './renderer';
 import Select from './select';
 import SubsetList from './subset-list';
+import LL from './ll';
+
+export function Unsolved() {
+
+    const { cases  } = useCases();
+    const { solutions } = useSolutions();
+
+    const unsolved = cases.filter(case_ => !solutions[case_.index]);
+
+    const hasSolved = unsolved.length > 3900;
+
+    return (
+        <div className="unsolved">
+            {hasSolved ? (
+                <span className="blue">
+                    solving...
+                </span>
+            ) : (
+                unsolved.map((case_, index) => {
+                    return (
+                        <LL
+                            case_={case_}
+                            key={index}
+                            width={200}
+                            height={200}
+                        />
+                    );
+                })
+            )}
+        </div>
+    );
+}
 
 export default function Subsets() {
     const { cases, subset, select, setSelect } = useCases();
-    const { solutions, solving } = useSolutions();
+    const { solutions } = useSolutions();
     const hasSubset = subset.length > 0;
     const coverage = Object.keys(solutions).length;
 
@@ -23,6 +55,8 @@ export default function Subsets() {
     }));
 
     const subsetCoverage = filtered.filter(case_ => solutions[case_.index]).length;
+
+    // TODO: render index
 
     return (
         <div className="subsets">
@@ -51,11 +85,9 @@ export default function Subsets() {
                             unsolved
                         </div>
                     )}
-                    {solving && (
-                        <span className="data">
-                            solving cases...
-                        </span>
-                    )}
+                    <Link to="/subsets/unsolved" className="link data">
+                        view unsolved cases
+                    </Link>
                     <SubsetList />
                     <select
                         value={select}

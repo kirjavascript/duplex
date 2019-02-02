@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import About from './about';
 import Algs from './algs';
 import Solver from './solver';
-import Subsets from './subsets';
+import Subsets, { Unsolved } from './subsets';
 import Trainer from './trainer';
 
 import { AlgStore } from './algs/store';
@@ -29,7 +29,8 @@ function App(props) {
                         {links.map(link => (
                             <Link
                                 className={
-                                    location.pathname === '/' + link ? 'active' : ''
+                                    location.pathname.split('/')[1] === link
+                                        ? 'active' : ''
                                 }
                                 key={link}
                                 to={'/' + link}>
@@ -41,7 +42,8 @@ function App(props) {
             />
             <Route exact path="/" component={About} />
             <Route path="/algs" component={Algs} />
-            <Route path="/subsets" component={Subsets} />
+            <Route exact path="/subsets" component={Subsets} />
+            <Route exact path="/subsets/unsolved" component={Unsolved} />
             <Route path="/trainer" component={Trainer} />
         </Fragment>
     );
