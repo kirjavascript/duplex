@@ -27,7 +27,7 @@ export default function About() {
                     >practically*</span>
                 ) : (
                     <span className="blue">
-                        *(there are still 10 cases left unsolved with the default list. with so few, single algorithms can be learnt for them. alternatively, if you hit one of these cases you can just do a random alg and it's probable that you will come across another case you know ^_^)
+                        *(there are still 9 cases left unsolved with the default list. with so few, single algorithms can be learnt for them. alternatively, if you hit one of these cases you can just do a random alg and it's probable that you will come across another case you know ^_^)
                     </span>
                 )}{' '}
                 entirely.
@@ -44,26 +44,6 @@ export default function About() {
             <p>
                 <a href="http://www.github.com/kirjavascript/duplex">view the source</a>
             </p>
-
-            <pre>
-                {`
-TODO:
-
-sort by canonical / first alg
-
----
-
-hide cases you've already seen / learnt
-make shortest movecount also searhc for least transforms
-can you learn rules that allow you to solve cases you haven't learnt in a one by one fashion, like something that applies to a group of cases
-provide algsets from 2ll
-add beginner method
-
-* add ability to select a subset, and list solutions that use the smallest quantity of first alg -> this is how to find recog patterns
-* show shortest, reduce first alg
-                `}
-            </pre>
-
         </div>
 
     );

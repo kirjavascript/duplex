@@ -37,34 +37,9 @@ export function Moves({ data, trimAUF }) {
     );
 }
 
-function findSolution(solutions) {
-    const { select } = useCases();
-
-    const stars = solutions.filter(({solution}) => {
-        return solution.length === 2;
-    });
-    const ranked = (stars.length ? stars : solutions).map((data) => {
-        const {
-            solution: [auf0, solution0, auf1, solution1 = { length: 0 }],
-        } = data;
-
-        const weight = select === 'transform'
-            ? (!!solution0.mirror + !!solution0.invert
-                + !!solution1.mirror + !!solution1.invert)
-            : solution0.length + +!!auf0 + +!!auf1 + +solution1.length;
-
-        return { weight, data };
-    }).sort((a, b) => a.weight - b.weight);
-
-    const best = ranked.length ? ranked[0].data : undefined;
-
-    return best;
-}
-
-export default function Case({ case_, solutions }) {
+export default function Case({ case_, solutions, chosen }) {
 
     const { solving } = useSolutions();
-    const chosen = findSolution(solutions);
     const [showModal, setShowModal] = useState(false);
 
     const closeModal = useCallback(() => {
@@ -83,9 +58,9 @@ export default function Case({ case_, solutions }) {
                 {chosen && <Moves data={chosen} trimAUF />}
             </pre>
             {solving ? (
-                <span className="blue">
-                    solving...
-                </span>
+                <pre>
+                    ...
+                </pre>
             ) : (
                 <p>
                     {solutions.length} solutions
