@@ -7,17 +7,13 @@ export const useSolutions = () => {
 }
 
 export const SolutionStore = ({  children }) => {
-    const [solutions, setSolutionsReal] = useState([]);
-    const [length, setLength] = useState(0);
-
-    const setSolutions = (solutions) => {
-        setLength(Object.keys(solutions).length);
-        setSolutionsReal(solutions);
-    };
+    const [solutions, setSolutions] = useState([]);
+    const [solving, setSolving] = useState(false);
 
     return <ctx.Provider
         value={{
-            solutions, setSolutions, length,
+            solutions, setSolutions,
+            solving, setSolving,
         }}
         children={children}
     />

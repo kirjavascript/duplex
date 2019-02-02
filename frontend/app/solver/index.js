@@ -33,9 +33,7 @@ export function useSolver() {
     }
 
     function loadTrainerCase() {
-        worker.postMessage({
-            action: 'LOAD_TRAINER_CASE',
-        });
+        worker.postMessage({ action: 'LOAD_TRAINER_CASE' });
     }
 
     return {
@@ -47,7 +45,7 @@ export default function Solver({ children }) {
     const { algs, setParseError } = useAlgs();
     const { cases, setCases, setSubset } = useCases();
     const { setTrainerCase } = useTrainer();
-    const { solutions, setSolutions } = useSolutions();
+    const { solutions, setSolutions, setSolving } = useSolutions();
     const workerRef = useRef();
 
     useEffect(() => {
@@ -63,16 +61,16 @@ export default function Solver({ children }) {
                 setParseError(payload);
             } else if (action === 'CASES') {
                 setCases(payload);
-                worker.postMessage({
-                    action: 'LOAD_TRAINER_CASE',
-                });
+                worker.postMessage({ action: 'LOAD_TRAINER_CASE' });
+            } else if (action === 'START_SOLVE') {
+                setSolving(true);
+            } else if (action === 'END_SOLVE') {
+                setSolving(false);
             } else if (action === 'SOLUTIONS') {
                 setSolutions(payload);
             } else if (action === 'SUBSET') {
                 setSubset(payload);
-                worker.postMessage({
-                    action: 'LOAD_TRAINER_CASE',
-                });
+                worker.postMessage({ action: 'LOAD_TRAINER_CASE' });
             } else if (action === 'TRAINER_CASE') {
                 setTrainerCase(payload);
             }

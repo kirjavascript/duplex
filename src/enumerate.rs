@@ -204,7 +204,7 @@ pub fn check_mask(mask: &Case, case: &Case) -> bool {
     false
 }
 
-fn rotate_stickers(edges: &mut [Edge], corners: &mut [Corner]) {
+pub fn rotate_stickers(edges: &mut [Edge], corners: &mut [Corner]) {
     for edge in edges.iter_mut() {
         rotate_sticker(&mut edge.0);
         rotate_sticker(&mut edge.1);
@@ -216,7 +216,7 @@ fn rotate_stickers(edges: &mut [Edge], corners: &mut [Corner]) {
     }
 }
 
-fn rotate_edges(edges: &mut [Edge], corners: &mut [Corner]) {
+pub fn rotate_edges(edges: &mut [Edge], corners: &mut [Corner]) {
     edges.rotate_right(1);
     corners.rotate_right(1);
 }

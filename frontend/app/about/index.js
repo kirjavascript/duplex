@@ -1,9 +1,11 @@
 import React, { Fragment, useState } from 'react';
-
+import { useAlgs } from '#app/algs/store';
 
 export default function About() {
 
     const [almost, setAlmost] = useState(false);
+
+    const { algs } = useAlgs();
 
     return (
         <div className="about">
@@ -17,34 +19,27 @@ export default function About() {
                 good systems for creating 2x3x3 blocks are already well known (F2L, RouxDFDB, Petrus, Heise) and will not be described here.
             </p>
             <p>
-                the last layer is comprised of one look then a combination of two algs. the solutions for each case are generated from a list of about 40 algs.  an advantage of this approach is that since we can generate combinations from a known good list of algs, we can eliminate bad cases
+                the last layer is comprised of one look then a combination of two algs. the solutions for each case are generated from a list of {algs.length} algs.  an advantage of this approach is that since we can generate combinations from a known good list of algs, we can eliminate bad cases
                 {' '}{!almost ? (
                     <span
                         className="blue pointer"
                         onClick={() => { setAlmost(true); }}
-                    >almost*</span>
+                    >practically*</span>
                 ) : (
                     <span className="blue">
-                        *(about 3% of cases remain unsolved. this is still a work in progress - a better algset or alternative solution may resolve this. one thing you can do if you hit one of these cases is do a random alg from outside the list and it's likely you will come across another case you know ^_^)
+                        *(there are still 10 cases left unsolved with the default list. with so few, single algorithms can be learnt for them. alternatively, if you hit one of these cases you can just do a random alg and it's probable that you will come across another case you know ^_^)
                     </span>
                 )}{' '}
                 entirely.
             </p>
             <p>
-                initially for learning, only the first alg has to be learnt - since it must reduce to a case you already know.
+                initially for learning, only the first alg has to be learnt - since it must reduce to a case you already know. even having to do a two look version at first should provide shorter / better solutions compared to traditional two look systems. sorting options should help finding recog patterns, and the LL picker on the subsets page allows you to create custom subsets.
 
-                since several solutions exist for each case, arranging them by __TODO: sorting__
-
-                the LL picker on the subsets page allows you to create custom subsets.
-
-                updates to the alg list are automatically saved - <span className="blue pointer" onClick={() => { localStorage.clear(); location.reload(); }}>click here</span> to clear all data.
+                {' '}<span className="blue pointer" onClick={() => { localStorage.clear(); location.reload(); }}>click here</span> to reset saved data.
 
             </p>
             <p>
-                subsets of DXLL can likely be incorporated into other systems
-            </p>
-            <p>
-                I managed to learn OLLCP with a <a href="https://www.speedsolving.com/wiki/index.php/OLLCP_(few_algs)" target="_blank">similar system</a> over the course of a few months. other methods from the same lineage are <a href="http://lar5.com/cube/270" target="_blank">Petrus270</a> and <a href="https://www.speedsolving.com/forum/threads/suneoll.23222/" target="_blank">SuneOLL</a>.
+                I managed to learn OLLCP with a <a href="https://www.speedsolving.com/wiki/index.php/OLLCP_(few_algs)" target="_blank">similar system</a> over the course of a few months. other methods from the same lineage are <a href="http://lar5.com/cube/270" target="_blank">Petrus270</a> and <a href="https://www.speedsolving.com/forum/threads/suneoll.23222/" target="_blank">SuneOLL</a>. subsets of DXLL can likely be incorporated into other systems.
             </p>
             <p>
                 <a href="http://www.github.com/kirjavascript/duplex">view the source</a>
@@ -54,17 +49,13 @@ export default function About() {
                 {`
 TODO:
 
-why doesnt 1217172485964883 have a 1 alg solution (rotate during solving to get more LL indexes) get_isomorphic_indexes
-localstorage solutions (maybe)
-starred, show coverage of subset
+sort by canonical / first alg
+strip auf
 
 ---
 
 hide cases you've already seen / learnt
-subsets - strip first auf by rotating
-select subset, generate cases that use smallest number of first algs OR shortest OR minimize auf
-group by first alg
-
+make shortest movecount also searhc for least transforms
 can you learn rules that allow you to solve cases you haven't learnt in a one by one fashion, like something that applies to a group of cases
 provide algsets from 2ll
 add beginner method

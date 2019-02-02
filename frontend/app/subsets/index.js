@@ -9,9 +9,9 @@ import SubsetList from './subset-list';
 
 export default function Subsets() {
     const { cases, subset, select, setSelect } = useCases();
-    const { solutions, length: coverage } = useSolutions();
+    const { solutions, solving } = useSolutions();
     const hasSubset = subset.length > 0;
-
+    const coverage = Object.keys(solutions).length;
 
     const filtered = cases.filter((case_) => {
         return !hasSubset || subset.includes(case_.index);
@@ -21,6 +21,8 @@ export default function Subsets() {
         case_,
         solutions: solutions[case_.index] || [],
     }));
+
+    const subsetCoverage = filtered.filter(case_ => solutions[case_.index]).length;
 
     return (
         <div className="subsets">
@@ -36,10 +38,6 @@ export default function Subsets() {
                             {cases.length - coverage}
                         </span>
                         unsolved
-                        <span className="data">
-                            {cases.length ? Math.round((coverage/cases.length)*100) : 0}%
-                        </span>
-                        coverage
                     </div>
                     {hasSubset && (
                         <div>
@@ -47,10 +45,16 @@ export default function Subsets() {
                                 {subset.length}
                             </span>
                             in subset
-                            <Link to="/trainer">
-                                {' '}view in trainer
-                            </Link>
+                            <span className="data">
+                                {subset.length - subsetCoverage}
+                            </span>
+                            unsolved
                         </div>
+                    )}
+                    {solving && (
+                        <span className="data">
+                            solving cases...
+                        </span>
                     )}
                     <SubsetList />
                     <select

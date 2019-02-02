@@ -1,9 +1,7 @@
 import React, { Fragment, useState, useCallback } from 'react';
-// import normalize from 'cube-notation-normalizer';
 import Modal from './modal';
 import LL from './ll';
 import { useCases } from './store';
-import { solutionToString } from '../trainer';
 
 const auf = ['','U ','U2 ','U\' '];
 
@@ -41,29 +39,30 @@ export function Moves({ data }) {
 function findSolution(solutions) {
     const { select } = useCases();
 
-    const star = solutions.find(({solution}) => {
+    const stars = solutions.filter(({solution}) => {
         return solution.length === 2;
     });
-    const ranked = solutions.map((data) => {
-        const { solution: [auf0, solution0, auf1, solution1 = {}] } = data;
+    const ranked = (stars.length ? stars : solutions).map((data) => {
+        const {
+            solution: [auf0, solution0, auf1, solution1 = { length: 0 }],
+        } = data;
 
         const weight = select === 'transform'
             ? (!!solution0.mirror + !!solution0.invert
                 + !!solution1.mirror + !!solution1.invert)
-            : solutionToString(data).split(' ').length;
+            : solution0.length + +!!auf0 + +!!auf1 + +solution1.length;
 
         return { weight, data };
     }).sort((a, b) => a.weight - b.weight);
 
-    return {
-        star,
-        best: ranked.length ? ranked[0].data : undefined,
-    };
+    const best = ranked.length ? ranked[0].data : undefined;
+
+    return best;
 }
 
 export default function Case({ case_, solutions }) {
 
-    const { best } = findSolution(solutions);
+    const chosen = findSolution(solutions);
     const [showModal, setShowModal] = useState(false);
 
     const closeModal = useCallback(() => {
@@ -77,7 +76,7 @@ export default function Case({ case_, solutions }) {
             <LL case_={case_} />
             <br />
             <pre>
-                {best && <Moves data={best} />}
+                {chosen && <Moves data={chosen} />}
             </pre>
             <p>
                 {solutions.length} solutions

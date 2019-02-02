@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { useSolver } from '#app/solver';
+import { useSolutions } from '#app/solver/store';
 import { useAlgs, AlgStore } from './store';
 
 export default function Algs() {
@@ -15,22 +16,26 @@ export default function Algs() {
         setParseError,
     } = useAlgs();
 
-    const {
-        loadAlgs,
-    } = useSolver();
+    const { loadAlgs } = useSolver();
+
+    const { solving } = useSolutions();
 
     return (
         <div className="algs">
             <div className="options">
-                <button
-                    type="button"
-                    onClick={() => {
-                        setParseError();
-                        loadAlgs(algs);
-                    }}
-                >
-                    reload algs
-                </button>
+                {solving ? (
+                    <button type="button">solving...</button>
+                ) : (
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setParseError();
+                            loadAlgs(algs);
+                        }}
+                    >
+                        find solutions
+                    </button>
+                )}
                 <button
                     type="button"
                     onClick={addAlg}
@@ -52,7 +57,7 @@ export default function Algs() {
                         onChange={(e) => { updateName(i, e.target.value); }}
                     />
                     <input
-                        className="moves"
+                        className="inner-text"
                         type="text"
                         value={alg.moves}
                         placeholder="moves"

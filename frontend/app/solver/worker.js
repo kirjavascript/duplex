@@ -87,6 +87,7 @@ fetch(ENDPOINT).then(response =>
     self.onmessage = ({ data: { action, payload } }) => {
         if (action === 'LOAD_ALGS') {
             console.time('solution time');
+            self.postMessage({ action: 'START_SOLVE' });
             const error = wasm.load_algs(JSON.stringify(payload));
             if (error) {
                 self.postMessage({ action: 'PARSE_ERROR', payload: error });
@@ -94,6 +95,7 @@ fetch(ENDPOINT).then(response =>
                 const solutions = JSON.parse(wasm.run_algs());
                 self.postMessage({ action: 'SOLUTIONS', payload: solutions });
             }
+            self.postMessage({ action: 'END_SOLVE' });
             console.timeEnd('solution time');
         } else if (action === 'EXPLORE_SOLVE') {
             wasm.explore_solve(JSON.stringify(payload));

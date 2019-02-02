@@ -27,6 +27,7 @@ pub enum Layer {
     Uw, Fw, Rw, Lw, Bw, Dw, X, Y, Z,
 }
 
+#[derive(Clone)]
 pub struct Move {
     pub order: Order,
     pub layer: Layer,
@@ -593,6 +594,18 @@ impl Cube {
             .fold(0usize, |acc, cur| (acc * 218) + cur) as u64;
 
         edges << 32 | corners
+    }
+
+    pub fn get_ll_indices(&mut self) -> Vec<u64> {
+        (0..4).into_iter().map(|_| {
+            let index = self.get_ll_index();
+            crate::enumerate::rotate_stickers(
+                &mut self.edges[..4],
+                &mut self.corners[..4],
+            );
+            index
+        }).collect()
+        // try adding aufs?
     }
 
     pub fn is_f2l_solved(&self) -> bool {

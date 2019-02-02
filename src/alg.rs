@@ -2,17 +2,19 @@ use crate::cube::*;
 use crate::parser::parse_moves;
 use serde::{Serialize, Deserialize};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 enum MirrorType {
     FB, LR, Yes,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct JSONAlg {
     name: String,
     moves: String,
     mirror: Option<MirrorType>,
     invert: bool,
+    #[serde(default)]
+    length: usize,
 }
 
 pub fn create_algset(data: String) -> Result<Vec<Alg>, String> {
@@ -29,9 +31,34 @@ pub fn create_algset(data: String) -> Result<Vec<Alg>, String> {
                 algs.push(alg.mirror(&type_).invert());
             }
         }
+
         algs.push(alg);
     }
     Ok(algs)
+}
+
+macro_rules! conjugate {
+    ($conjugation:expr, $conjugates:expr, $json_alg:expr) => {
+        let mut conj = $json_alg.clone();
+        conj.moves = format!($conjugation, &conj.moves);
+        conj.name = format!($conjugation, &conj.name);
+        if let Ok(alg) = Alg::new(&conj) {
+            $conjugates.push(alg);
+        }
+    };
+}
+
+fn _get_conjugates(json_alg: &JSONAlg) -> Vec<Alg> {
+    let mut conjugates = Vec::new();
+    conjugate!("R {} R'", conjugates, json_alg);
+    conjugate!("R' {} R", conjugates, json_alg);
+    conjugate!("L {} L'", conjugates, json_alg);
+    conjugate!("L' {} L", conjugates, json_alg);
+    conjugate!("F {} F'", conjugates, json_alg);
+    conjugate!("F' {} F", conjugates, json_alg);
+    conjugate!("B {} B'", conjugates, json_alg);
+    conjugate!("B' {} B", conjugates, json_alg);
+    conjugates
 }
 
 #[derive(Debug)]
@@ -106,6 +133,7 @@ impl Alg {
                 None
             },
             invert: self.invert,
+            length: self.moves.len(),
         }
     }
 

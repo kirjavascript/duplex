@@ -119,19 +119,24 @@ unsafe extern "C" fn run_algs() {
             CUBE.replace(Cube::new());
             CUBE.do_transform(&alg.transform);
             do_auf(auf);
-
-            let index = CUBE.get_ll_index();
-            if indices.contains(&index) {
-                hits += 1;
-                let solution = json!({
-                    "index": index.to_string(),
-                    "solution": [
-                        invert_auf(auf),
-                        alg.invert().to_json(),
-                    ]
-                });
-                add_solution(index, solution);
-            }
+            let mut check_index = |index| {
+                if indices.contains(&index) {
+                    hits += 1;
+                    let solution = json!({
+                        "index": index.to_string(),
+                        "solution": [
+                            invert_auf(auf),
+                            alg.invert().to_json(),
+                        ]
+                    });
+                    add_solution(index, solution);
+                }
+            };
+            let ll_indices = CUBE.get_ll_indices();
+            check_index(ll_indices[0]);
+            check_index(ll_indices[1]);
+            check_index(ll_indices[2]);
+            check_index(ll_indices[3]);
         }
     }
 
@@ -146,20 +151,26 @@ unsafe extern "C" fn run_algs() {
                     do_auf(first_auf);
                     CUBE.do_transform(&second_alg.transform);
                     do_auf(second_auf);
-                    let index = CUBE.get_ll_index();
-                    if indices.contains(&index) {
-                        hits += 1;
-                        let solution = json!({
-                            "index": index.to_string(),
-                            "solution": [
-                                invert_auf(second_auf),
-                                second_alg.invert().to_json(),
-                                invert_auf(first_auf),
-                                first_alg.invert().to_json()
-                            ]
-                        });
-                        add_solution(index, solution);
-                    }
+                    let mut check_index = |index| {
+                        if indices.contains(&index) {
+                            hits += 1;
+                            let solution = json!({
+                                "index": index.to_string(),
+                                "solution": [
+                                    invert_auf(second_auf),
+                                    second_alg.invert().to_json(),
+                                    invert_auf(first_auf),
+                                    first_alg.invert().to_json()
+                                ]
+                            });
+                            add_solution(index, solution);
+                        }
+                    };
+                    let ll_indices = CUBE.get_ll_indices();
+                    check_index(ll_indices[0]);
+                    check_index(ll_indices[1]);
+                    check_index(ll_indices[2]);
+                    check_index(ll_indices[3]);
                 }
             }
         }

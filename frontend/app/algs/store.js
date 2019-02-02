@@ -11,11 +11,11 @@ export const AlgStore = ({  children }) => {
 
     const setAlgsMut = (cb) => setAlgs(produce(cb));
 
-    const addAlg = useCallback((obj) => {
+    const addAlg = useCallback((e) => {
         setAlgsMut(state => [...state, {
             moves: '',
             name: '',
-            mirror: true,
+            mirror: 'FB',
             invert: true,
         }]);
     }, []);
