@@ -14,7 +14,7 @@ export default [
     { name: 'widefruf', moves: `fRUR'U'f'`, mirror: 'LR', invert: true },
     { name: 'Tperm', moves: `RUR'U'R'FR2U'R'U'RUR'F'`, mirror: null, invert: false },
     { name: 'sexysledge', moves: `R U R' U' R' F R F'`, mirror: 'FB', invert: true },
-    { name: 'Uperm', moves: `M2 U'MU2M'U'M2`, mirror: 'LR', invert: false },
+    { name: 'Uperm', moves: `M2 U'MU2M'U'M2`, mirror: null, invert: true },
     { name: 'sexyslice', moves: `R U R' U' M' URU' r'`, mirror: 'FB', invert: true },
     { name: 'edgeflip', moves: `M'U'MU2M'U'M`, mirror: 'FB', invert: true },
     { name: 'diagU', moves: `FU'R'URUF'R'U2R`, mirror: 'FB', invert: true },
