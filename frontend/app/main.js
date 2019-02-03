@@ -50,7 +50,7 @@ function App(props) {
 }
 
 if (typeof WebAssembly !== 'object') {
-    document.body.innerHTML = 'this website requires WebAssembly';
+    document.body.innerHTML = 'this website requires WebAssembly - update your browser';
 } else {
     render((
         [<App />, Solver, TrainerStore, SolutionStore, CaseStore, AlgStore, Router]

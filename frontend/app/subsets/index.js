@@ -1,16 +1,19 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import sortBy from 'lodash/sortBy';
+import debounce from 'lodash/debounce';
 import { useSolutions } from '#app/solver/store';
 import { useCases } from './store';
 import Case from './case';
 import Renderer from './renderer';
 import Select from './select';
 import SubsetList from './subset-list';
+import SortWorker from './sort.worker';
 import LL from './ll';
 
 export function Unsolved() {
 
-    const { cases  } = useCases();
+    const { cases } = useCases();
     const { solutions } = useSolutions();
 
     const unsolved = cases.filter(case_ => !solutions[case_.index]);
@@ -55,9 +58,7 @@ function findSolution(solutions = []) {
         return { weight, data };
     }).sort((a, b) => a.weight - b.weight);
 
-    const best = ranked.length ? ranked[0].data : undefined;
-
-    return best;
+    return ranked.length ? ranked[0].data : undefined;
 }
 
 export default function Subsets() {
@@ -70,7 +71,7 @@ export default function Subsets() {
         return !hasSubset || subset.includes(case_.index);
     });
 
-    const caseList = filtered.map((case_) => ({
+    let caseList = filtered.map((case_) => ({
         case_,
         solutions: solutions[case_.index] || [],
         chosen: findSolution(solutions[case_.index]),
@@ -78,21 +79,43 @@ export default function Subsets() {
 
     const subsetCoverage = filtered.filter(case_ => solutions[case_.index]).length;
 
-    if (select === 'first-alg') {
-        caseList.sort((a, b) => {
-            if (!a.chosen || !b.chosen) {
-                return 0;
-            } else if (a.chosen.solution[1].name < b.chosen.solution[1].name) {
-                return -1;
-            } else if (a.chosen.solution[1].name > b.chosen.solution[1].name) {
-                return 1;
-            }
-            return 0;
+    // handle sorting
+
+    const [sortedList, setSortedList] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const workerRef = useRef();
+
+    useEffect(() => {
+        const worker = new SortWorker();
+        worker.addEventListener('message', ({ data }) => {
+            setSortedList(data);
+            setLoading(false);
         });
-    }
+        workerRef.current = worker;
+        return () => {
+            worker.terminate();
+            setLoading(false);
+        };
+    }, []);
 
+    useEffect(() => {
+        if (select === 'fewest-groups') {
+            workerRef.current.postMessage(caseList);
+            setLoading(true);
+        }
+    }, [select, solutions.length, subset.join``]);
 
-    // TODO: replace filter with sorting: canonical / first alg / first alg (reduce)
+    const list = do {
+        if (select === 'least-transforms') {
+            sortBy(caseList, d => (
+                d.chosen && d.chosen.solution[1].name.toLowerCase()
+            ));
+        } else if (select === 'fewest-groups') {
+            sortedList;
+        } else {
+            caseList;
+        }
+    };
 
     return (
         <div className="subsets">
@@ -132,14 +155,17 @@ export default function Subsets() {
                         }}
                     >
                         <option value="canonical">canonical</option>
-                        <option value="first-alg">group by alg</option>
-                        <option value="first-alg-reduce">group by alg (fewer groups)</option>
+                        <option value="least-transforms">group algs (fewer transforms)</option>
+                        <option value="fewest-groups">group algs (fewer groups)</option>
                     </select>
                 </div>
             </div>
 
-            <Renderer caseList={caseList}>
-                {(obj) => <Case {...obj} />}
+            <Renderer caseList={list || []}>
+                {(obj) => <Case
+                    {...obj}
+                    loading={loading}
+                />}
             </Renderer>
         </div>
     );

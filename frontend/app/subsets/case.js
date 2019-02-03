@@ -37,7 +37,7 @@ export function Moves({ data, trimAUF }) {
     );
 }
 
-export default function Case({ case_, solutions, chosen }) {
+export default function Case({ case_, solutions, chosen, loading }) {
 
     const { solving } = useSolutions();
     const [showModal, setShowModal] = useState(false);
@@ -55,9 +55,9 @@ export default function Case({ case_, solutions, chosen }) {
             <LL case_={case_} rotate={rotate} />
             <br />
             <pre>
-                {chosen && <Moves data={chosen} trimAUF />}
+                {chosen && !loading && <Moves data={chosen} trimAUF />}
             </pre>
-            {solving ? (
+            {solving || loading ? (
                 <pre>
                     ...
                 </pre>

@@ -29,6 +29,7 @@ module.exports = (env={}, args={}) => {
                                     '@babel/preset-react',
                                 ],
                                 plugins: [
+                                    '@babel/plugin-proposal-do-expressions',
                                 ],
                             }
                         }

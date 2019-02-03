@@ -27,7 +27,7 @@ export default function About() {
                     >practically*</span>
                 ) : (
                     <span className="blue">
-                        *(there are still 9 cases left unsolved with the default list. with so few, single algorithms can be learnt for them. alternatively, if you hit one of these cases you can just do a random alg and it's probable that you will come across another case you know ^_^)
+                        *(there are still 9 cases left unsolved with the default list. with so few, single algorithms can be learnt for them)
                     </span>
                 )}{' '}
                 entirely.

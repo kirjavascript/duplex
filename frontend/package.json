@@ -5,6 +5,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-do-expressions": "^7.2.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "autoprefixer": "^8.5.1",
@@ -35,6 +36,7 @@
   "dependencies": {
     "cube-notation-normalizer": "^1.0.0",
     "immer": "^1.10.5",
+    "lodash": "^4.17.11",
     "react": "^16.8.0-alpha.0",
     "react-dom": "^16.8.0-alpha.0",
     "react-router-dom": "^4.3.1"
