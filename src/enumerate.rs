@@ -231,7 +231,7 @@ fn rotate_sticker(sticker: &mut Face) {
         F => L,
         L => B,
         X => X,
-        _ => unreachable!(),
+        D => D,
     });
 }
 

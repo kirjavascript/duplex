@@ -2,8 +2,6 @@ import sortBy from 'lodash/sortBy';
 
 self.onmessage = ({ data }) => {
 
-    // console.log(obj.data);
-
     const getName = (solution) => (
         (solution[1].invert?'invert ':'')
         + (solution[1].mirror?'mirror ':'')
