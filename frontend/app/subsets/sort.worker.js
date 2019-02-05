@@ -1,51 +1,60 @@
 import sortBy from 'lodash/sortBy';
+import orderBy from 'lodash/orderBy';
 
+/* eslint-disable */
 self.onmessage = ({ data }) => {
 
-    const getName = (solution) => (
-        (solution[1].invert?'invert ':'')
-        + (solution[1].mirror?'mirror ':'')
-        + solution[1].name
-    );
+    const caseList = data;
 
-    let caseList = data;
-
-    // get most common solutions, order by them
-    const frequency = {};
-    Object.values([].concat(...caseList.map(d => d.solutions)))
-        .forEach(({ solution }) => {
-            const name = getName(solution);
-            if (frequency[name]) {
-                frequency[name] += 1;
-            } else {
-                frequency[name] = 1;
+    // this following code was optimised for speed (its still not fast)
+    const names = {};
+    for (let i = 0; i < caseList.length; i++)  {
+        const { solutions } = caseList[i];
+        for (let j = 0; j < solutions.length; j++)  {
+            const { solution } = solutions[j];
+            if (names[solution.realName] === true) {
+                continue;
             }
-        });
+            solution.realName = ((solution[1].invert?'invert ':'')
+                + (solution[1].mirror?'mirror ':'')
+                + solution[1].name).toLowerCase();
+            names[solution.realName] = true;
+        }
+    }
 
-    const names = Object.keys(frequency)
-        .map(name => {
-            const coverage = caseList.filter(({solutions}) => {
-                return !!solutions.find(d => getName(d.solution) === name);
-            }).length;
-            return [name, coverage];
-        });
+    let coverage = [];
 
-    const ordered = sortBy(names, d => -d[1]).map(d => d[0]);
+    for (name in names) {
+        let count = 0;
+        for (let i = 0; i < caseList.length; i++)  {
+            const { solutions } = caseList[i];
+            for (let j = 0; j < solutions.length; j++)  {
+                if (solutions[j].solution.realName === name) {
+                    count++;
+                    break;
+                }
+            }
+        }
+        coverage.push([name, count]);
+    }
+    coverage = orderBy(coverage, [1, 0], ['desc', 'desc']); // length
 
-    caseList = caseList.map((case_, i) => {
+    const sortedList = [];
+
+    for (let i = 0; i < caseList.length; i++)  {
+        const case_ = caseList[i]
         let found = false;
-        for (let i = 0; !found && i < ordered.length; i += 1) {
+        for (let j = 0; !found && j < coverage.length; j += 1) {
+            const name = coverage[j][0];
             found = case_.solutions.find(d => {
-                return getName(d.solution) === ordered[i];
+                return d.solution.realName === name;
             });
             case_.chosen = found;
         }
-        return case_;
-    });
+        sortedList.push(case_);
+    }
 
-    caseList = sortBy(caseList, d => (
-        d.chosen && getName(d.chosen.solution).toLowerCase()
-    ));
-
-    self.postMessage(caseList);
+    self.postMessage(sortBy(sortedList, d => (
+        d.chosen && d.chosen.solution.realName
+    )));
 };
