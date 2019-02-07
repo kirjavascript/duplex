@@ -51,6 +51,7 @@ export default function Case({ case_, solutions, chosen, loading }) {
     return (
         <div
             className="case visible"
+            data-index={case_.index}
         >
             <LL case_={case_} rotate={rotate} />
             <br />

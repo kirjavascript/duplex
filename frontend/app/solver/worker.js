@@ -94,6 +94,10 @@ fetch(ENDPOINT).then(response =>
             } else {
                 const solutions = JSON.parse(wasm.run_algs());
                 self.postMessage({ action: 'SOLUTIONS', payload: solutions });
+                // console.log(solutions["835328418514003"])
+            // console.time('canon');
+            //     wasm.get_canonical();
+            // console.timeEnd('canon');
             }
             self.postMessage({ action: 'END_SOLVE' });
             console.timeEnd('solution time');

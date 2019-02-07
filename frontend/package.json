@@ -37,8 +37,8 @@
     "cube-notation-normalizer": "^1.0.0",
     "immer": "^1.10.5",
     "lodash": "^4.17.11",
-    "react": "^16.8.0-alpha.0",
-    "react-dom": "^16.8.0-alpha.0",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
     "react-router-dom": "^4.3.1"
   }
 }
