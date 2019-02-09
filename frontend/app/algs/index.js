@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { useSolver } from '#app/solver';
-import { useSolutions } from '#app/solver/store';
+import { useCases } from '#app/subsets/store';
 import { useAlgs, AlgStore } from './store';
 
 export default function Algs() {
@@ -18,7 +18,7 @@ export default function Algs() {
 
     const { loadAlgs } = useSolver();
 
-    const { solving } = useSolutions();
+    const { solving } = useCases();
 
     return (
         <div className="algs">

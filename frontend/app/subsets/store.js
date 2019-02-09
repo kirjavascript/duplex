@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import useLocalState from '#app/localstate';
 import LL from './ll';
-import { solved } from './subset-list';
+import { blank } from './subset-list';
 
 const ctx = createContext();
 
@@ -10,19 +10,22 @@ export const useCases = () => {
 }
 
 export const CaseStore = ({  children }) => {
-    const [cases, setCases] = useLocalState('cases', []);
-    const [subset, setSubset] = useLocalState('subset', []);
-    const [ll, setLL] = useLocalState('LL', solved);
+    const [cases, setCases] = useState([]);
+    const [solutions, setSolutions] = useState([]);
+    const [solving, setSolving] = useState(true);
+
+    const [ll, setLL] = useLocalState('LL', blank);
     const [sticker, setSticker] = useLocalState('sticker', 'X');
-    const [select, setSelect] = useLocalState('select', 'transform');
+    const [sort, setSort] = useLocalState('sort', 'canonical');
 
     return <ctx.Provider
         value={{
             cases, setCases,
-            subset, setSubset,
+            solutions, setSolutions,
+            solving, setSolving,
             ll, setLL,
             sticker, setSticker,
-            select, setSelect,
+            sort, setSort,
         }}
         children={children}
     />

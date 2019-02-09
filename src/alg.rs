@@ -88,6 +88,15 @@ impl Alg {
          }
     }
 
+    pub fn get_full_name(&self) -> String {
+        format!(
+            "{}{}{}",
+            (if self.invert { "invert " } else { "" }),
+            (if self.mirror { "mirror " } else { "" }),
+            self.name,
+        )
+    }
+
     fn mirror(&self, type_: &MirrorType) -> Self {
         let moves = self.moves.iter().map(|m| match type_ {
                 MirrorType::FB => Self::mirror_fb(m),

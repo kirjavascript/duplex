@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useCallback } from 'react';
-import { useSolutions } from '#app/solver/store';
 import Modal from './modal';
 import LL from './ll';
 import { useCases } from './store';
@@ -16,7 +15,7 @@ function getName(solution) {
 }
 
 export function Moves({ data, trimAUF }) {
-    const { solution } = data;
+    const { alg: solution } = data;
     const [showName, setName] = useState(true);
     return (
         <span
@@ -37,16 +36,22 @@ export function Moves({ data, trimAUF }) {
     );
 }
 
-export default function Case({ case_, solutions, chosen, loading }) {
+export default function Case({ case: case_, solutionIndices }) {
 
-    const { solving } = useSolutions();
+    const { solving, solutions } = useCases();
     const [showModal, setShowModal] = useState(false);
 
     const closeModal = useCallback(() => {
         setShowModal(false);
     }, []);
 
-    const rotate = chosen && chosen.solution[0] * 90;
+    const caseSolutions = solutionIndices
+        ? solutionIndices.map(i => solutions[i])
+        : [];
+
+    const chosen = caseSolutions[0];
+
+    const rotate = chosen ? (90 * chosen.alg[0]) : undefined;
 
     return (
         <div
@@ -56,15 +61,15 @@ export default function Case({ case_, solutions, chosen, loading }) {
             <LL case_={case_} rotate={rotate} />
             <br />
             <pre>
-                {chosen && !loading && <Moves data={chosen} trimAUF />}
+                {chosen && <Moves data={chosen} trimAUF />}
             </pre>
-            {solving || loading ? (
+            {solving ? (
                 <pre>
                     ...
                 </pre>
             ) : (
                 <p>
-                    {solutions.length} solutions
+                    {caseSolutions.length} solutions
                     <br />
                     <span
                         onClick={() => setShowModal(true)}
@@ -77,7 +82,6 @@ export default function Case({ case_, solutions, chosen, loading }) {
             <Modal
                 show={showModal}
                 case_={case_}
-                solutions={solutions}
             >
                 {() => (
                     <Fragment>
@@ -90,7 +94,7 @@ export default function Case({ case_, solutions, chosen, loading }) {
                             close
                         </button>
                         <div className="solutions">
-                            {solutions.map((data, i) => (
+                            {caseSolutions.map((data, i) => (
                                 <Fragment key={i}>
                                     <Moves data={data} />
                                 </Fragment>

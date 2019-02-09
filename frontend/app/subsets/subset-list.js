@@ -35,12 +35,12 @@ export const ell = {
 export default function () {
 
     const { loadSubset } = useSolver();
-    const { setLL } = useCases();
+    const { setLL, sort } = useCases();
 
     const setSubset = (subset) => {
         return () => {
             setLL(subset);
-            loadSubset({ index: '0', ...subset });
+            loadSubset({ ll: subset, sort });
         }
     };
 

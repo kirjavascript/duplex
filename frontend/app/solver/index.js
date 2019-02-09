@@ -10,7 +10,6 @@ import React, {
 import { useAlgs } from '#app/algs/store';
 import { useCases } from '#app/subsets/store';
 import { useTrainer } from '#app/trainer/store';
-import { useSolutions } from './store';
 import Worker from './worker';
 
 const ctx = createContext();
@@ -25,15 +24,15 @@ export function useSolver() {
         });
     }
 
-    function loadSubset(subset) {
+    function loadSubset({ ll, sort }) {
         worker.postMessage({
             action: 'LOAD_SUBSET',
-            payload: subset,
+            payload: { ll, sort },
         });
     }
 
     function loadTrainerCase() {
-        worker.postMessage({ action: 'LOAD_TRAINER_CASE' });
+        // worker.postMessage({ action: 'LOAD_TRAINER_CASE' });
     }
 
     return {
@@ -43,10 +42,19 @@ export function useSolver() {
 
 export default function Solver({ children }) {
     const { algs, setParseError } = useAlgs();
-    const { cases, setCases, setSubset } = useCases();
+    const {
+        cases,
+        setCases,
+        solutions,
+        setSolutions,
+        setSolving,
+        ll,
+        sort,
+    } = useCases();
     const { setTrainerCase } = useTrainer();
-    const { solutions, setSolutions, setSolving } = useSolutions();
     const workerRef = useRef();
+
+    // TODO: trainer, unsolved
 
     useEffect(() => {
         const worker = new Worker();
@@ -59,20 +67,23 @@ export default function Solver({ children }) {
                 });
             } else if (action === 'PARSE_ERROR') {
                 setParseError(payload);
-            } else if (action === 'CASES') {
-                setCases(payload);
-                worker.postMessage({ action: 'LOAD_TRAINER_CASE' });
             } else if (action === 'START_SOLVE') {
                 setSolving(true);
             } else if (action === 'END_SOLVE') {
                 setSolving(false);
+                worker.postMessage({
+                    action: 'LOAD_SUBSET',
+                    payload: {
+                        ll, sort,
+                    },
+                })
             } else if (action === 'SOLUTIONS') {
                 setSolutions(payload);
-            } else if (action === 'SUBSET') {
-                setSubset(payload);
-                worker.postMessage({ action: 'LOAD_TRAINER_CASE' });
+            } else if (action === 'CASES') {
+                setCases(payload);
+                // worker.postMessage({ action: 'LOAD_TRAINER_CASE' });
             } else if (action === 'TRAINER_CASE') {
-                setTrainerCase(payload);
+                // setTrainerCase(payload);
             }
         });
 

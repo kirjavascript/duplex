@@ -39,7 +39,7 @@ function Picker() {
 export default function Select() {
 
     const { loadSubset } = useSolver();
-    const { ll, setLL, sticker } = useCases();
+    const { ll, setLL, sticker, sort } = useCases();
 
     return (
         <div className="select">
@@ -52,7 +52,7 @@ export default function Select() {
                         ll[type][perm][orient] = sticker;
                     });
                     setLL(newPos);
-                    loadSubset({ index: '0', ...newPos });
+                    loadSubset({ sort, ll: newPos });
                 }}
             />
             <Picker />

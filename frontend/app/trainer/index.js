@@ -2,7 +2,6 @@ import React, { Fragment, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import normalize from 'cube-notation-normalizer';
 import { useSolver } from '#app/solver';
-import { useSolutions } from '#app/solver/store';
 import LL from '#app/subsets/ll';
 import { useWindowSize } from '#app/subsets/render-hooks';
 import { Moves } from '#app/subsets/case';
@@ -38,7 +37,6 @@ export default function Trainer() {
 
     const { trainerCase } = useTrainer();
     const { loadTrainerCase, worker } = useSolver();
-    const { solutions: solutionsList } = useSolutions();
     const { width } = useWindowSize();
     const solutions = solutionsList[trainerCase.index] || [];
 

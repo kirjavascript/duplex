@@ -93,23 +93,40 @@ fetch(ENDPOINT).then(response =>
                 self.postMessage({ action: 'PARSE_ERROR', payload: error });
             } else {
                 const solutions = JSON.parse(wasm.run_algs());
-                self.postMessage({ action: 'SOLUTIONS', payload: solutions });
+                self.postMessage({
+                    action: 'SOLUTIONS',
+                    payload: solutions,
+                });
             }
             self.postMessage({ action: 'END_SOLVE' });
-        } else if (action === 'EXPLORE_SOLVE') {
-            wasm.explore_solve(JSON.stringify(payload));
+            console.timeEnd('solution time');
         } else if (action == 'LOAD_SUBSET') {
-            const subsetJSON = wasm.load_subset(JSON.stringify(payload));
-            self.postMessage({
-                action: 'SUBSET',
-                payload: JSON.parse(subsetJSON),
-            });
+            const { ll, sort } = payload;
+            if (sort === 'canonical') {
+                const casesJSON = wasm.get_canonical(JSON.stringify(ll));
+                self.postMessage({
+                    action: 'CASES',
+                    payload: JSON.parse(casesJSON),
+                });
+            } else if (sort === 'group-algs') {
+                const casesJSON = wasm.get_group_algs(JSON.stringify(ll));
+                self.postMessage({
+                    action: 'CASES',
+                    payload: JSON.parse(casesJSON),
+                });
+            } else if (sort === 'group-reduce') {
+                const casesJSON = wasm.get_group_reduce(JSON.stringify(ll));
+                self.postMessage({
+                    action: 'CASES',
+                    payload: JSON.parse(casesJSON),
+                });
+            }
         } else if (action == 'LOAD_TRAINER_CASE') {
-            const caseJSON = wasm.get_random_from_subset();
-            self.postMessage({
-                action: 'TRAINER_CASE',
-                payload: JSON.parse(caseJSON),
-            });
+            // const caseJSON = wasm.get_random_from_subset();
+            // self.postMessage({
+            //     action: 'TRAINER_CASE',
+            //     payload: JSON.parse(caseJSON),
+            // });
         }
     };
 
@@ -117,6 +134,6 @@ fetch(ENDPOINT).then(response =>
 
     const cases = JSON.parse(wasm.enumerate_ll());
 
-    self.postMessage({ action: 'CASES', payload: cases });
+    self.postMessage({ action: 'CASES', payload: cases.map(d => ({case: d})) });
 
 }).catch(console.error);
