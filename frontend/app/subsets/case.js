@@ -36,9 +36,9 @@ export function Moves({ data, trimAUF }) {
     );
 }
 
-export default function Case({ case: case_, solutionIndices }) {
+export default function Case({ case: case_, solutionIndices, trainer, index }) {
 
-    const { solving, solutions } = useCases();
+    const { solving, solutions, toggleTrainer } = useCases();
     const [showModal, setShowModal] = useState(false);
 
     const closeModal = useCallback(() => {
@@ -60,24 +60,38 @@ export default function Case({ case: case_, solutionIndices }) {
         >
             <LL case_={case_} rotate={rotate} />
             <br />
-            <pre>
-                {chosen && <Moves data={chosen} trimAUF />}
-            </pre>
             {solving ? (
                 <pre>
                     ...
                 </pre>
             ) : (
-                <p>
-                    {caseSolutions.length} solutions
-                    <br />
-                    <span
-                        onClick={() => setShowModal(true)}
-                        className="modal-trigger"
-                    >
-                        {' '}(see all)
-                    </span>
-                </p>
+                <Fragment>
+                    <pre>
+                        {chosen && <Moves data={chosen} trimAUF />}
+                    </pre>
+                    <p>
+                        {caseSolutions.length} solutions
+                        <span
+                            onClick={() => setShowModal(true)}
+                            className="modal-trigger"
+                        >
+                            {' '}(see all)
+                        </span>
+                        <br />
+                        <span
+                            className="checkbox trainer-checkbox"
+                            onClick={() => {
+                                toggleTrainer(index);
+                            }}
+                        >
+                            trainer
+                            <span className="link">
+                                {trainer ? '✔' : '✗'}
+                            </span>
+                        </span>
+                    </p>
+
+                </Fragment>
             )}
             <Modal
                 show={showModal}

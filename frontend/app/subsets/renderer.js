@@ -51,7 +51,7 @@ export default function Renderer({ caseList, children }) {
                             position: 'absolute',
                         }}
                     >
-                        {children(obj)}
+                        {children(obj, i)}
                     </div>
                 ) : false;
             })}

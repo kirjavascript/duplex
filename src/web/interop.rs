@@ -118,6 +118,7 @@ macro_rules! console {
 
 // random
 
+#[allow(unused)]
 pub fn range_random(range: Range<usize>) -> usize {
     let (start, end) = (
         range.start as f64,

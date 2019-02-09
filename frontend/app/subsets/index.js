@@ -41,7 +41,7 @@ export function Unsolved() {
 
 
 export default function Subsets() {
-    const { cases, sort, setSort, ll } = useCases();
+    const { cases, sort, setSort, ll, trainerAll } = useCases();
     const { loadSubset } = useSolver();
 
     const coverage = cases.filter(d => d.solutionIndices).length;
@@ -76,11 +76,25 @@ export default function Subsets() {
                         <option value="group-algs">group by alg</option>
                         <option value="group-reduce">reduce groups</option>
                     </select>
+                    <br />
+                    <div className="trainer-actions">
+                        <button
+                            onClick={() => { trainerAll(true); }}
+                        >
+                            use all
+                        </button>
+                        <button
+                            onClick={() => { trainerAll(false); }}
+                        >
+                            use none
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <Renderer caseList={cases}>
-                {(obj) => <Case
+                {(obj, i) => <Case
+                    index={i}
                     {...obj}
                 />}
             </Renderer>

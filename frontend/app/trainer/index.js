@@ -6,7 +6,7 @@ import LL from '#app/subsets/ll';
 import { useWindowSize } from '#app/subsets/render-hooks';
 import { Moves } from '#app/subsets/case';
 import { useCases } from '#app/subsets/store';
-import { solved } from '#app/subsets/subset-list';
+import { blank } from '#app/subsets/subset-list';
 
 const auf = ['', 'U', 'U2', 'U\''];
 
@@ -39,13 +39,14 @@ export default function Trainer() {
     const { width } = useWindowSize();
     const LLSize = Math.min(400, width - 40);
 
-    const [trainerCase, setTrainerCase] = useState({ case: solved });
+    const [trainerCase, setTrainerCase] = useState({ case: blank });
     const { cases, solutions } = useCases();
 
     const loadTrainerCase = () => {
-        if (cases.length) {
-            const index = Math.floor(Math.random()*cases.length);
-            setTrainerCase(cases[index]);
+        const casesTrainer = cases.filter(d => d.trainer);
+        if (casesTrainer.length) {
+            const index = Math.floor(Math.random()*casesTrainer.length);
+            setTrainerCase(casesTrainer[index]);
         }
     };
 
