@@ -1,16 +1,17 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import normalize from 'cube-notation-normalizer';
 import { useSolver } from '#app/solver';
 import LL from '#app/subsets/ll';
 import { useWindowSize } from '#app/subsets/render-hooks';
 import { Moves } from '#app/subsets/case';
-import { useTrainer } from './store';
+import { useCases } from '#app/subsets/store';
+import { solved } from '#app/subsets/subset-list';
 
 const auf = ['', 'U', 'U2', 'U\''];
 
 export function solutionToString(solution) {
-    return solution.solution.map(part => {
+    return solution.alg.map(part => {
         if (typeof part === 'number') {
             return auf[part];
         } else {
@@ -35,39 +36,51 @@ function getSetup(solutions) {
 
 export default function Trainer() {
 
-    const { trainerCase } = useTrainer();
-    const { loadTrainerCase, worker } = useSolver();
     const { width } = useWindowSize();
-    const solutions = solutionsList[trainerCase.index] || [];
-
     const LLSize = Math.min(400, width - 40);
 
-    useEffect(() => {
-        if (worker) {
-            const getSpace = (e) => {
-                if (e.keyCode === 32) {
-                    loadTrainerCase();
-                }
-            };
-            const eatSpace = (e) => {
-                if (e.keyCode === 32) {
-                    e.preventDefault();
-                }
-            };
-            document.addEventListener('keyup', getSpace)
-            document.addEventListener('keydown', eatSpace)
-            return () => {
-                document.removeEventListener('keyup', getSpace);
-                document.removeEventListener('keydown', eatSpace);
-            };
+    const [trainerCase, setTrainerCase] = useState({ case: solved });
+    const { cases, solutions } = useCases();
+
+    const loadTrainerCase = () => {
+        if (cases.length) {
+            const index = Math.floor(Math.random()*cases.length);
+            setTrainerCase(cases[index]);
         }
-        return undefined;
-    }, [worker]);
+    };
+
+    const solutionList = do {
+        if (trainerCase.solutionIndices) {
+            trainerCase.solutionIndices.map(i => solutions[i]);
+        } else {
+            [];
+        }
+    };
+
+    useEffect(() => {
+        loadTrainerCase();
+        const getSpace = (e) => {
+            if (e.keyCode === 32) {
+                loadTrainerCase();
+            }
+        };
+        const eatSpace = (e) => {
+            if (e.keyCode === 32) {
+                e.preventDefault();
+            }
+        };
+        document.addEventListener('keyup', getSpace)
+        document.addEventListener('keydown', eatSpace)
+        return () => {
+            document.removeEventListener('keyup', getSpace);
+            document.removeEventListener('keydown', eatSpace);
+        };
+    }, [cases]);
 
     return (
         <div className="trainer">
             <LL
-                case_={trainerCase}
+                case_={trainerCase.case}
                 width={LLSize}
                 height={LLSize}
             />
@@ -87,16 +100,16 @@ export default function Trainer() {
                     </Link>
                 </div>
             </div>
-            {!!solutions.length && (
+            {!!solutionList.length && (
                 <div>
                     <p className="setup">
                         <span className="grey">
-                            setup - {getSetup(solutions)}
+                            setup - {getSetup(solutionList)}
                         </span>
                     </p>
 
                     <div className="solutions">
-                        {solutions.map((data, i) => (
+                        {solutionList.map((data, i) => (
                             <div key={i}>
                                 <Moves data={data} />
                             </div>

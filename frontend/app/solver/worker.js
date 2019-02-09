@@ -121,12 +121,6 @@ fetch(ENDPOINT).then(response =>
                     payload: JSON.parse(casesJSON),
                 });
             }
-        } else if (action == 'LOAD_TRAINER_CASE') {
-            // const caseJSON = wasm.get_random_from_subset();
-            // self.postMessage({
-            //     action: 'TRAINER_CASE',
-            //     payload: JSON.parse(caseJSON),
-            // });
         }
     };
 

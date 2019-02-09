@@ -9,7 +9,6 @@ import React, {
 
 import { useAlgs } from '#app/algs/store';
 import { useCases } from '#app/subsets/store';
-import { useTrainer } from '#app/trainer/store';
 import Worker from './worker';
 
 const ctx = createContext();
@@ -31,12 +30,8 @@ export function useSolver() {
         });
     }
 
-    function loadTrainerCase() {
-        // worker.postMessage({ action: 'LOAD_TRAINER_CASE' });
-    }
-
     return {
-        loadAlgs, loadSubset, loadTrainerCase, worker,
+        loadAlgs, loadSubset, worker,
     };
 }
 
@@ -51,10 +46,7 @@ export default function Solver({ children }) {
         ll,
         sort,
     } = useCases();
-    const { setTrainerCase } = useTrainer();
     const workerRef = useRef();
-
-    // TODO: trainer, unsolved
 
     useEffect(() => {
         const worker = new Worker();
@@ -81,9 +73,6 @@ export default function Solver({ children }) {
                 setSolutions(payload);
             } else if (action === 'CASES') {
                 setCases(payload);
-                // worker.postMessage({ action: 'LOAD_TRAINER_CASE' });
-            } else if (action === 'TRAINER_CASE') {
-                // setTrainerCase(payload);
             }
         });
 

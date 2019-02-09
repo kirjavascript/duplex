@@ -13,7 +13,7 @@ export function Unsolved() {
 
     const { cases, solutions } = useCases();
 
-    const unsolved = cases.filter(case_ => !solutions[case_.index]);
+    const unsolved = cases.filter(case_ => !case_.solutionIndices);
 
     const hasSolved = unsolved.length > 3900;
 
@@ -24,10 +24,10 @@ export function Unsolved() {
                     solving...
                 </span>
             ) : (
-                unsolved.map((case_, index) => {
+                unsolved.map((obj, index) => {
                     return (
                         <LL
-                            case_={case_}
+                            case_={obj.case}
                             key={index}
                             width={200}
                             height={200}

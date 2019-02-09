@@ -184,12 +184,12 @@ extern "C" fn get_group_reduce(subset: JSString) {
                     indices.swap(0, index);
                 }
 
-                (case, indices, found.map(|s| s.1))
+                (case, Some(indices), found.map(|s| s.1))
             } else {
-                (case, vec![], None)
+                (case, None, None)
             }
         })
-        .collect::<Vec<(&&Case, Vec<_>, Option<&String>)>>();
+        .collect::<Vec<(&&Case, Option<Vec<_>>, Option<&String>)>>();
 
     cases.sort_by(|a, b| {
         if a.2.is_none() || b.2.is_none() {
