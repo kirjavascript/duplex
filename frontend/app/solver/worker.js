@@ -94,13 +94,8 @@ fetch(ENDPOINT).then(response =>
             } else {
                 const solutions = JSON.parse(wasm.run_algs());
                 self.postMessage({ action: 'SOLUTIONS', payload: solutions });
-                // console.log(solutions["835328418514003"])
-            // console.time('canon');
-            //     wasm.get_canonical();
-            // console.timeEnd('canon');
             }
             self.postMessage({ action: 'END_SOLVE' });
-            console.timeEnd('solution time');
         } else if (action === 'EXPLORE_SOLVE') {
             wasm.explore_solve(JSON.stringify(payload));
         } else if (action == 'LOAD_SUBSET') {

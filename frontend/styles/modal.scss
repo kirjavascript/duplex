@@ -21,7 +21,7 @@
             top: 10%;
             bottom: 10%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translatex(-50%);
         }
 
         .moves {
@@ -38,6 +38,10 @@
             position: absolute;
             top: 40px;
             right: 60px;
+
+            @media only screen and (max-width: 750px) {
+                display: none;
+            }
         }
         .solutions {
             overflow-y: scroll;
