@@ -23,7 +23,7 @@ export default [
     { name: 'diagsune', moves: `RUR'UR'FRF'RU2R'`, mirror: 'FB', invert: true },
     { name: 'niklasune', moves: `R U' L' U R' U L U L' U L`, mirror: 'FB', invert: true },
     { name: 'sledgesune', moves: `R' U' R' F R F' R U' R' U2 R`, mirror: 'FB', invert: true },
-    { name: 'doublesledge', moves: `R U R' U R' F R F' U2 R' F R F'`, mirror: 'FB', invert: true },
+    { name: 'doublesledge', moves: `R U R' U R' F R F' U2 R' F R F'`, mirror: 'LR', invert: true },
     { name: 'tswap', moves: `F R U' R' U' R U2 R' U' F'`, mirror: 'FB', invert: true },
     { name: 'almostJ', moves: `R' U' R U R' F' R U R' U' R' F R2`, mirror: 'FB', invert: true },
     { name: 'fspam', moves: `F R U R' U' R U' R' U R U R' F'`, mirror: 'FB', invert: true },
