@@ -50,6 +50,7 @@ export default function Solver({ children }) {
 
     useEffect(() => {
         const worker = new Worker();
+        let casesCache;
 
         worker.addEventListener('message', ({ data: { action, payload } }) => {
             if (action === 'INIT') {
@@ -71,8 +72,13 @@ export default function Solver({ children }) {
                 })
             } else if (action === 'SOLUTIONS') {
                 setSolutions(payload);
+            } else if (action === 'SUBSET') {
+                setCases(payload.map((obj) => {
+                    return { ...obj, case: casesCache[obj.case] };
+                }));
             } else if (action === 'CASES') {
-                setCases(payload);
+                casesCache = payload;
+                setCases(payload.map((case_) => ({ case: case_ })));
             }
         });
 

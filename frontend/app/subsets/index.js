@@ -13,7 +13,7 @@ export function Unsolved() {
 
     const { cases, solutions } = useCases();
 
-    const unsolved = cases.filter(case_ => !case_.solutionIndices);
+    const unsolved = cases.filter(case_ => !case_.sIds);
 
     const hasSolved = unsolved.length > 3900;
 
@@ -44,7 +44,7 @@ export default function Subsets() {
     const { cases, sort, setSort, ll, trainerAll } = useCases();
     const { loadSubset } = useSolver();
 
-    const coverage = cases.filter(d => d.solutionIndices).length;
+    const coverage = cases.filter(d => d.sIds).length;
 
     return (
         <div className="subsets">

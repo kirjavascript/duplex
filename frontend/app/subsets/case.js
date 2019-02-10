@@ -36,7 +36,7 @@ export function Moves({ data, trimAUF }) {
     );
 }
 
-export default function Case({ case: case_, solutionIndices, trainer, index }) {
+export default function Case({ case: case_, sIds, trainer, index }) {
 
     const { solving, solutions, toggleTrainer } = useCases();
     const [showModal, setShowModal] = useState(false);
@@ -45,8 +45,8 @@ export default function Case({ case: case_, solutionIndices, trainer, index }) {
         setShowModal(false);
     }, []);
 
-    const caseSolutions = solutionIndices
-        ? solutionIndices.map(i => solutions[i])
+    const caseSolutions = sIds
+        ? sIds.map(i => solutions[i])
         : [];
 
     const chosen = caseSolutions[0];

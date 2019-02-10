@@ -51,8 +51,8 @@ export default function Trainer() {
     };
 
     const solutionList = do {
-        if (trainerCase.solutionIndices) {
-            trainerCase.solutionIndices.map(i => solutions[i]);
+        if (trainerCase.sIds) {
+            trainerCase.sIds.map(i => solutions[i]);
         } else {
             [];
         }

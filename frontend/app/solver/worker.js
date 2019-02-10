@@ -105,19 +105,19 @@ fetch(ENDPOINT).then(response =>
             if (sort === 'canonical') {
                 const casesJSON = wasm.get_canonical(JSON.stringify(ll));
                 self.postMessage({
-                    action: 'CASES',
+                    action: 'SUBSET',
                     payload: JSON.parse(casesJSON),
                 });
             } else if (sort === 'group-algs') {
                 const casesJSON = wasm.get_group_algs(JSON.stringify(ll));
                 self.postMessage({
-                    action: 'CASES',
+                    action: 'SUBSET',
                     payload: JSON.parse(casesJSON),
                 });
             } else if (sort === 'group-reduce') {
                 const casesJSON = wasm.get_group_reduce(JSON.stringify(ll));
                 self.postMessage({
-                    action: 'CASES',
+                    action: 'SUBSET',
                     payload: JSON.parse(casesJSON),
                 });
             }
@@ -128,6 +128,6 @@ fetch(ENDPOINT).then(response =>
 
     const cases = JSON.parse(wasm.enumerate_ll());
 
-    self.postMessage({ action: 'CASES', payload: cases.map(d => ({case: d})) });
+    self.postMessage({ action: 'CASES', payload: cases });
 
 }).catch(console.error);

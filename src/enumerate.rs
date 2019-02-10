@@ -94,6 +94,9 @@ pub struct Case {
     #[serde(default)]
     #[serde(skip_serializing)]
     pub ll_index: u64,
+    #[serde(default)]
+    #[serde(skip_serializing)]
+    pub index: usize,
     pub edges: Vec<Edge>,
     pub corners: Vec<Corner>,
 }
@@ -151,9 +154,10 @@ pub fn get_cases() -> Vec<Case> {
         }
     }
 
-    let vec: Vec<Case> = positions.iter()
-        .map(|(k, v)| Case {
+    let vec: Vec<Case> = positions.iter().enumerate()
+        .map(|(i, (k, v))| Case {
             ll_index: *k,
+            index: i,
             edges: v.edges[..4].iter().fold(vec![], |mut acc, cur| {
                 acc.push(cur.clone());
                 acc

@@ -51,7 +51,7 @@ extern "C" fn get_canonical(subset: JSString) {
     let cases = CASES.lock().unwrap();
     let solutions = SOLUTIONS.lock().unwrap();
 
-    let solutions_str = solutions.iter()
+    let solutions_u64 = solutions.iter()
         .map(|s| {
             (s.0, s.1.iter().map(|s| s.index).collect())
         })
@@ -62,8 +62,8 @@ extern "C" fn get_canonical(subset: JSString) {
     let cases = cases.iter()
         .filter(|case| enumerate::check_mask(&subset_mask, &case))
         .map(|case| json!({
-            "case": case,
-            "solutionIndices": solutions_str.get(&case.ll_index),
+            "case": case.index,
+            "sIds": solutions_u64.get(&case.ll_index),
         }))
         .collect::<Vec<Value>>();
 
@@ -86,7 +86,7 @@ extern "C" fn get_group_algs(subset: JSString) {
 
     cases.sort_by(|a, b| {
         if a.1.is_none() || b.1.is_none() {
-            Ordering::Less
+            Ordering::Equal
         } else {
             a.1.unwrap()[0].name.cmp(&b.1.unwrap()[0].name)
         }
@@ -94,8 +94,8 @@ extern "C" fn get_group_algs(subset: JSString) {
 
     let cases = cases.iter()
         .map(|(case, indices)| json!({
-            "case": case,
-            "solutionIndices": (
+            "case": case.index,
+            "sIds": (
                 indices.map(|s| s.iter().map(|s| s.index).collect::<Vec<usize>>())
             ),
         }))
@@ -180,7 +180,7 @@ extern "C" fn get_group_reduce(subset: JSString) {
 
     cases.sort_by(|a, b| {
         if a.2.is_none() || b.2.is_none() {
-            Ordering::Less
+            Ordering::Equal
         } else {
             a.2.unwrap().cmp(&b.2.unwrap())
         }
@@ -188,8 +188,8 @@ extern "C" fn get_group_reduce(subset: JSString) {
 
     let cases = cases.iter()
         .map(|(case, indices, _)| json!({
-            "case": case,
-            "solutionIndices": indices,
+            "case": case.index,
+            "sIds": indices,
         }))
         .collect::<Vec<Value>>();
 

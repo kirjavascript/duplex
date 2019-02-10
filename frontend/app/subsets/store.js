@@ -39,6 +39,7 @@ export const CaseStore = ({  children }) => {
         setCases(newCases);
     }, [cases]);
 
+
     return <ctx.Provider
         value={{
             cases, setCases,
