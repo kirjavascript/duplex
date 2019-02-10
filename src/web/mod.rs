@@ -53,9 +53,9 @@ extern "C" fn get_canonical(subset: JSString) {
 
     let solutions_str = solutions.iter()
         .map(|s| {
-            (s.0.to_string(), s.1.iter().map(|s| s.index).collect())
+            (s.0, s.1.iter().map(|s| s.index).collect())
         })
-        .collect::<HashMap<String, Vec<usize>>>();
+        .collect::<HashMap<&u64, Vec<usize>>>();
 
     let subset_mask: Case = serde_json::from_str(&subset.to_string()).unwrap();
 
@@ -63,7 +63,7 @@ extern "C" fn get_canonical(subset: JSString) {
         .filter(|case| enumerate::check_mask(&subset_mask, &case))
         .map(|case| json!({
             "case": case,
-            "solutionIndices": solutions_str.get(&case.index),
+            "solutionIndices": solutions_str.get(&case.ll_index),
         }))
         .collect::<Vec<Value>>();
 
@@ -80,7 +80,7 @@ extern "C" fn get_group_algs(subset: JSString) {
     let mut cases = cases.iter()
         .filter(|case| enumerate::check_mask(&subset_mask, &case))
         .map(|case| {
-            (case, solutions.get(&case.index.parse().unwrap()))
+            (case, solutions.get(&case.ll_index))
         })
         .collect::<Vec<(&Case, Option<&Vec<Solution>>)>>();
 
@@ -119,7 +119,7 @@ extern "C" fn get_group_reduce(subset: JSString) {
     let cases = cases.iter()
         .filter(|case| enumerate::check_mask(&subset_mask, &case))
         .map(|case| {
-            (case, solutions.get(&case.index.parse().unwrap()))
+            (case, solutions.get(&case.ll_index))
         })
         .collect::<Vec<(&Case, Option<&Vec<Solution>>)>>();
 
@@ -199,7 +199,7 @@ extern "C" fn get_group_reduce(subset: JSString) {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Solution {
     #[serde(skip_serializing)]
-    ll_index: String,
+    ll_index: u64,
     #[serde(skip_serializing)]
     index: usize,
     #[serde(skip_serializing)]
@@ -229,9 +229,7 @@ unsafe extern "C" fn run_algs() {
     // get indexes
 
     let cases = CASES.lock().unwrap();
-    let indices: HashSet<u64> = cases.iter().map(|x| {
-        x.index.parse::<u64>().unwrap()
-    }).collect();
+    let indices: HashSet<u64> = cases.iter().map(|x| x.ll_index).collect();
 
     // get solutions for just one alg (AUF at end, because we invert later)
 
@@ -263,7 +261,7 @@ unsafe extern "C" fn run_algs() {
                 if indices.contains(&index) {
                     let alg = alg.invert();
                     let solution = Solution {
-                        ll_index: index.to_string(),
+                        ll_index: index,
                         index: hits,
                         name: alg.get_full_name().to_lowercase(),
                         transforms: (alg.mirror as usize
@@ -301,7 +299,7 @@ unsafe extern "C" fn run_algs() {
                             let first_alg = first_alg.invert();
                             let second_alg = second_alg.invert();
                             let solution = Solution {
-                                ll_index: index.to_string(),
+                                ll_index: index,
                                 index: hits,
                                 name: second_alg.get_full_name().to_lowercase(),
                                 transforms: (4 + first_alg.mirror as usize

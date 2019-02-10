@@ -93,7 +93,7 @@ fn get_EP() -> ([Transform; 12], [Transform; 12]) {
 pub struct Case {
     #[serde(default)]
     #[serde(skip_serializing)]
-    pub index: String,
+    pub ll_index: u64,
     pub edges: Vec<Edge>,
     pub corners: Vec<Corner>,
 }
@@ -153,7 +153,7 @@ pub fn get_cases() -> Vec<Case> {
 
     let vec: Vec<Case> = positions.iter()
         .map(|(k, v)| Case {
-            index: format!("{}", *k),
+            ll_index: *k,
             edges: v.edges[..4].iter().fold(vec![], |mut acc, cur| {
                 acc.push(cur.clone());
                 acc
