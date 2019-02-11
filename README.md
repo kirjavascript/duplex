@@ -7,3 +7,4 @@ TODO
     add 'not U' sticker
     prefer-sunes
     dont pick the same case twice in trainer
+    retain trainer ticks
