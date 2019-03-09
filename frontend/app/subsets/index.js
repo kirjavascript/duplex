@@ -10,11 +10,9 @@ import SubsetList from './subset-list';
 import LL from './ll';
 
 export function Unsolved() {
-
     const { cases, solutions } = useCases();
 
     const unsolved = cases.filter(case_ => !case_.sIds);
-
     const hasSolved = unsolved.length > 3900;
 
     return (
