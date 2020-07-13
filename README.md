@@ -2,6 +2,7 @@ duplex is an experimental speedcubing method
 
 TODO
 
+    ability to hide unsolved cases
     add beginner method
     add custom subsets and save
     sort by algs & sticker patterns
